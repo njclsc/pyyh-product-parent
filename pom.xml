@@ -13,6 +13,7 @@
 		<lombok-version>1.18.24</lombok-version>
 		<fastjson-version>1.2.72</fastjson-version>
 		<netty-version>4.1.39.Final</netty-version>
+		<disruptor-version>3.4.4</disruptor-version>
 	</properties>
 	<build>
 		<pluginManagement>
@@ -56,6 +57,11 @@
 			</dependency>
 			<dependency>
 				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter-log4j2</artifactId>
+				<version>${spring-boot-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-starter-aop</artifactId>
 				<version>${spring-boot-version}</version>
 			</dependency>
@@ -63,6 +69,11 @@
 				<groupId>org.projectlombok</groupId>
 				<artifactId>lombok</artifactId>
 				<version>${lombok-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.lmax</groupId>
+				<artifactId>disruptor</artifactId>
+				<version>${disruptor-version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.alibaba</groupId>

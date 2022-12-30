@@ -6,3 +6,6 @@ server:
 spring:
   application:
     name: communication
+  profiles:
+    active: 
+      - other
