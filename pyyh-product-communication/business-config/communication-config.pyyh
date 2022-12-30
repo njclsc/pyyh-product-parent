@@ -22,5 +22,12 @@
 		"queueSize": 200,
 		"lizer":"testUdp"
 	},
-	"lizers": ["testTcp", "testUdp"]
+	"lizers": ["testTcp", "testUdp"],
+	"threadPool": {
+		"corePoolSize": 5,
+		"maximumPoolSize": 10,
+		"keepAliveTime": 10,
+		"timeUnit": "minutes",
+		"queueSize": 500
+	}
 }

@@ -10,4 +10,5 @@ public class CommunicationConfigPojo {
 	private TcpServerConfigPojo tcpServer;
 	private UDPConfigPojo udp;
 	private List<String> lizers;
+	private ThreadConfigPojo threadPool;
 }

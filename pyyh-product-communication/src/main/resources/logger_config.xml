@@ -58,7 +58,7 @@
 			includeLocation : 取消行号信息，因为影响性能
 			additivity ：日志信息不传递到外层。
 		 -->
-		<AsyncLogger name = "com.pyyh.product.logger" level = "info" includeLocation = "false" additivity = "false">
+		<AsyncLogger name = "com.pyyh.product.logger" level = "error" includeLocation = "false" additivity = "true">
 			<AppenderRef ref = "file_general" />
 		</AsyncLogger>
 		
