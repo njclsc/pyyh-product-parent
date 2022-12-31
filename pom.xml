@@ -14,6 +14,9 @@
 		<fastjson-version>1.2.72</fastjson-version>
 		<netty-version>4.1.39.Final</netty-version>
 		<disruptor-version>3.4.4</disruptor-version>
+		<druid-version>1.1.22</druid-version>
+		<jdbc-version>8.0.19</jdbc-version>
+		<mybatis-version>2.1.1</mybatis-version>
 	</properties>
 	<build>
 		<pluginManagement>
@@ -79,6 +82,21 @@
 				<groupId>com.alibaba</groupId>
 				<artifactId>fastjson</artifactId>
 				<version>${fastjson-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.alibaba</groupId>
+				<artifactId>druid</artifactId>
+				<version>${druid-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.mybatis.spring.boot</groupId>
+				<artifactId>mybatis-spring-boot-starter</artifactId>
+				<version>${mybatis-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>mysql</groupId>
+				<artifactId>mysql-connector-java</artifactId>
+				<version>${jdbc-version}</version>
 			</dependency>
 			<dependency>
 				<groupId>io.netty</groupId>
