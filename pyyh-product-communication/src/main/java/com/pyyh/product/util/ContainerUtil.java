@@ -11,7 +11,6 @@ import io.netty.channel.ChannelInitializer;
 public class ContainerUtil {
 	private static HashMap<String, ChannelInitializer<?>> lizer;
 	private static ThreadPoolExecutor pool;
-	private static BlockingQueue<Runnable> queue;
 	private static DataSource dataSource;
 	
 	public static DataSource getDataSource() {
@@ -37,14 +36,5 @@ public class ContainerUtil {
 	public static void setPool(ThreadPoolExecutor pool) {
 		ContainerUtil.pool = pool;
 	}
-
-	public static BlockingQueue<Runnable> getQueue() {
-		return queue;
-	}
-
-	public static void setQueue(BlockingQueue<Runnable> queue) {
-		ContainerUtil.queue = queue;
-	}
-
 	
 }

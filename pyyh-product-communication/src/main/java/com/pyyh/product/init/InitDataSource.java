@@ -73,7 +73,6 @@ public class InitDataSource {
 		config.put("logAbandoned", logAbandoned);
 		DataSource ds = DruidDataSourceFactory.createDataSource(config);
 		ContainerUtil.setDataSource(ds);
-		System.out.println(ds);
 		return ds;
 	}
 	
