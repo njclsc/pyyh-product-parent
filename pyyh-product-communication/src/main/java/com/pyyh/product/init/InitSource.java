@@ -18,7 +18,7 @@ public class InitSource {
 
 	@Bean
 	public void communicationInit() throws Exception{
-		//lizer业务链
+		//netty lizer业务链
 		ISourceService sourceServiceLizer = new CommunicationSourceServiceLizerImp();
 		CommunicationConfigPojo ccp = sourceServiceLizer.loadSource("business-config/communication-config.pyyh");
 		ContainerUtil.setLizer(sourceServiceLizer.registSource(ccp));
