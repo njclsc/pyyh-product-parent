@@ -1,4 +1,20 @@
 {
+	"httpClients":[
+		{
+			"used": true,
+			"key": "value1",
+			"url": "1",
+			"requestType": "post",
+			"parameterType": "json"
+		},
+		{
+			"used": true,
+			"key": "value2",
+			"url": "2",
+			"requestType": "get",
+			"parameterType": "json"
+		}
+	],
 	"tcpClient": {
 		"used": true,
 		"localAddress": ["192.168.4.109:10011", "192.168.4.109:10012",

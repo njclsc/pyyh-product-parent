@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import com.pyyh.product.init.pojo.CommunicationConfigPojo;
 import com.pyyh.product.init.pojo.ThreadConfigPojo;
 import com.pyyh.product.init.service.ISourceService;
+import com.pyyh.product.init.serviceimp.CommunicationSourceServiceHttpPostImp;
 import com.pyyh.product.init.serviceimp.CommunicationSourceServiceLizerImp;
 import com.pyyh.product.init.serviceimp.CommunicationSourceServiceTCPClientImp;
 import com.pyyh.product.init.serviceimp.CommunicationSourceServiceTCPServerImp;
@@ -26,6 +27,9 @@ public class InitSource {
 		ISourceService threadPool = new CommunicationSourceServiceThreadPoolImp();
 		ThreadConfigPojo tcp = (ThreadConfigPojo)threadPool.registSource(ccp);
 		ContainerUtil.setPool(tcp.getPool());
+		//http端口
+		ISourceService sourceHttp = new CommunicationSourceServiceHttpPostImp();
+		sourceHttp.registSource(ccp);
 		//tcpServer端口
 		ISourceService sourceServiceTcp = new CommunicationSourceServiceTCPServerImp();
 		sourceServiceTcp.registSource(ccp);

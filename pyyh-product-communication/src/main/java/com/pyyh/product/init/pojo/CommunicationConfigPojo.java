@@ -7,6 +7,7 @@ import lombok.Setter;
 @Setter
 @Getter
 public class CommunicationConfigPojo {
+	private List<HttpClientPojo> httpClients;
 	private TcpServerConfigPojo tcpServer;
 	private TcpClientConfigPojo tcpClient;
 	private UDPConfigPojo udp;
