@@ -1,7 +1,6 @@
 package com.pyyh.product.util;
 
 import java.util.HashMap;
-import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 
 import javax.sql.DataSource;
@@ -9,6 +8,7 @@ import javax.sql.DataSource;
 import io.netty.channel.ChannelInitializer;
 
 public class ContainerUtil {
+	private static HashMap<String, HashMap<String, ?>> communicationSources = new HashMap<>(); 
 	private static HashMap<String, ChannelInitializer<?>> lizer;
 	private static ThreadPoolExecutor pool;
 	private static DataSource dataSource;
@@ -36,5 +36,14 @@ public class ContainerUtil {
 	public static void setPool(ThreadPoolExecutor pool) {
 		ContainerUtil.pool = pool;
 	}
+
+	public static HashMap<String, HashMap<String, ?>> getCommunicationSources() {
+		return communicationSources;
+	}
+
+	public static void setCommunicationSources(HashMap<String, HashMap<String, ?>> communicationSources) {
+		ContainerUtil.communicationSources = communicationSources;
+	}
+
 	
 }
