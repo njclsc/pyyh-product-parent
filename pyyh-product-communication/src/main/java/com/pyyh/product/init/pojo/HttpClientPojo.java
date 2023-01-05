@@ -11,4 +11,5 @@ public class HttpClientPojo {
 	private String url;
 	private String requestType;
 	private String parameterType;
+	private Object parameters;
 }

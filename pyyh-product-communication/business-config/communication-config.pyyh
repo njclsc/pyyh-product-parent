@@ -5,14 +5,38 @@
 			"key": "value1",
 			"url": "1",
 			"requestType": "post",
-			"parameterType": "json"
+			"parameterType": "json",
+			"parameters": {
+				"p1":"v1", "p2":"v2", "p3":"v3",
+			}
 		},
 		{
 			"used": true,
 			"key": "value2",
 			"url": "2",
+			"requestType": "post",
+			"parameterType": "form",
+			"parameters": [
+				"p1:v1", "p2:v2", "p3:v3"
+			]
+		},
+		{
+			"used": true,
+			"key": "value3",
+			"url": "2",
 			"requestType": "get",
-			"parameterType": "json"
+			"parameterType": "",
+			"parameters": [
+				"p1:v1", "p2:v2", "p3:v3"
+			]
+		},
+		{
+			"used": true,
+			"key": "value4",
+			"url": "2",
+			"requestType": "get",
+			"parameterType": "",
+			"parameters": []
 		}
 	],
 	"tcpClient": {
