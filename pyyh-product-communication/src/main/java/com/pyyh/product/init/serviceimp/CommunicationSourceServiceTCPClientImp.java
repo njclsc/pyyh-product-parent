@@ -1,8 +1,10 @@
 package com.pyyh.product.init.serviceimp;
 
 import java.net.InetSocketAddress;
+import java.util.HashMap;
 
 import com.pyyh.product.init.pojo.CommunicationConfigPojo;
+import com.pyyh.product.init.pojo.HttpClientTaskPojo;
 import com.pyyh.product.init.pojo.TcpClientConfigPojo;
 import com.pyyh.product.util.ContainerUtil;
 
@@ -21,6 +23,7 @@ public class CommunicationSourceServiceTCPClientImp  extends AbstractSourceServi
 		// TODO Auto-generated method stub
 		CommunicationConfigPojo ccp = (CommunicationConfigPojo)p;
 		TcpClientConfigPojo tccp = ccp.getTcpClient();
+		HashMap<String, ChannelFuture> tcpClient = new HashMap<>();
 		if(tccp.isUsed()){
 			EventLoopGroup work = new NioEventLoopGroup();
 			Bootstrap boot = new Bootstrap();
@@ -32,7 +35,11 @@ public class CommunicationSourceServiceTCPClientImp  extends AbstractSourceServi
 				String[] localAddress = address.split(":");
 				ChannelFuture f = boot.connect(new InetSocketAddress(remoteAddress[0], Integer.parseInt(remoteAddress[1])), 
 						new InetSocketAddress(localAddress[0], Integer.parseInt(localAddress[1])));
+				tcpClient.put(address + "_" + remoteAddress, f);
 			}
+		}
+		if(tcpClient.size() > 0){
+			ContainerUtil.getCommunicationSources().put("protocol_tcpClient_connection", tcpClient);
 		}
 		return null;
 	}

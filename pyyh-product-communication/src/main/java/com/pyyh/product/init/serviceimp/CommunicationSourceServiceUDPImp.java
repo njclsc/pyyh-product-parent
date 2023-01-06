@@ -1,6 +1,7 @@
 package com.pyyh.product.init.serviceimp;
 
 import java.net.InetSocketAddress;
+import java.util.HashMap;
 
 import com.pyyh.product.init.pojo.CommunicationConfigPojo;
 import com.pyyh.product.init.pojo.UDPConfigPojo;
@@ -21,6 +22,7 @@ public class CommunicationSourceServiceUDPImp extends AbstractSourceServiceImp{
 		// TODO Auto-generated method stub
 		CommunicationConfigPojo ccp = (CommunicationConfigPojo)p;
 		UDPConfigPojo udpCnf = ccp.getUdp();
+		HashMap<String, ChannelFuture> udp = new HashMap<>();
 		if(udpCnf.isUsed()){
 			EventLoopGroup work = new NioEventLoopGroup();
 			Bootstrap boot = new Bootstrap();
@@ -32,7 +34,11 @@ public class CommunicationSourceServiceUDPImp extends AbstractSourceServiceImp{
 			for(String s : udpCnf.getIpAddress()){
 				String[] tmpAddress = s.split(":");
 				ChannelFuture f = boot.bind(new InetSocketAddress(tmpAddress[0], Integer.parseInt(tmpAddress[1])));
+				udp.put(s, f);
 			}
+		}
+		if(udp.size() > 0){
+			ContainerUtil.getCommunicationSources().put("protocol_udp", udp);
 		}
 		return null;
 	}

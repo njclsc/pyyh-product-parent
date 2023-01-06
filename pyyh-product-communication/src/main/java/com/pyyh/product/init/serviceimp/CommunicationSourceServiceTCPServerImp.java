@@ -3,6 +3,7 @@ package com.pyyh.product.init.serviceimp;
 import java.io.File;
 import java.io.FileInputStream;
 import java.net.InetSocketAddress;
+import java.util.HashMap;
 
 import com.alibaba.fastjson.JSONObject;
 import com.pyyh.product.init.pojo.CommunicationConfigPojo;
@@ -24,6 +25,7 @@ public class CommunicationSourceServiceTCPServerImp extends AbstractSourceServic
 		// TODO Auto-generated method stub
 		CommunicationConfigPojo ccp = (CommunicationConfigPojo)p;
 		TcpServerConfigPojo tscp = ccp.getTcpServer();
+		HashMap<String, ChannelFuture> tcpClient = new HashMap<>();
 		if(tscp.isUsed()){
 			EventLoopGroup boss = new NioEventLoopGroup();
 			EventLoopGroup work = new NioEventLoopGroup();
@@ -38,7 +40,11 @@ public class CommunicationSourceServiceTCPServerImp extends AbstractSourceServic
 			for(String s : tscp.getIpAddress()){
 				String[] tmpAddress = s.split(":");
 				ChannelFuture f = boot.bind(new InetSocketAddress(tmpAddress[0], Integer.parseInt(tmpAddress[1])));
+				tcpClient.put(s, f);
 			}
+		}
+		if(tcpClient.size() > 0){
+			ContainerUtil.getCommunicationSources().put("protocol_tcpServer_connection", tcpClient);
 		}
 		return null;
 	}

@@ -1,6 +1,7 @@
 package com.pyyh.product.init.serviceimp;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -14,18 +15,22 @@ import com.alibaba.fastjson.JSONArray;
 import com.pyyh.product.init.pojo.CommunicationConfigPojo;
 import com.pyyh.product.init.pojo.HttpClientPojo;
 import com.pyyh.product.init.pojo.HttpClientTaskPojo;
+import com.pyyh.product.util.ContainerUtil;
 
 public class CommunicationSourceServiceHttpPostImp extends AbstractSourceServiceImp{
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public <T, P> T registSource(P p) throws Exception {
 		// TODO Auto-generated method stub
 		CommunicationConfigPojo ccp = (CommunicationConfigPojo)p;
 		List<HttpClientPojo> https = ccp.getHttpClients();
+		HashMap<String, HttpClientTaskPojo> posts = new HashMap<>();
 		for(HttpClientPojo client : https){
 			if(client.isUsed()){
 				CloseableHttpClient clientBro = HttpClients.createDefault();
 				String requestType = client.getRequestType();
+				HttpClientTaskPojo hctp = null;
 				if(requestType.equals("post")){
 					HttpPost post = new HttpPost(client.getUrl());
 					if(client.getParameterType().equals("form")){
@@ -37,21 +42,25 @@ public class CommunicationSourceServiceHttpPostImp extends AbstractSourceService
 						}
 						UrlEncodedFormEntity entity = new UrlEncodedFormEntity(list, "UTF-8");
 						post.setEntity(entity);
-						System.out.println("post--form   " + client.getParameters());
 					}else if(client.getParameterType().equals("json")){
 						StringEntity entity = new StringEntity(client.getParameters().toString(), "UTF-8");
 						post.setEntity(entity);
 						post.setHeader("Content-type", "application/json");
-						System.out.println("post--json   " + client.getParameters().toString());
 					}
-					HttpClientTaskPojo hctp = new HttpClientTaskPojo();
+					hctp = new HttpClientTaskPojo();
 					hctp.setClientBro(clientBro);
 					hctp.setPost(post);
-					System.out.println(hctp.getClientBro() + "   " + hctp.getPost());
+				}
+				if(hctp != null){
+					posts.put(client.getKey(), hctp);
 				}
 			}
+			
 		}
 		//返回post的所有端口实例
+		if(posts.size() > 0){
+			ContainerUtil.getCommunicationSources().put("protocol_http_post", posts);
+		}
 		return null;
 	}
 

@@ -1,5 +1,9 @@
 package com.pyyh.product.init;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
@@ -42,5 +46,13 @@ public class InitSource {
 		//tcpClient端口
 		ISourceService sourceServiceTcpClient = new CommunicationSourceServiceTCPClientImp();
 		sourceServiceTcpClient.registSource(ccp);
+		
+		
+//		Iterator<Map.Entry<String, HashMap<String, ?>>> itr = ContainerUtil.getCommunicationSources().entrySet().iterator();
+//		while(itr.hasNext()){
+//			Map.Entry<String, HashMap<String, ?>> entry = itr.next();
+//			System.out.println(entry.getKey() + "   " + entry.getValue().size());
+//			
+//		}
 	}
 }

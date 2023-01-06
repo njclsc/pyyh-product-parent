@@ -1,6 +1,7 @@
 package com.pyyh.product.init.serviceimp;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -14,18 +15,22 @@ import com.alibaba.fastjson.JSONArray;
 import com.pyyh.product.init.pojo.CommunicationConfigPojo;
 import com.pyyh.product.init.pojo.HttpClientPojo;
 import com.pyyh.product.init.pojo.HttpClientTaskPojo;
+import com.pyyh.product.util.ContainerUtil;
 
 public class CommunicationSourceServiceHttpGetImp extends AbstractSourceServiceImp{
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public <T, P> T registSource(P p) throws Exception {
 		// TODO Auto-generated method stub
 		CommunicationConfigPojo ccp = (CommunicationConfigPojo)p;
 		List<HttpClientPojo> https = ccp.getHttpClients();
+		HashMap<String, HttpClientTaskPojo> gets = new HashMap<>();
 		for(HttpClientPojo client : https){
 			if(client.isUsed()){
 				CloseableHttpClient clientBro = HttpClients.createDefault();
 				String requestType = client.getRequestType();
+				HttpClientTaskPojo hctp = null;
 				if(requestType.equals("get")){
 					List<BasicNameValuePair> list = new ArrayList<>();
 					JSONArray array = (JSONArray)client.getParameters();
@@ -40,14 +45,19 @@ public class CommunicationSourceServiceHttpGetImp extends AbstractSourceServiceI
 					}else{
 						get = new HttpGet(client.getUrl());
 					}
-					HttpClientTaskPojo hctp = new HttpClientTaskPojo();
+					hctp = new HttpClientTaskPojo();
 					hctp.setClientBro(clientBro);
 					hctp.setGet(get);
-					System.out.println("---->" + get.getURI());
+				}
+				if(hctp != null){
+					gets.put(client.getKey(), hctp);
 				}
 			}
 		}
 		//返回get的所有端口实例
+		if(gets.size() > 0){
+			ContainerUtil.getCommunicationSources().put("protocol_http_get", gets);
+		}
 		return null;
 	}
 
