@@ -10,3 +10,4 @@ spring:
     active: 
       - other
       - datasource
+      - quartz
