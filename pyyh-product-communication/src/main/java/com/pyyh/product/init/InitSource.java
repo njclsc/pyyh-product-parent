@@ -46,13 +46,6 @@ public class InitSource {
 		//tcpClient端口
 		ISourceService sourceServiceTcpClient = new CommunicationSourceServiceTCPClientImp();
 		sourceServiceTcpClient.registSource(ccp);
-		
-		
-//		Iterator<Map.Entry<String, HashMap<String, ?>>> itr = ContainerUtil.getCommunicationSources().entrySet().iterator();
-//		while(itr.hasNext()){
-//			Map.Entry<String, HashMap<String, ?>> entry = itr.next();
-//			System.out.println(entry.getKey() + "   " + entry.getValue().size());
-//			
-//		}
 	}
+
 }
