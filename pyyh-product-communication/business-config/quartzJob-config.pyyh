@@ -6,14 +6,14 @@
 		"groupTriggerName": "groupTriggerName1",
 		"triggerName": "triggerName",
 		"cron": "*/2 * * * * ?",
-		"jobClassName": "xxx"
+		"jobClassName": "com.pyyh.product.business.job.TestJob1"
 	},{
-		"used": false,
+		"used": true,
 		"groupJobName": "groupJobName2",
 		"jobName": "jobName2",
 		"groupTriggerName": "groupTriggerName2",
 		"triggerName": "triggerName",
-		"cron": "*/2 * * * * ?",
-		"jobClassName": "xxxx"
+		"cron": "*/10 * * * * ?",
+		"jobClassName": "com.pyyh.product.business.job.TestJob2"
 	}]
 }

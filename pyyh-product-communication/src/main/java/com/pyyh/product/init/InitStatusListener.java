@@ -21,15 +21,14 @@ public class InitStatusListener implements ApplicationListener<ContextRefreshedE
 	}
 	private void loadJob(Scheduler scheduler){
 		try {
-//			new JobServiceTest1().registJob(scheduler);
-//			new JobServiceTest2().registJob(scheduler);
 			QuartzJobSourceServiceImp quartzService = new QuartzJobSourceServiceImp();
 			QuartzConfigPojo quartzConfig = quartzService.loadSource("business-config/quartzJob-config.pyyh");
 			quartzConfig.setScheduler(scheduler);
 			for(QuartzConfigPojo quartz : quartzConfig.getJobs()){
-				new JobServiceImp(quartzConfig).registJob(null);
+				if(quartz.isUsed()){
+					new JobServiceImp(quartz).registJob(scheduler);
+				}
 			}
-			
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
