@@ -125,5 +125,6 @@
 	</dependencyManagement>
 	<modules>
 		<module>pyyh-product-communication</module>
+		<module>pyyh-product-login</module>
 	</modules>
 </project>
