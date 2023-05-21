@@ -1,0 +1,12 @@
+server:
+  port: 7777
+  servlet:
+    context-path: /login
+
+spring:
+  application:
+    name: login
+  profiles:
+    active: 
+      - other
+      - datasource
