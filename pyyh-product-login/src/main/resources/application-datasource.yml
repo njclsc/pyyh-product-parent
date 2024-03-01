@@ -2,14 +2,14 @@ spring:
   datasource:
     name: dbsource
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://192.168.4.109:3306/test?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8
+    url: jdbc:mysql://192.168.3.188:3306/db_zh_bicycle?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8
     username: root
     password: 123321
     type: com.alibaba.druid.pool.DruidDataSource
     druid:
       validationQuery: SELECT 1
-      initialSize: 3
-      maxActive: 10
+      initialSize: 30
+      maxActive: 35
       minIdle: 0
       maxWait: 60000
       testOnBorrow: false
@@ -23,4 +23,4 @@ spring:
       
 mybatis:
   mapper-locations:
-    - classpath:com/pyyh/product/business/dao/**/*.xml
+    - classpath:com/pyyh/product/login/business/dao/**/*.xml
