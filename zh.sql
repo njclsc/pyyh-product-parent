@@ -27,11 +27,11 @@ CREATE TABLE `tb_sys_account` (
   `unitIndex` int(11) DEFAULT NULL COMMENT '单位索引',
   `roleIndex` int(11) DEFAULT NULL COMMENT '角色索引',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 /*Data for the table `tb_sys_account` */
 
-insert  into `tb_sys_account`(`id`,`accountName`,`password`,`unitIndex`,`roleIndex`) values (1,'zh','33',1,NULL);
+insert  into `tb_sys_account`(`id`,`accountName`,`password`,`unitIndex`,`roleIndex`) values (1,'zh','33',1,1),(2,'zh1','44',1,2);
 
 /*Table structure for table `tb_sys_menu` */
 
@@ -78,7 +78,7 @@ CREATE TABLE `tb_sys_role` (
 
 /*Data for the table `tb_sys_role` */
 
-insert  into `tb_sys_role`(`id`,`roleName`,`unitIndex`,`authority`) values (1,'管理员',1,NULL),(2,'普通用户',1,NULL);
+insert  into `tb_sys_role`(`id`,`roleName`,`unitIndex`,`authority`) values (1,'管理员',1,'r_-1#w_2,3,6,7,9,10,12,13,14,15,16'),(2,'普通用户',1,'r_2,3#w_7');
 
 /*Table structure for table `tb_sys_unit` */
 
