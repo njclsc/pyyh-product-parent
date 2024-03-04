@@ -1,0 +1,12 @@
+server:
+  port: 6010
+  servlet:
+    context-path: /manager
+
+spring:
+  application:
+    name: manager
+  profiles:
+    active: 
+      - datasource
+      - other

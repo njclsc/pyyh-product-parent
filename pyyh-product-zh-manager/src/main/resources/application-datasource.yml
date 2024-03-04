@@ -23,4 +23,4 @@ spring:
       
 mybatis:
   mapper-locations:
-    - classpath:com/pyyh/product/login/business/dao/**/*.xml
+    - classpath:com/pyyh/product/manager/business/dao/**/*.xml

@@ -4,5 +4,5 @@ import com.pyyh.product.login.pojo.UserPojo;
 
 public interface ILoginService {
 
-	public String loginCheck(UserPojo user);
+	public Object loginCheck(UserPojo user);
 }

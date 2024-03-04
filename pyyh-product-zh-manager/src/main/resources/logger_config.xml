@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status = "info" monitorInterVal = "3600">
+	<properties>
+		<!-- 日志文件名称[可用项目名称] -->
+		<property name = "partName" value = "communicationPart" />
+		<!--日志存放路径-->
+		<property name = "logDir" value = "./communication_log" />
+		<!--日志输出格式-控制台-->
+		<property name = "console_pattern" value = "%d{yyyy-MM-dd HH:mm:ss.SSS} %t [%-5p] : %m%n" />
+		<!--日志输出格式-文件-->
+		<property name = "file_pattern" value = "%d{yyyy-MM-dd HH:mm:ss.SSS} %t [%-5p] : %m%n" />
+	</properties>
+	<Appenders>
+		<!-- 控制台日志 -->
+		<Console name = "console" target = "SYSTEM_OUT">
+			<PatternLayout pattern = "${console_pattern}" />
+		</Console>
+		<!-- 普通日志 -->
+		<RollingFile name = "file_general" fileName = "${logDir}/${partName}.log" filePattern = "${logDir}/$${date:yyyy-MM-dd}/${partName}-%d{yyyy-MM-dd}-%i.log.zip">
+			<PatternLayout pattern = "${file_pattern}" />
+			<Policies>
+				<!--按时间间隔归档:
+	              1. interval=时间间隔, 单位由filePattern的%d日期格式指定, 此处配置代表每一天归档一次
+	              2. modulate="true" 是否对interval取模，决定了下一次触发的时间点
+	            -->
+               <TimeBasedTriggeringPolicy interval="1" modulate="true" />
+               <!-- 按照日志文件的大小: size表示当前日志文件的最大size，支持单位：KB/MB/GB-->
+               <SizeBasedTriggeringPolicy size="20MB"/>
+			</Policies>
+			<!-- 历史日志配置: 该属性如不设置，则默认为最多同一文件夹下7个文件开始覆盖-->
+            <DefaultRolloverStrategy max="30"/>
+		</RollingFile>
+		<!-- 
+		
+		<Async name = "fileGeneralAsync">
+			<AppenderRef ref = "file_general" />
+		</Async>
+		 -->
+		 <Async name = "consoleAsync">
+			<AppenderRef ref = "console" />
+		</Async>
+	</Appenders>
+	
+	<Loggers>
+		<Root level = "info">
+		<!-- 
+			<AppenderRef ref = "consloleAppender" />
+			<AppenderRef ref = "fileAppender" />
+			<AppenderRef ref = "rollingFile" />
+			<AppenderRef ref = "myAsync" />
+			
+			<AppenderRef ref = "consoleAsync" />
+			<AppenderRef ref = "fileGeneralAsync" />
+		-->
+			<AppenderRef ref = "consoleAsync" />
+		</Root>
+		<!-- 
+			includeLocation : 取消行号信息，因为影响性能
+			additivity ：日志信息不传递到外层。
+		 -->
+		<AsyncLogger name = "com.pyyh.product.logger" level = "error" includeLocation = "false" additivity = "true">
+			<AppenderRef ref = "file_general" />
+		</AsyncLogger>
+		
+
+	</Loggers>
+</Configuration>

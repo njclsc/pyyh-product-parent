@@ -14,4 +14,5 @@ public class MenuPojo {
 	private int parentIndex;
 	private String sourceUrl;
 	private List<MenuPojo> children;
+	private String icon;
 }

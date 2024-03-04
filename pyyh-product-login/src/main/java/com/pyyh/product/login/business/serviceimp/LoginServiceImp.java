@@ -28,7 +28,7 @@ public class LoginServiceImp implements ILoginService{
 	private ILoginDao loginDao;
 	
 	@Override
-	public String loginCheck(UserPojo user) {
+	public Object loginCheck(UserPojo user) {
 		// TODO Auto-generated method stub
 		ResponsePojo rp = new ResponsePojo();
 		try{
@@ -39,7 +39,7 @@ public class LoginServiceImp implements ILoginService{
 			rp.setMessage("登录成功");
 			rp.setResult("success");
 			//加载权限资源
-			String infos = loadMenu(user);
+			JSONObject infos = loadMenu(user);
 			rp.setToken(TokenUtil.createToken(user));
 			rp.setSource(infos);
 		}catch(UnknownAccountException e){
@@ -49,10 +49,10 @@ public class LoginServiceImp implements ILoginService{
 			rp.setMessage("密码错误");
 			rp.setResult("fail");
 		}
-		return JSONObject.toJSONString(rp);
+		return rp;
 	}
 	
-	private String loadMenu(UserPojo user){
+	private JSONObject loadMenu(UserPojo user){
 		//获取userId
 		UserPojo up = loginDao.findUser(user);
 		user.setId(up.getId());
@@ -106,8 +106,8 @@ public class LoginServiceImp implements ILoginService{
 		JSONObject obj = new JSONObject();
 		obj.put("readAuthority", readAuthority);
 		obj.put("wirtyAuthority", writeAuthority);
-		obj.put("menuInfo", mlv1s);
-		return obj.toJSONString();
+		obj.put("menuInfo", JSONArray.toJSON(mlv1s));
+		return obj;
 	}
 
 }

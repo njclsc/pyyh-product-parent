@@ -139,5 +139,6 @@
 	<modules>
 		<module>pyyh-product-communication</module>
 		<module>pyyh-product-login</module>
+		<module>pyyh-product-zh-manager</module>
 	</modules>
 </project>

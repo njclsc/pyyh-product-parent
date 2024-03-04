@@ -43,12 +43,13 @@ CREATE TABLE `tb_sys_menu` (
   `menuPosition` int(11) DEFAULT NULL COMMENT '菜单位置[相对于同一级菜单位置]',
   `parentIndex` int(11) DEFAULT '-1' COMMENT '上一级菜单索引',
   `sourceUrl` varchar(150) DEFAULT NULL COMMENT '菜单资源连接',
+  `icon` varchar(50) DEFAULT NULL COMMENT '菜单图标',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
 
 /*Data for the table `tb_sys_menu` */
 
-insert  into `tb_sys_menu`(`id`,`menuName`,`menuPosition`,`parentIndex`,`sourceUrl`) values (1,'主页',0,-1,'/1'),(2,'数据列表',0,1,'/1/1'),(3,'数据看板',1,1,'/1/2'),(4,'车辆管理',1,-1,'/2'),(5,'设备管理',2,-1,'/3'),(6,'标签管理',0,5,'/3/1'),(7,'基站管理',1,5,'/3/2'),(8,'系统日志',3,-1,'/4'),(9,'报警数据',0,8,'/4/1'),(10,'违停数据',1,8,'/4/2'),(11,'系统配置',4,-1,'/5'),(12,'用户管理',0,11,'/5/1'),(13,'单位管理',1,11,'/5/2'),(14,'组织管理',2,11,'/5/3'),(15,'角色管理',3,11,'/5/4'),(16,'区域管理',4,11,'/5/5');
+insert  into `tb_sys_menu`(`id`,`menuName`,`menuPosition`,`parentIndex`,`sourceUrl`,`icon`) values (1,'主页',0,-1,'/1',NULL),(2,'数据列表',0,1,'/1/1',NULL),(3,'数据看板',1,1,'/1/2',NULL),(4,'车辆业务',1,-1,'/2',NULL),(5,'设备管理',2,-1,'/3',NULL),(6,'标签管理',0,5,'/3/1',NULL),(7,'基站管理',1,5,'/3/2',NULL),(8,'系统日志',3,-1,'/4',NULL),(9,'报警数据',0,8,'/4/1',NULL),(10,'违停数据',1,8,'/4/2',NULL),(11,'系统配置',4,-1,'/5',NULL),(12,'用户管理',0,11,'/5/1',NULL),(13,'单位管理',1,11,'/5/2',NULL),(14,'组织管理',2,11,'/5/3',NULL),(15,'角色管理',3,11,'/5/4',NULL),(16,'区域管理',4,11,'/5/5',NULL),(17,'车辆注册',0,4,'/2/1',NULL);
 
 /*Table structure for table `tb_sys_orginization` */
 
@@ -78,7 +79,7 @@ CREATE TABLE `tb_sys_role` (
 
 /*Data for the table `tb_sys_role` */
 
-insert  into `tb_sys_role`(`id`,`roleName`,`unitIndex`,`authority`) values (1,'管理员',1,'r_-1#w_2,3,6,7,9,10,12,13,14,15,16'),(2,'普通用户',1,'r_2,3#w_7');
+insert  into `tb_sys_role`(`id`,`roleName`,`unitIndex`,`authority`) values (1,'管理员',1,'r_-1#w_2,3,6,7,9,10,12,13,14,15,16,17'),(2,'普通用户',1,'r_2,3#w_7');
 
 /*Table structure for table `tb_sys_unit` */
 
@@ -95,7 +96,7 @@ CREATE TABLE `tb_sys_unit` (
 
 /*Data for the table `tb_sys_unit` */
 
-insert  into `tb_sys_unit`(`id`,`unitName`,`unitCode`,`parentUnit`,`unitType`) values (1,'正晗电子','ZHDZ_D_01',NULL,0);
+insert  into `tb_sys_unit`(`id`,`unitName`,`unitCode`,`parentUnit`,`unitType`) values (1,'上海正晗电子','ZHDZ_D_01',NULL,0);
 
 /*Table structure for table `tb_tmp_area` */
 

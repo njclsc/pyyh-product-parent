@@ -18,7 +18,7 @@ public class LoginController {
 	private ILoginService loginService;
 	
 	@RequestMapping("loginCheck")
-	public String loginCheck(@RequestBody UserPojo user){
+	public Object loginCheck(@RequestBody UserPojo user){
 		return loginService.loginCheck(user);
 	}
 }
