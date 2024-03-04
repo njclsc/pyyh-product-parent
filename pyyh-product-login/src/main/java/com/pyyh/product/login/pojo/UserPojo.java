@@ -14,5 +14,6 @@ public class UserPojo {
 	private int unitIndex;
 	private int roleIndex;
 	private boolean login;
-	private List<String> source;
+	private List<String> readAuthority;
+	private List<String> writeAuthority;
 }

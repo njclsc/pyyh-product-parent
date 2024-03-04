@@ -5,4 +5,19 @@
 	<select id="findUser" parameterType = "com.pyyh.product.login.pojo.UserPojo" resultType = "com.pyyh.product.login.pojo.UserPojo">
 		select * from tb_sys_account where accountName = #{accountName} and unitIndex = ${unitIndex}
 	</select>
+	
+	<select id="findRole" parameterType = "com.pyyh.product.login.pojo.UserPojo" resultType = "com.pyyh.product.login.pojo.RolePojo">
+		SELECT * FROM tb_sys_account 
+			LEFT JOIN tb_sys_role ON tb_sys_account.roleIndex = tb_sys_role.id
+    		AND tb_sys_account.unitIndex = tb_sys_role.unitIndex
+		WHERE tb_sys_account.unitIndex = ${unitIndex} AND tb_sys_account.accountName = #{accountName}
+	</select>
+	
+	<select id="loadMenu" parameterType = "com.pyyh.product.login.pojo.MenuPojo" resultType = "com.pyyh.product.login.pojo.MenuPojo">
+		select * from tb_sys_menu where 1 = 1
+		<if test="parentIndex != null and parentIndex != ''">
+			and parentIndex = ${parentIndex}
+		</if>
+		order by menuPosition asc
+	</select>
 </mapper>

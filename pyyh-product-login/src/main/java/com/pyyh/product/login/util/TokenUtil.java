@@ -24,7 +24,8 @@ public class TokenUtil {
 		p_map.put("accountName", user.getAccountName());
 		p_map.put("unitIndex", user.getUnitIndex());
 		p_map.put("isLogin", user.isLogin());
-		p_map.put("authority", user.getSource());
+		p_map.put("readAuthority", user.getReadAuthority());
+		p_map.put("writeAuthority", user.getWriteAuthority());
 		return JWT.create().withHeader(h_map).withIssuedAt(new Date())
 				.withExpiresAt(new Date(System.currentTimeMillis() + (60L * 24L * 3600L * 1000L))).withPayload(p_map)
 				.sign(Algorithm.HMAC256(JWT_SECRET));
