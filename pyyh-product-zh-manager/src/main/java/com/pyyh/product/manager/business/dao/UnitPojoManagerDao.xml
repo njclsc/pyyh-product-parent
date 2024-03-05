@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.pyyh.product.manager.business.dao.IUnitPojoManagerDao">
+
+	<select id="findById" parameterType = "com.pyyh.product.manager.pojo.UnitPojo" resultType = "com.pyyh.product.manager.pojo.UnitPojo">
+		select * from tb_sys_unit where 1 = 1
+		<if test="id != null and id != ''">
+			and id = ${id}
+		</if>
+		<if test="unitCode != null and unitCode != ''">
+			and unitCode = #{unitCode}
+		</if>
+		<if test="unitType != null and unitType != ''">
+			and unitType = #{unitType}
+		</if>
+	</select>
+	<select id="findAll" parameterType = "com.pyyh.product.manager.pojo.UnitPojo" resultType = "com.pyyh.product.manager.pojo.UnitPojo">
+		select * from tb_sys_unit where 1 = 1
+		<if test="unitCode != null and unitCode != ''">
+			and unitCode = #{unitCode}
+		</if>
+		<if test="unitType != null and unitType != ''">
+			and unitType = #{unitType}
+		</if>
+	</select>
+	<insert id="add" parameterType = "com.pyyh.product.manager.pojo.UnitPojo">
+		
+	</insert>
+</mapper>
