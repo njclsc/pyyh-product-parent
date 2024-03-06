@@ -1,0 +1,11 @@
+server:
+  port: 6020
+  servlet:
+    context-path: /collect
+
+spring:
+  application:
+    name: collect
+  profiles:
+    active: 
+      - datasource
