@@ -23,4 +23,8 @@ public class UnitManager {
 	public Object findUnits(@RequestBody UnitPojo unit){
 		return unitService.findAll(unit);
 	}
+	@RequestMapping("addUnit")
+	public Object addUnit(@RequestBody UnitPojo unit){
+		return unitService.add(unit);
+	}
 }

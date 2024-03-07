@@ -24,7 +24,7 @@
 			and unitType = #{unitType}
 		</if>
 	</select>
-	<insert id="add" parameterType = "com.pyyh.product.manager.pojo.UnitPojo">
-		
+	<insert id="add" parameterType = "com.pyyh.product.manager.pojo.UnitPojo" useGeneratedKeys="true" keyProperty="id">
+		insert into tb_sys_unit(unitName, unitCode, parentUnit, unitType) values(#{unitName}, #{unitCode}, ${parentUnit}, ${unitType})
 	</insert>
 </mapper>

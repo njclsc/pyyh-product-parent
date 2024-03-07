@@ -10,7 +10,7 @@ import com.pyyh.product.manager.pojo.UnitPojo;
 public interface IUnitPojoManagerDao {
 	public List<UnitPojo> findAll(UnitPojo UnitPojo);
 	public UnitPojo findById(UnitPojo UnitPojo);
-	public UnitPojo add(UnitPojo UnitPojo);
-	public UnitPojo deleUnitPojoe(UnitPojo UnitPojo);
-	public UnitPojo updaUnitPojoe(UnitPojo UnitPojo);
+	public void add(UnitPojo UnitPojo);
+	public UnitPojo delete(UnitPojo UnitPojo);
+	public UnitPojo update(UnitPojo UnitPojo);
 }

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import com.pyyh.product.manager.business.dao.IUnitPojoManagerDao;
 import com.pyyh.product.manager.business.service.IManagerService;
 import com.pyyh.product.manager.pojo.UnitPojo;
+import com.pyyh.product.manager.util.ToolUtil;
 
 @SuppressWarnings("unchecked")
 @Service("UnitManagerServiceImp")
@@ -23,7 +24,17 @@ public class UnitManagerServiceImp implements IManagerService{
 	@Override
 	public <T> T add(T t) {
 		// TODO Auto-generated method stub
-		return null;
+		UnitPojo up = (UnitPojo)t;
+		unitDao.add(up);
+		if(up.getId() > 0){
+			try {
+				ToolUtil.createUnitAppDataTable(up);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return (T)up;
 	}
 
 	@Override
