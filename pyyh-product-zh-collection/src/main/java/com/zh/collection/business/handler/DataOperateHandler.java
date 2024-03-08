@@ -21,7 +21,7 @@ public class DataOperateHandler extends ChannelInboundHandlerAdapter{
 			String hrsi = tagData.substring(14, 16);
 			System.out.println(tagId + "  " + status + "  " + antId + "  " + lowrsi + "  " + hrsi);
 		}
-		System.out.println(deviceId + "  " + cmdType + "  " + tagNum);
+		System.out.println(deviceId + "  " + cmdType + "  " + tagNum + " " + ctx.channel().localAddress().toString().substring(1));
 	}
 
 }

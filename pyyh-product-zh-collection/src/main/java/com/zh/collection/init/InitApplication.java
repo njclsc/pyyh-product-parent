@@ -1,13 +1,25 @@
 package com.zh.collection.init;
 
 import java.net.InetSocketAddress;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSONObject;
 import com.zh.collection.lizer.UDPChannelinitializer;
+import com.zh.collection.pojo.AreaPojo;
+import com.zh.collection.pojo.CachePojo;
+import com.zh.collection.pojo.DevicePojo;
+import com.zh.collection.pojo.RulePojo;
+import com.zh.collection.pojo.TagPojo;
 import com.zh.collection.pojo.UDPConfigPojo;
+import com.zh.collection.pojo.UnitPojo;
 import com.zh.collection.util.ContainerUtil;
 import com.zh.collection.util.OperateUtil;
 
@@ -39,6 +51,106 @@ public class InitApplication {
 				ChannelFuture f = boot.bind(new InetSocketAddress(tmpAddress[0], Integer.parseInt(tmpAddress[1])));
 			}
 		}
+		//缓存加载
+		cacheLoad();
 		return "";
+	}
+	private void cacheLoad() throws Exception{
+		CachePojo cp = new CachePojo();
+		ContainerUtil.setCache(cp);
+		Connection con = ContainerUtil.getDataSource().getConnection();
+		Statement stat = con.createStatement();
+		String sqlUnit = "select * from tb_sys_unit";
+		ResultSet rs = stat.executeQuery(sqlUnit);
+		//单位
+		HashMap<String, UnitPojo> ups = new HashMap<>();
+		while(rs.next()){
+			try{
+			
+			
+			UnitPojo up = new UnitPojo();
+			up.setId(rs.getInt("id"));
+			up.setUnitName(rs.getString("unitName"));
+			up.setUnitCode(rs.getString("unitCode"));
+			up.setParentUnit(rs.getInt("parentUnit"));
+			up.setUnitType(rs.getInt("unitType"));
+			up.setChannelAddr(rs.getString("channelAddr"));
+			ups.put(up.getChannelAddr(), up);
+			
+			//区域
+			HashMap<String, AreaPojo> unitAreaCache = new HashMap<>();
+			Statement areaStat = con.createStatement();
+			String sqlArea = "select * from tb_" + up.getId() + "_area";
+			ResultSet rsArea = areaStat.executeQuery(sqlArea);
+			while(rsArea.next()){
+				AreaPojo ap = new AreaPojo();
+				ap.setId(rsArea.getInt("id"));
+				ap.setAreaName(rsArea.getString("areaName"));
+				ap.setType(rsArea.getInt("type"));
+				unitAreaCache.put("" + ap.getId(), ap);
+			}
+			rsArea.close();
+			areaStat.close();
+			//设备
+			HashMap<String, DevicePojo> unitDeviceCache = new HashMap<>();
+			Statement devStat = con.createStatement();
+			String sqlDev = "select * from tb_" + up.getId() + "_device";
+			ResultSet rsDev = devStat.executeQuery(sqlDev);
+			while(rsDev.next()){
+				DevicePojo dp = new DevicePojo();
+				dp.setId(rsDev.getInt("id"));
+				dp.setDeviceId(rsDev.getString("deviceId"));;
+				dp.setAreaIndex(rs.getInt("areaIndex"));
+				dp.setType(rsDev.getInt("type"));
+				unitDeviceCache.put(dp.getDeviceId(), dp);
+			}
+			rsDev.close();
+			devStat.close();
+			//标签
+			HashMap<String, TagPojo> unitTagCache = new HashMap<>();
+			Statement tagStat = con.createStatement();
+			String sqlTag = "select * from tb_" + up.getId() + "_tag";
+			ResultSet rsTag = tagStat.executeQuery(sqlTag);
+			while(rsTag.next()){
+				TagPojo tp = new TagPojo();
+				tp.setId(rsTag.getInt("id"));
+				tp.setTagId(rsTag.getString("tagId"));
+				tp.setStatus(rsTag.getInt("status"));
+				tp.setType(rsTag.getInt("type"));
+				unitTagCache.put(tp.getTagId(), tp);
+			}
+			rsTag.close();
+			tagStat.close();
+			//规则
+			HashMap<String, List<RulePojo>> unitRuleCache = new HashMap<>();
+			Statement ruleStat = con.createStatement();
+			String sqlRule = "select * from tb_" + up.getId() + "_rule";
+			ResultSet rsRule = ruleStat.executeQuery(sqlRule);
+			while(rsRule.next()){
+				RulePojo rp = new RulePojo();
+				rp.setId(rsRule.getInt("id"));
+				rp.setRuleName(rsRule.getString("ruleName"));
+				rp.setRuleType(rsRule.getInt("ruleType"));
+				rp.setAreaIndex(rsRule.getInt("areaIndex"));
+				List<RulePojo> rps = unitRuleCache.get(rp.getAreaIndex());
+				if(rps == null){
+					rps = new ArrayList<RulePojo>();
+					rps.add(rp);
+					unitRuleCache.put("" + rp.getAreaIndex(), rps);
+				}else{
+					rps.add(rp);
+				}
+			}
+			
+			
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+			
+		}
+		
+		rs.close();
+		stat.close();
+		con.close();
 	}
 }
