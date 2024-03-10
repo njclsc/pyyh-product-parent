@@ -54,6 +54,8 @@ public class InitApplication {
 		}
 		//缓存加载
 		cacheLoad();
+		//创建线程池
+		ContainerUtil.setThreadPool(OperateUtil.createThreadPool());
 		return "";
 	}
 	private void cacheLoad() throws Exception{
@@ -175,7 +177,8 @@ public class InitApplication {
 			}
 			
 		}
-		System.out.println(JSONObject.toJSONString(ContainerUtil.getCaches()));
+		
+		System.out.println(JSONObject.toJSONString(ContainerUtil.getCaches()) + "  " + Runtime.getRuntime().availableProcessors());
 		rs.close();
 		stat.close();
 		con.close();

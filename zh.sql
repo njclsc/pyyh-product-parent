@@ -16,6 +16,62 @@ CREATE DATABASE /*!32312 IF NOT EXISTS*/`db_zh_bicycle` /*!40100 DEFAULT CHARACT
 
 USE `db_zh_bicycle`;
 
+/*Table structure for table `tb_14_area` */
+
+DROP TABLE IF EXISTS `tb_14_area`;
+
+CREATE TABLE `tb_14_area` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `areaName` varchar(100) DEFAULT NULL COMMENT '区域名称',
+  `type` int(2) DEFAULT NULL COMMENT '0:门禁1：停车场2：公寓',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Data for the table `tb_14_area` */
+
+/*Table structure for table `tb_14_device` */
+
+DROP TABLE IF EXISTS `tb_14_device`;
+
+CREATE TABLE `tb_14_device` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `deviceId` varchar(50) DEFAULT NULL COMMENT '设备ID',
+  `areaIndex` int(11) DEFAULT NULL COMMENT '关联区域id',
+  `type` int(11) DEFAULT NULL COMMENT '设备类型0:中心网关；1：低频地感',
+  `refreshTime` varchar(30) DEFAULT NULL COMMENT '刷新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Data for the table `tb_14_device` */
+
+/*Table structure for table `tb_14_rule` */
+
+DROP TABLE IF EXISTS `tb_14_rule`;
+
+CREATE TABLE `tb_14_rule` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `ruleName` varchar(50) DEFAULT NULL COMMENT '规则名称',
+  `ruleType` int(11) DEFAULT NULL COMMENT '规则类型',
+  `areaIndex` int(11) DEFAULT NULL COMMENT '关联区域',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Data for the table `tb_14_rule` */
+
+/*Table structure for table `tb_14_tag` */
+
+DROP TABLE IF EXISTS `tb_14_tag`;
+
+CREATE TABLE `tb_14_tag` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `tagId` varchar(50) DEFAULT NULL COMMENT '标签id',
+  `status` int(3) DEFAULT NULL COMMENT '状态',
+  `type` int(11) DEFAULT NULL COMMENT '类型0:带低频1；2.4G',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Data for the table `tb_14_tag` */
+
 /*Table structure for table `tb_1_area` */
 
 DROP TABLE IF EXISTS `tb_1_area`;
@@ -71,6 +127,22 @@ CREATE TABLE `tb_1_tag` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Data for the table `tb_1_tag` */
+
+/*Table structure for table `tb_1_timly` */
+
+DROP TABLE IF EXISTS `tb_1_timly`;
+
+CREATE TABLE `tb_1_timly` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `tagId` varchar(50) DEFAULT NULL COMMENT '标签Id',
+  `oldDeviceId` varchar(50) DEFAULT NULL COMMENT '上一设备id',
+  `currentDeviceId` varchar(50) DEFAULT NULL COMMENT '当前设备id',
+  `oldDeviceTime` varchar(50) DEFAULT NULL COMMENT '上一设备时间',
+  `currentDeviceTime` varchar(50) DEFAULT NULL COMMENT '当前设备时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Data for the table `tb_1_timly` */
 
 /*Table structure for table `tb_sys_account` */
 
@@ -149,11 +221,11 @@ CREATE TABLE `tb_sys_unit` (
   `unitType` int(2) DEFAULT NULL COMMENT '0：开发商 1:学校；2：小区',
   `channelAddr` varchar(50) DEFAULT NULL COMMENT '接收硬件数据地址，一单位对应一个',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 /*Data for the table `tb_sys_unit` */
 
-insert  into `tb_sys_unit`(`id`,`unitName`,`unitCode`,`parentUnit`,`unitType`,`channelAddr`) values (1,'上海正晗电子','ZHDZ_D_01',NULL,0,NULL);
+insert  into `tb_sys_unit`(`id`,`unitName`,`unitCode`,`parentUnit`,`unitType`,`channelAddr`) values (1,'上海正晗电子','ZHDZ_D_01',NULL,0,'192.168.4.109:10006');
 
 /*Table structure for table `tb_tmp_area` */
 
@@ -228,6 +300,11 @@ DROP TABLE IF EXISTS `tb_tmp_timly`;
 
 CREATE TABLE `tb_tmp_timly` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `tagId` varchar(50) DEFAULT NULL COMMENT '标签Id',
+  `oldDeviceId` varchar(50) DEFAULT NULL COMMENT '上一设备id',
+  `currentDeviceId` varchar(50) DEFAULT NULL COMMENT '当前设备id',
+  `oldDeviceTime` varchar(50) DEFAULT NULL COMMENT '上一设备时间',
+  `currentDeviceTime` varchar(50) DEFAULT NULL COMMENT '当前设备时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

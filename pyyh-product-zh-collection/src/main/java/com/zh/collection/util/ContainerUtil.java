@@ -2,6 +2,7 @@ package com.zh.collection.util;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ThreadPoolExecutor;
 
 import javax.sql.DataSource;
 
@@ -16,6 +17,7 @@ import com.zh.collection.pojo.UnitPojo;
 public class ContainerUtil {
 	private static DataSource dataSource;
 	private static String rootPath;
+	private static ThreadPoolExecutor threadPool;
 	private static HashMap<String, CachePojo<String, UnitPojo, String, AreaPojo, String, DevicePojo, String, TagPojo, String, List<RulePojo>, String, TimlyPojo>> caches = new HashMap<>();
 	public static DataSource getDataSource() {
 		return dataSource;
@@ -40,6 +42,16 @@ public class ContainerUtil {
 	public static void setCaches(HashMap<String, CachePojo<String, UnitPojo, String, AreaPojo, String, DevicePojo, String, TagPojo, String, List<RulePojo>, String, TimlyPojo>> caches) {
 		ContainerUtil.caches = caches;
 	}
+
+	public static ThreadPoolExecutor getThreadPool() {
+		return threadPool;
+	}
+
+	public static void setThreadPool(ThreadPoolExecutor threadPool) {
+		ContainerUtil.threadPool = threadPool;
+	}
+
+
 
 
 

@@ -2,6 +2,10 @@ package com.zh.collection.util;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import com.alibaba.fastjson.JSONObject;
 public class OperateUtil {
@@ -17,5 +21,17 @@ public class OperateUtil {
 			sb.append((char)data[i]);
 		}
 		return JSONObject.parseObject(sb.toString());
+	}
+	public static ThreadPoolExecutor createThreadPool(){
+		int cpuNum = Runtime.getRuntime().availableProcessors();
+		return new ThreadPoolExecutor(
+				cpuNum * 2,
+				cpuNum * 2 + 2,
+				60,
+				TimeUnit.SECONDS,
+				new ArrayBlockingQueue<Runnable>(50000),
+				Executors.defaultThreadFactory(),
+				new ThreadPoolExecutor.AbortPolicy()
+			  );
 	}
 }
