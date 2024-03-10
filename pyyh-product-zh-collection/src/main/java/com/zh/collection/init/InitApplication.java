@@ -18,6 +18,7 @@ import com.zh.collection.pojo.CachePojo;
 import com.zh.collection.pojo.DevicePojo;
 import com.zh.collection.pojo.RulePojo;
 import com.zh.collection.pojo.TagPojo;
+import com.zh.collection.pojo.TimlyPojo;
 import com.zh.collection.pojo.UDPConfigPojo;
 import com.zh.collection.pojo.UnitPojo;
 import com.zh.collection.util.ContainerUtil;
@@ -56,18 +57,18 @@ public class InitApplication {
 		return "";
 	}
 	private void cacheLoad() throws Exception{
-		CachePojo cp = new CachePojo();
-		ContainerUtil.setCache(cp);
+		
 		Connection con = ContainerUtil.getDataSource().getConnection();
 		Statement stat = con.createStatement();
 		String sqlUnit = "select * from tb_sys_unit";
 		ResultSet rs = stat.executeQuery(sqlUnit);
 		//单位
-		HashMap<String, UnitPojo> ups = new HashMap<>();
+		
 		while(rs.next()){
 			try{
-			
-			
+			CachePojo<String, UnitPojo, String, AreaPojo, String, DevicePojo, String, TagPojo, String, List<RulePojo>, String, TimlyPojo> cp = new CachePojo<>();
+			//单位
+			HashMap<String, UnitPojo> ups = new HashMap<>();
 			UnitPojo up = new UnitPojo();
 			up.setId(rs.getInt("id"));
 			up.setUnitName(rs.getString("unitName"));
@@ -76,7 +77,7 @@ public class InitApplication {
 			up.setUnitType(rs.getInt("unitType"));
 			up.setChannelAddr(rs.getString("channelAddr"));
 			ups.put(up.getChannelAddr(), up);
-			
+			cp.setUnitCache(ups);
 			//区域
 			HashMap<String, AreaPojo> unitAreaCache = new HashMap<>();
 			Statement areaStat = con.createStatement();
@@ -91,6 +92,7 @@ public class InitApplication {
 			}
 			rsArea.close();
 			areaStat.close();
+			cp.setAreaCache(unitAreaCache);
 			//设备
 			HashMap<String, DevicePojo> unitDeviceCache = new HashMap<>();
 			Statement devStat = con.createStatement();
@@ -106,6 +108,7 @@ public class InitApplication {
 			}
 			rsDev.close();
 			devStat.close();
+			cp.setDeviceCache(unitDeviceCache);
 			//标签
 			HashMap<String, TagPojo> unitTagCache = new HashMap<>();
 			Statement tagStat = con.createStatement();
@@ -121,6 +124,7 @@ public class InitApplication {
 			}
 			rsTag.close();
 			tagStat.close();
+			cp.setTagCache(unitTagCache);
 			//规则
 			HashMap<String, List<RulePojo>> unitRuleCache = new HashMap<>();
 			Statement ruleStat = con.createStatement();
@@ -141,14 +145,37 @@ public class InitApplication {
 					rps.add(rp);
 				}
 			}
+			rsRule.close();
+			ruleStat.close();
+			cp.setRuleCache(unitRuleCache);
+			//实时
+			HashMap<String, TimlyPojo> unitTimlyCache = new HashMap<>();
+			Statement timlyStat = con.createStatement();
+			String sqlTimly = "select * from tb_" + up.getId() + "_timly";
+			ResultSet rsTimly = timlyStat.executeQuery(sqlTimly);
+			while(rsTimly.next()){
+				TimlyPojo tp = new TimlyPojo();
+				tp.setId(rsTimly.getInt("id"));
+				tp.setTagId(rsTimly.getString("tagId"));
+				tp.setOldDeviceId(rsTimly.getString("oldDeviceId"));
+				tp.setCurrentDeviceId(rsTimly.getString("currentDeviceId"));
+				tp.setOldDeviceTime(rsTimly.getString("oldDeviceTime"));
+				tp.setCurrentDeviceTime(rsTimly.getString("currentDeviceTime"));
+				unitTimlyCache.put(tp.getTagId(), tp);
+			}
+			rsTimly.close();
+			timlyStat.close();
+			cp.setTimlyCache(unitTimlyCache);
+			//车辆
 			
 			
+			ContainerUtil.getCaches().put(up.getChannelAddr(), cp);
 			}catch(Exception e){
 				e.printStackTrace();
 			}
 			
 		}
-		
+		System.out.println(JSONObject.toJSONString(ContainerUtil.getCaches()));
 		rs.close();
 		stat.close();
 		con.close();
