@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSONObject;
+import com.zh.collection.business.task.BusinessForStartAllTask;
 import com.zh.collection.lizer.UDPChannelinitializer;
 import com.zh.collection.pojo.AreaPojo;
 import com.zh.collection.pojo.CachePojo;
@@ -56,6 +57,9 @@ public class InitApplication {
 		cacheLoad();
 		//创建线程池
 		ContainerUtil.setThreadPool(OperateUtil.createThreadPool());
+		//业务处理
+		ContainerUtil.getThreadPool().execute(new BusinessForStartAllTask());
+		
 		return "";
 	}
 	private void cacheLoad() throws Exception{

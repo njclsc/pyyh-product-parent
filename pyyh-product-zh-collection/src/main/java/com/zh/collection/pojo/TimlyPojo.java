@@ -13,4 +13,6 @@ public class TimlyPojo {
 	private String oldDeviceTime;
 	private String currentDeviceTime;
 	private String hbStationId;
+	private String mappingAddress;
+	private String positionType;
 }

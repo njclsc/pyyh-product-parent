@@ -3,6 +3,7 @@ package com.zh.collection.util;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 
 import javax.sql.DataSource;
@@ -20,6 +21,7 @@ public class ContainerUtil {
 	private static DataSource dataSource;
 	private static String rootPath;
 	private static ThreadPoolExecutor threadPool;
+	private static LinkedBlockingQueue<Object> inQueue = new LinkedBlockingQueue<>();
 	private static HashMap<String, CachePojo<String, UnitPojo, String, AreaPojo, String, DevicePojo, String, TagPojo, String, List<RulePojo>, String, TimlyPojo>> caches = new HashMap<>();
 	public static DataSource getDataSource() {
 		return dataSource;
@@ -55,6 +57,14 @@ public class ContainerUtil {
 
 	public static ThreadPoolExecutor getThreadPool() {
 		return threadPool;
+	}
+
+	public static LinkedBlockingQueue<Object> getInQueue() {
+		return inQueue;
+	}
+
+	public static void setInQueue(LinkedBlockingQueue<Object> inQueue) {
+		ContainerUtil.inQueue = inQueue;
 	}
 
 	public static void setThreadPool(ThreadPoolExecutor threadPool) {
