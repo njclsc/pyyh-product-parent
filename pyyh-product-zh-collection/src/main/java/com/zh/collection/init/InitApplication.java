@@ -163,6 +163,7 @@ public class InitApplication {
 				tp.setCurrentDeviceId(rsTimly.getString("currentDeviceId"));
 				tp.setOldDeviceTime(rsTimly.getString("oldDeviceTime"));
 				tp.setCurrentDeviceTime(rsTimly.getString("currentDeviceTime"));
+				tp.setHbStationId(rsTimly.getString("hbStationId"));
 				unitTimlyCache.put(tp.getTagId(), tp);
 			}
 			rsTimly.close();

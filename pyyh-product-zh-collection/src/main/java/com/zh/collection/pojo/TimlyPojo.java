@@ -12,4 +12,5 @@ public class TimlyPojo {
 	private String currentDeviceId;
 	private String oldDeviceTime;
 	private String currentDeviceTime;
+	private String hbStationId;
 }

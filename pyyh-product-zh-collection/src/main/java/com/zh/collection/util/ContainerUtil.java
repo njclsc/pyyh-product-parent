@@ -1,5 +1,6 @@
 package com.zh.collection.util;
 
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -15,6 +16,7 @@ import com.zh.collection.pojo.TimlyPojo;
 import com.zh.collection.pojo.UnitPojo;
 
 public class ContainerUtil {
+	private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	private static DataSource dataSource;
 	private static String rootPath;
 	private static ThreadPoolExecutor threadPool;
@@ -41,6 +43,14 @@ public class ContainerUtil {
 
 	public static void setCaches(HashMap<String, CachePojo<String, UnitPojo, String, AreaPojo, String, DevicePojo, String, TagPojo, String, List<RulePojo>, String, TimlyPojo>> caches) {
 		ContainerUtil.caches = caches;
+	}
+
+	public static SimpleDateFormat getSdf() {
+		return sdf;
+	}
+
+	public static void setSdf(SimpleDateFormat sdf) {
+		ContainerUtil.sdf = sdf;
 	}
 
 	public static ThreadPoolExecutor getThreadPool() {

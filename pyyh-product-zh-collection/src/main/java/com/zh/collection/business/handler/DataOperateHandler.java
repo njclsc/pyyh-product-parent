@@ -1,5 +1,7 @@
 package com.zh.collection.business.handler;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -17,7 +19,12 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
 public class DataOperateHandler extends ChannelInboundHandlerAdapter{
-
+	private SimpleDateFormat sdf;
+	
+	public DataOperateHandler(){
+		this.sdf = ContainerUtil.getSdf();
+		System.out.println(this.getClass().getName() + "   " + sdf);
+	}
 	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
 		// TODO Auto-generated method stub
@@ -38,7 +45,8 @@ public class DataOperateHandler extends ChannelInboundHandlerAdapter{
 			//------------------------------
 			
 			
-			
+			//实时缓存
+			HashMap<String, TimlyPojo> timly = cache.getTimlyCache();
 			//标签处理
 			HashMap<String, TagPojo> tags = cache.getTagCache();
 			System.out.println("标签" + devs);
@@ -52,7 +60,10 @@ public class DataOperateHandler extends ChannelInboundHandlerAdapter{
 				String hrsi = tagData.substring(14, 16);
 				System.out.println(tagId + "  " + status + "  " + antId + "  " + lowrsi + "  " + hrsi);
 				//------------------------------
-				
+				TimlyPojo tp = timly.get(tagId);
+				if(tp != null){
+					System.out.println("---");
+				}
 				
 				
 				

@@ -53,6 +53,7 @@ public class ToolUtil {
 		sql.append("currentDeviceId VARCHAR(50) DEFAULT NULL COMMENT '当前设备id',");
 		sql.append("oldDeviceTime VARCHAR(50) DEFAULT NULL COMMENT '上一设备时间',");
 		sql.append("currentDeviceTime VARCHAR(50) DEFAULT NULL COMMENT '当前设备时间',");
+		sql.append("hbStationId VARCHAR(50) DEFAULT NULL COMMENT '2.4G基站',");
 		sql.append("PRIMARY KEY (id)");
 		sql.append(") ENGINE=INNODB DEFAULT CHARSET=utf8");
 		String[] sqls = sql.toString().split("###");
