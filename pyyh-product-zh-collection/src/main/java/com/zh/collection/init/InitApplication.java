@@ -107,8 +107,8 @@ public class InitApplication {
 			while(rsDev.next()){
 				DevicePojo dp = new DevicePojo();
 				dp.setId(rsDev.getInt("id"));
-				dp.setDeviceId(rsDev.getString("deviceId"));;
-				dp.setAreaIndex(rs.getInt("areaIndex"));
+				dp.setDeviceId(rsDev.getString("deviceId"));
+				dp.setAreaIndex(rsDev.getInt("areaIndex"));
 				dp.setType(rsDev.getInt("type"));
 				unitDeviceCache.put(dp.getDeviceId(), dp);
 			}

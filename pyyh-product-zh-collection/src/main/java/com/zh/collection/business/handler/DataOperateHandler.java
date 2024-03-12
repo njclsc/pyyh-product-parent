@@ -38,7 +38,7 @@ public class DataOperateHandler extends ChannelInboundHandlerAdapter{
 		if(cache == null){
 			return;
 		}
-		System.out.println(JSONObject.toJSONString(cache));
+//		System.out.println(JSONObject.toJSONString(cache));
 		//数据解析
 		String data = String.valueOf(msg);
 		String deviceId = data.substring(4, 8);
@@ -46,7 +46,7 @@ public class DataOperateHandler extends ChannelInboundHandlerAdapter{
 		if(cmdType.equals("41")){
 			//设备处理
 			HashMap<String, DevicePojo> devs = cache.getDeviceCache();
-			System.out.println("设备" + devs);
+//			System.out.println("设备" + devs);
 			//------------------------------
 			
 			
@@ -54,7 +54,7 @@ public class DataOperateHandler extends ChannelInboundHandlerAdapter{
 			HashMap<String, TimlyPojo> timly = cache.getTimlyCache();
 			//标签处理
 //			HashMap<String, TagPojo> tags = cache.getTagCache();
-			System.out.println("标签" + devs);
+//			System.out.println("标签" + devs);
 			int tagNum = Integer.parseInt(data.substring(12, 14), 16);
 			for(int i = 0; i < tagNum; i++){
 				String tagData = data.substring(i * 16 + 14, (i + 1) * 16 + 14);
