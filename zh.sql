@@ -25,9 +25,11 @@ CREATE TABLE `tb_1_area` (
   `areaName` varchar(100) DEFAULT NULL COMMENT '区域名称',
   `type` int(2) DEFAULT NULL COMMENT '0:门禁1：停车场2：公寓',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 /*Data for the table `tb_1_area` */
+
+insert  into `tb_1_area`(`id`,`areaName`,`type`) values (1,'东门外',0),(2,'东门内',1),(4,'停车场1',2),(5,'公寓1',3);
 
 /*Table structure for table `tb_1_device` */
 
@@ -40,9 +42,11 @@ CREATE TABLE `tb_1_device` (
   `type` int(11) DEFAULT NULL COMMENT '设备类型0:中心网关；1：低频地感',
   `refreshTime` varchar(30) DEFAULT NULL COMMENT '刷新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
 /*Data for the table `tb_1_device` */
+
+insert  into `tb_1_device`(`id`,`deviceId`,`areaIndex`,`type`,`refreshTime`) values (1,'0001',1,1,NULL),(2,'0002',2,1,NULL),(4,'0003',4,1,NULL),(5,'0058',NULL,0,NULL),(6,'0059',5,0,NULL);
 
 /*Table structure for table `tb_1_rule` */
 
