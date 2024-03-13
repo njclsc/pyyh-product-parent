@@ -37,20 +37,20 @@ public class BusinessForStartAllTask implements Runnable{
 					//door operate 
 					String oldDevId = tp.getOldDeviceId();
 					String curDevId = tp.getCurrentDeviceId();
-					
-					if(oldDevId != null && curDevId != null && !oldDevId.equals("") && !curDevId.equals("")){
+					int hbArea = devices.get(tp.getHbStationId()).getAreaIndex();
+					if(oldDevId != null && curDevId != null && !oldDevId.equals("") && !curDevId.equals("") && hbArea < 1){
 						int curAreaType = areas.get("" + devices.get(curDevId).getAreaIndex()).getType();
 						int oldAreaType = areas.get("" + devices.get(oldDevId).getAreaIndex()).getType();
-						int hbArea = devices.get(tp.getHbStationId()).getAreaIndex();
-						if(oldAreaType < 2 && curAreaType < 2 && hbArea < 1){
+						if(oldAreaType < 2 && curAreaType < 2){
 							threadPool.execute(new BusinessForDoorTask(tp, devices, areas));
-						}else if(oldAreaType == 2 && curAreaType == 2 && hbArea < 1){
+						}else if(oldAreaType == 2 && curAreaType == 2){
 							threadPool.execute(new BusinessForParkingTask(tp, devices, areas));
-						}else if(hbArea > 0){
-							int hbAreaType = areas.get("" + hbArea).getType();
-							if(hbAreaType == 3){
-								threadPool.execute(new BusinessForApartmentTask(tp, devices, areas));
-							}
+						}
+						//由于只是一包数据判断  不可靠  有可能要增加一个oldHbStationId;
+					}else if(hbArea > 0){
+						int hbAreaType = areas.get("" + hbArea).getType();
+						if(hbAreaType == 3){
+							threadPool.execute(new BusinessForApartmentTask(tp, devices, areas));
 						}
 					}
 				}

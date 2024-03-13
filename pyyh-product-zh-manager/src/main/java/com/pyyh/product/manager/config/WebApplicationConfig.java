@@ -18,7 +18,7 @@ public class WebApplicationConfig extends WebMvcConfigurationSupport{
 		System.out.println("------><>");
 		registry.addInterceptor(authInterceptor)
 		.addPathPatterns("/**")
-		.excludePathPatterns("/static/**");
+		.excludePathPatterns("/static/**", "/vehicle/regist", "/vehicle/scanCode");
 		
 //		super.addInterceptors(registry);
 	}

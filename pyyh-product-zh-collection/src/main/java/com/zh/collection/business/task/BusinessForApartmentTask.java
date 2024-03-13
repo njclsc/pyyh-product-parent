@@ -18,6 +18,11 @@ public class BusinessForApartmentTask implements Runnable{
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
+		String oldDevId = tp.getOldDeviceId();
+		String curDevId = tp.getCurrentDeviceId();
+		String hbDevId = tp.getHbStationId();
+		AreaPojo cap = areas.get("" + devices.get(hbDevId).getAreaIndex());
 		System.out.println("apartment operate");
+		System.out.println(cap.getAreaName());
 	}
 }

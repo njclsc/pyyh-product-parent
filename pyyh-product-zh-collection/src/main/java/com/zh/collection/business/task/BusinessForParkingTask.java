@@ -18,7 +18,15 @@ public class BusinessForParkingTask implements Runnable{
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
-		System.out.println("parking operate");
+		String oldDevId = tp.getOldDeviceId();
+		String curDevId = tp.getCurrentDeviceId();
+		AreaPojo oap = areas.get("" + devices.get(oldDevId).getAreaIndex());
+		AreaPojo cap = areas.get("" + devices.get(curDevId).getAreaIndex());
+		System.out.println(oap.getType() + "   " + cap.getType());
+		System.out.println("parking operate" + oldDevId + "  " + curDevId + "  " + tp.getCurrentDeviceTime());
+		if(oap.getType() == 2 && cap.getType() == 2 && oldDevId.equals(curDevId)){
+			System.out.println(cap.getAreaName());
+		}
 	}
 
 }
