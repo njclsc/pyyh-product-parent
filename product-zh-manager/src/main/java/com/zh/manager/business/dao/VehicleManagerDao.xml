@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zh.manager.business.dao.IVehicleManagerDao">
+
+	<insert id="add" parameterType = "com.zh.manager.business.pojo.VehiclePojo" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO tb_${unitIndex}_vehicle(ownerName, ownerType, movePhone, ownerNumber, vehicleType, vehicleBrand, vehicleColor, registDate, status) VALUES(
+			         #{ownerName}, ${ownerType}, #{movePhone}, #{ownerNumber}, ${vehicleType}, #{vehicleBrand}, #{vehicleColor}, #{registDate}, ${status})
+	</insert>
+	<update id="update" parameterType = "com.zh.manager.business.pojo.VehiclePojo" >
+		update tb_${unitIndex}_vehicle set ownerName = #{ownerName}, ownerType = #{ownerType}, movePhone = #{movePhone},
+			ownerNumber = #{ownerNumber}, vehicleType = #{vehicleType}, vehicleBrand = #{vehicleBrand}, vehicleColor = #{vehicleColor}
+		where id = ${id}
+	</update>
+	<select id="findById" parameterType = "com.zh.manager.business.pojo.VehiclePojo" resultType = "com.zh.manager.business.pojo.VehiclePojo">
+		select * from tb_${unitIndex}_vehicle where id = ${id}
+	</select>
+	<select id="findByAll" parameterType = "com.zh.manager.business.pojo.VehiclePojo" resultType = "com.zh.manager.business.pojo.VehiclePojo">
+		select * from tb_${unitIndex}_vehicle where 1 = 1
+		<if test="ownerName != null and ownerName != ''">
+			and ownerName = #{ownerName}
+		</if>
+		<if test="movePhone != null and movePhone!= ''">
+			and movePhone = #{movePhone}
+		</if>
+	</select>
+	<delete id="delete" parameterType = "com.zh.manager.business.pojo.VehiclePojo">
+		delete from tb_${unitIndex}_vehicle where id = ${id}
+	</delete>
+</mapper>

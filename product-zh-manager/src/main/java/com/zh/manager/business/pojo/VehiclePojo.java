@@ -1,4 +1,4 @@
-package com.pyyh.product.manager.pojo;
+package com.zh.manager.business.pojo;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -1,15 +1,13 @@
-package com.pyyh.product.manager.util;
+package com.zh.manager.util;
 
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Map;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.interfaces.Claim;
-import com.pyyh.product.manager.config.DataSourceConfiguer;
-import com.pyyh.product.manager.pojo.UnitPojo;
-
+import com.zh.manager.business.pojo.UnitPojo;
+import com.zh.manager.config.DataSourceConfiguer;
 public class ToolUtil {
 
 	public static Map<String, Claim> tokenParse(String token){
@@ -70,7 +68,7 @@ public class ToolUtil {
 		sql.append("validity int(5) DEFAULT NULL COMMENT '有效期 单位 月份',");
 		sql.append("registDate VARCHAR(30) DEFAULT NULL COMMENT '注册时间',");
 		sql.append("photos varchar(500) DEFAULT NULL COMMENT '照片',");
-		sql.append("status INT(2) DEFAULT NULL COMMENT '0:审批通过;1:审批未通过;2:审批中',");
+		sql.append("status INT(2) DEFAULT NULL COMMENT '0:以安装1:已通过;2:已驳回;3:待审核',");
 		sql.append("PRIMARY KEY (id)");
 		sql.append(") ENGINE=INNODB DEFAULT CHARSET=utf8");
 		String[] sqls = sql.toString().split("###");

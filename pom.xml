@@ -155,5 +155,6 @@
 		<module>pyyh-product-login</module>
 		<module>pyyh-product-zh-manager</module>
 		<module>pyyh-product-zh-collection</module>
+		<module>product-zh-manager</module>
 	</modules>
 </project>
