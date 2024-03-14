@@ -89,7 +89,17 @@ public class VehicleManagerServiceImp implements IManagerService, IAuditingServi
 	@Override
 	public ResponsePojo auditing(VehiclePojo vp) {
 		// TODO Auto-generated method stub
-		return null;
+		vmd.auditing(vp);
+		ResponsePojo rp = new ResponsePojo();
+		rp.setResult("success");
+		if(vp.getStatus() == 2){
+			rp.setMessage("已驳回");
+		}else if(vp.getStatus() == 1){
+			rp.setMessage("已通过");
+		}else if(vp.getStatus() == 0){
+			rp.setMessage("已安装");
+		}
+		return rp;
 	}
 
 }

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.zh.manager.business.pojo.ResponsePojo;
 import com.zh.manager.business.pojo.VehiclePojo;
+import com.zh.manager.business.service.IAuditingService;
 import com.zh.manager.business.service.IManagerService;
 
 @RestController
@@ -17,6 +18,9 @@ public class VehicleManagerController {
 	@Autowired
 	@Qualifier("VehicleManagerServiceImp")
 	private IManagerService vms;
+	@Autowired
+	@Qualifier("VehicleManagerServiceImp")
+	private IAuditingService as;
 	
 	@RequestMapping("add")
 	public ResponsePojo add(@RequestBody VehiclePojo vp){
@@ -37,6 +41,10 @@ public class VehicleManagerController {
 	@RequestMapping("delete")
 	public ResponsePojo delete(@RequestBody VehiclePojo vp){
 		return vms.delete(vp);
+	}
+	@RequestMapping("auditing")
+	public ResponsePojo auditing(@RequestBody VehiclePojo vp){
+		return as.auditing(vp);
 	}
 	
 }

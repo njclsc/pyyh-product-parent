@@ -27,4 +27,7 @@
 	<delete id="delete" parameterType = "com.zh.manager.business.pojo.VehiclePojo">
 		delete from tb_${unitIndex}_vehicle where id = ${id}
 	</delete>
+	<update id="auditing" parameterType = "com.zh.manager.business.pojo.VehiclePojo">
+		update tb_${unitIndex}_vehicle set status = ${status}, reason = #{reason} where id = ${id}
+	</update>
 </mapper>

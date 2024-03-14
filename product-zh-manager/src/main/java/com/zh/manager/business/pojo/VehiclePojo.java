@@ -21,4 +21,5 @@ public class VehiclePojo {
 	private String photos;
 	private int status;
 	private int unitIndex;
+	private String reason;
 }

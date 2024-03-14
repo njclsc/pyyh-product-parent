@@ -69,6 +69,8 @@ public class ToolUtil {
 		sql.append("registDate VARCHAR(30) DEFAULT NULL COMMENT '注册时间',");
 		sql.append("photos varchar(500) DEFAULT NULL COMMENT '照片',");
 		sql.append("status INT(2) DEFAULT NULL COMMENT '0:以安装1:已通过;2:已驳回;3:待审核',");
+		sql.append("reason VARCHAR(150) DEFAULT NULL COMMENT '审核信息备注',");
+		
 		sql.append("PRIMARY KEY (id)");
 		sql.append(") ENGINE=INNODB DEFAULT CHARSET=utf8");
 		String[] sqls = sql.toString().split("###");
