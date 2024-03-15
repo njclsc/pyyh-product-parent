@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zh.manager.business.dao.IRuleManagerDao">
+	<insert id="add" parameterType = "com.zh.manager.business.pojo.RulePojo" useGeneratedKeys="true" keyProperty="id">
+		insert into tb_${unitIndex}_rule(ruleName,ruleType,areaIndex,time) values(
+			#{ruleName},${ruleType},${areaIndex},${time}
+		)
+	</insert>
+	<update id="update" parameterType = "com.zh.manager.business.pojo.RulePojo">
+		update tb_${unitIndex}_rule set ruleName = #{ruleName},ruleType = ${ruleType}, areaIndex = ${areaIndex},time = ${time}
+		where id = ${id}
+	</update>
+	<delete id = "delete" parameterType = "com.zh.manager.business.pojo.RulePojo">
+		delete from tb_${unitIndex}_rule where id = ${id}
+	</delete>
+	<select id="findById" parameterType = "com.zh.manager.business.pojo.RulePojo" resultType = "com.zh.manager.business.pojo.RulePojo">
+		select * from tb_${unitIndex}_rule where id = ${id}
+	</select>
+	<select id="findAll" parameterType = "com.zh.manager.business.pojo.RulePojo" resultType = "com.zh.manager.business.pojo.RulePojo">
+		select * from tb_${unitIndex}_rule where 1 = 1 
+		<if test="id != null and id != ''">
+			and id = ${id}
+		</if>
+	</select>
+</mapper>

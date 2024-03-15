@@ -22,6 +22,7 @@ public class ZHUDPDecoder extends MessageToMessageDecoder<Object>{
 		byte[] data = new byte[len];
 		buf.readBytes(data);
 		String _data = byte2HexString(data);
+		System.out.println("data--> " + _data);
 		String[] _datas = _data.split(head);
 		for(String tmp : _datas){
 			if(tmp == null || tmp.length() < 1){

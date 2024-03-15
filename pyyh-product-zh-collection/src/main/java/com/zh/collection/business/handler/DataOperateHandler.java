@@ -56,14 +56,16 @@ public class DataOperateHandler extends ChannelInboundHandlerAdapter{
 //			HashMap<String, TagPojo> tags = cache.getTagCache();
 //			System.out.println("标签" + devs);
 			int tagNum = Integer.parseInt(data.substring(12, 14), 16);
+			System.out.println(tagNum);
 			for(int i = 0; i < tagNum; i++){
-				String tagData = data.substring(i * 16 + 14, (i + 1) * 16 + 14);
+				String tagData = data.substring(i * 14 + 14, (i + 1) * 14 + 14);
 				String tagId = tagData.substring(0, 6);
 				String status = tagData.substring(6, 8);
 				String antId = tagData.substring(8, 12);
 				String lowrsi = tagData.substring(12, 14);
-				String hrsi = tagData.substring(14, 16);
-				System.out.println(tagId + "  " + status + "  " + antId + "  " + lowrsi + "  " + hrsi);
+//				String hrsi = tagData.substring(14, 16);
+//				System.out.println(tagId + "  " + status + "  " + antId + "  " + lowrsi + "  " + hrsi);
+				System.out.println(tagId + "  " + status + "  " + antId + "  " + lowrsi);
 				//------------------------------
 				TimlyPojo tp = timly.get(tagId);
 				if(tp != null){

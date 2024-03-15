@@ -28,7 +28,8 @@ public class ToolUtil {
 		sql.append("areaIndex INT(11) DEFAULT NULL COMMENT '关联区域id',");
 		sql.append("type INT(11) DEFAULT NULL COMMENT '设备类型0:中心网关；1：低频地感',");
 		sql.append("refreshTime VARCHAR(30) DEFAULT NULL COMMENT '刷新时间',");
-		sql.append("PRIMARY KEY (id)");
+		sql.append("PRIMARY KEY (id),");
+		sql.append("UNIQUE KEY DEVID_INDEX (deviceId)");
 		sql.append(") ENGINE=INNODB DEFAULT CHARSET=utf8");
 		sql.append("###CREATE TABLE tb_tmp_tag (");
 		sql.append("id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键',");
@@ -37,13 +38,16 @@ public class ToolUtil {
 		sql.append("type INT(11) DEFAULT NULL COMMENT '类型0:带低频1；2.4G',");
 		sql.append("PRIMARY KEY (id)");
 		sql.append(") ENGINE=INNODB DEFAULT CHARSET=utf8");
+		
 		sql.append("###CREATE TABLE tb_tmp_rule (");
 		sql.append("id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键',");
 		sql.append("ruleName VARCHAR(50) DEFAULT NULL COMMENT '规则名称',");
-		sql.append("ruleType INT(11) DEFAULT NULL COMMENT '规则类型',");
+		sql.append("ruleType INT(11) DEFAULT NULL COMMENT '0:违停提醒时间;1:确认违停时间',");
 		sql.append("areaIndex INT(11) DEFAULT NULL COMMENT '关联区域',");
+		sql.append("time INT(3) DEFAULT NULL COMMENT '规则时限(单位：分钟)',");
 		sql.append("PRIMARY KEY (id)");
 		sql.append(") ENGINE=INNODB DEFAULT CHARSET=utf8");
+		
 		sql.append("###CREATE TABLE tb_tmp_timly (");
 		sql.append("id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键',");
 		sql.append("tagId VARCHAR(50) DEFAULT NULL COMMENT '标签Id',");
@@ -54,6 +58,7 @@ public class ToolUtil {
 		sql.append("hbStationId VARCHAR(50) DEFAULT NULL COMMENT '2.4G基站',");
 		sql.append("PRIMARY KEY (id)");
 		sql.append(") ENGINE=INNODB DEFAULT CHARSET=utf8");
+		
 		sql.append("###CREATE TABLE tb_tmp_vehicle (");
 		sql.append("id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键',");
 		sql.append("ownerName VARCHAR(11) DEFAULT NULL COMMENT '车主姓名',");

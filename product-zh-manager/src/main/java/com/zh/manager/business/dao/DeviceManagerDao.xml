@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zh.manager.business.dao.IDeviceManagerDao">
+	
+	<insert id="add" parameterType = "com.zh.manager.business.pojo.DevicePojo" useGeneratedKeys="true" keyProperty="id">
+		insert ignore into tb_${unitIndex}_device(deviceId, areaIndex, type)values(
+			#{deviceId}, ${areaIndex}, ${type}
+		)
+	</insert>
+	<delete id="delete" parameterType = "com.zh.manager.business.pojo.DevicePojo" >
+		delete from tb_${unitIndex}_device where id = ${id}
+	</delete>
+	<update id="update" parameterType = "com.zh.manager.business.pojo.DevicePojo">
+		update tb_${unitIndex}_device set deviceId = #{deviceId}, areaIndex = ${areaIndex}, type = ${type} 
+		where id = ${id}
+	</update>
+	<select id="findById" parameterType = "com.zh.manager.business.pojo.DevicePojo" resultType = "com.zh.manager.business.pojo.DevicePojo">
+		select * from tb_${unitIndex}_device where id = ${id}
+	</select>
+	<select id="findAll" parameterType = "com.zh.manager.business.pojo.DevicePojo" resultType = "com.zh.manager.business.pojo.DevicePojo">
+		select * from tb_${unitIndex}_device where 1 = 1
+		<if test="id != null and id != ''">
+			and id = ${id}
+		</if>
+		 
+	</select>
+</mapper>
