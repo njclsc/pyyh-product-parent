@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zh.manager.business.dao.ITagManagerDao">
+	<insert id="add" parameterType = "com.zh.manager.business.pojo.TagPojo" useGeneratedKeys="true" keyProperty="id">
+		insert ignore into tb_${unitIndex}_tag(tagId, status, type)values(
+			#{tagId}, ${status}, ${type}
+		)
+	</insert>
+	<insert id="addTimly" parameterType = "com.zh.manager.business.pojo.TagPojo" useGeneratedKeys="true" keyProperty="id">
+		insert ignore into tb_${unitIndex}_timly(tagId)values(#{tagId})
+	</insert>
+	<delete id="delete" parameterType = "com.zh.manager.business.pojo.TagPojo">
+		delete from tb_${unitIndex}_tag where tagId = #{tagId}
+	</delete>
+	<delete id="deleteTimly" parameterType = "com.zh.manager.business.pojo.TagPojo">
+		delete from tb_${unitIndex}_timly where tagId = #{tagId}
+	</delete>
+	<update id="update" parameterType = "com.zh.manager.business.pojo.TagPojo">
+		update tb_${unitIndex}_tag set status = ${status}, type = ${type}
+		where tagId = #{tagId}
+	</update>
+	<select id="findById" parameterType = "com.zh.manager.business.pojo.TagPojo" resultType = "com.zh.manager.business.pojo.TagPojo">
+		select * from tb_${unitIndex}_tag where id = ${id}
+	</select>
+	<select id="findAll" parameterType = "com.zh.manager.business.pojo.TagPojo" resultType = "com.zh.manager.business.pojo.TagPojo">
+		select * from tb_${unitIndex}_tag where 1 = 1
+		<if test="id != null and id != ''">
+			and id = ${id}
+		</if>
+		<if test="tagId != null and tagId != ''">
+			and tagId = #{tagId}
+		</if>
+		<if test="status != null and status != ''">
+			and status= ${status}
+		</if>
+		<if test="type != null and type != ''">
+			and type= ${type}
+		</if>
+	</select>
+</mapper>

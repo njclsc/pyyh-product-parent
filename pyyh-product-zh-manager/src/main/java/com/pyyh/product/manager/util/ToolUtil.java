@@ -32,13 +32,18 @@ public class ToolUtil {
 		sql.append("refreshTime VARCHAR(30) DEFAULT NULL COMMENT '刷新时间',");
 		sql.append("PRIMARY KEY (id)");
 		sql.append(") ENGINE=INNODB DEFAULT CHARSET=utf8");
+		
+		
 		sql.append("###CREATE TABLE tb_tmp_tag (");
 		sql.append("id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键',");
 		sql.append("tagId VARCHAR(50) DEFAULT NULL COMMENT '标签id',");
 		sql.append("status INT(3) DEFAULT NULL COMMENT '状态',");
 		sql.append("type INT(11) DEFAULT NULL COMMENT '类型0:带低频1；2.4G',");
-		sql.append("PRIMARY KEY (id)");
+		sql.append("PRIMARY KEY (id),");
+		sql.append("UNIQUE KEY DEV_INDEX (tagId)");
 		sql.append(") ENGINE=INNODB DEFAULT CHARSET=utf8");
+		
+		
 		sql.append("###CREATE TABLE tb_tmp_rule (");
 		sql.append("id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键',");
 		sql.append("ruleName VARCHAR(50) DEFAULT NULL COMMENT '规则名称',");
@@ -46,6 +51,7 @@ public class ToolUtil {
 		sql.append("areaIndex INT(11) DEFAULT NULL COMMENT '关联区域',");
 		sql.append("PRIMARY KEY (id)");
 		sql.append(") ENGINE=INNODB DEFAULT CHARSET=utf8");
+		
 		sql.append("###CREATE TABLE tb_tmp_timly (");
 		sql.append("id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键',");
 		sql.append("tagId VARCHAR(50) DEFAULT NULL COMMENT '标签Id',");
@@ -54,8 +60,10 @@ public class ToolUtil {
 		sql.append("oldDeviceTime VARCHAR(50) DEFAULT NULL COMMENT '上一设备时间',");
 		sql.append("currentDeviceTime VARCHAR(50) DEFAULT NULL COMMENT '当前设备时间',");
 		sql.append("hbStationId VARCHAR(50) DEFAULT NULL COMMENT '2.4G基站',");
-		sql.append("PRIMARY KEY (id)");
+		sql.append("PRIMARY KEY (id),");
+		sql.append("UNIQUE KEY TAG_INDEX (tagId)");
 		sql.append(") ENGINE=INNODB DEFAULT CHARSET=utf8");
+		
 		sql.append("###CREATE TABLE tb_tmp_vehicle (");
 		sql.append("id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键',");
 		sql.append("ownerName VARCHAR(11) DEFAULT NULL COMMENT '车主姓名',");
