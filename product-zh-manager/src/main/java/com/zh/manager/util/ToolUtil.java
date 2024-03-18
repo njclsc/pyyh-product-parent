@@ -19,7 +19,7 @@ public class ToolUtil {
 		sql.append("CREATE TABLE tb_tmp_area (");
 		sql.append("id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键',");
 		sql.append("areaName VARCHAR(100) DEFAULT NULL COMMENT '区域名称',");
-		sql.append("type INT(2) DEFAULT NULL COMMENT '0:门禁1：停车场2：公寓',");
+		sql.append("type INT(2) DEFAULT NULL COMMENT '0:门禁外;1:门禁内;2：停车场;3：公寓',");
 		sql.append("PRIMARY KEY (id)");
 		sql.append(") ENGINE=INNODB DEFAULT CHARSET=utf8;");
 		
@@ -45,9 +45,9 @@ public class ToolUtil {
 		sql.append("###CREATE TABLE tb_tmp_rule (");
 		sql.append("id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键',");
 		sql.append("ruleName VARCHAR(50) DEFAULT NULL COMMENT '规则名称',");
-		sql.append("ruleType INT(11) DEFAULT NULL COMMENT '0:违停提醒时间;1:确认违停时间',");
+		sql.append("ruleType INT(11) DEFAULT NULL COMMENT '0:违停提醒时间;1:确认违停时间;2:进出延时判断时间',");
 		sql.append("areaIndex INT(11) DEFAULT NULL COMMENT '关联区域',");
-		sql.append("time INT(3) DEFAULT NULL COMMENT '规则时限(单位：分钟)',");
+		sql.append("time INT(11) DEFAULT NULL COMMENT '规则时限(单位：分钟)',");
 		sql.append("PRIMARY KEY (id)");
 		sql.append(") ENGINE=INNODB DEFAULT CHARSET=utf8");
 		

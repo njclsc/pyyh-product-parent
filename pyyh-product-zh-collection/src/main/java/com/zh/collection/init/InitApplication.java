@@ -72,7 +72,7 @@ public class InitApplication {
 		
 		while(rs.next()){
 			try{
-			CachePojo<String, UnitPojo, String, AreaPojo, String, DevicePojo, String, TagPojo, String, List<RulePojo>, String, TimlyPojo> cp = new CachePojo<>();
+			CachePojo<String, UnitPojo, String, AreaPojo, String, DevicePojo, String, TagPojo, String, RulePojo, String, TimlyPojo> cp = new CachePojo<>();
 			//单位
 			HashMap<String, UnitPojo> ups = new HashMap<>();
 			UnitPojo up = new UnitPojo();
@@ -132,7 +132,7 @@ public class InitApplication {
 			tagStat.close();
 			cp.setTagCache(unitTagCache);
 			//规则
-			HashMap<String, List<RulePojo>> unitRuleCache = new HashMap<>();
+			HashMap<String, RulePojo> unitRuleCache = new HashMap<>();
 			Statement ruleStat = con.createStatement();
 			String sqlRule = "select * from tb_" + up.getId() + "_rule";
 			ResultSet rsRule = ruleStat.executeQuery(sqlRule);
@@ -141,15 +141,9 @@ public class InitApplication {
 				rp.setId(rsRule.getInt("id"));
 				rp.setRuleName(rsRule.getString("ruleName"));
 				rp.setRuleType(rsRule.getInt("ruleType"));
-				rp.setAreaIndex(rsRule.getInt("areaIndex"));
-				List<RulePojo> rps = unitRuleCache.get(rp.getAreaIndex());
-				if(rps == null){
-					rps = new ArrayList<RulePojo>();
-					rps.add(rp);
-					unitRuleCache.put("" + rp.getAreaIndex(), rps);
-				}else{
-					rps.add(rp);
-				}
+				rp.setTime(rsRule.getInt("time"));
+//				rp.setAreaIndex(rsRule.getInt("areaIndex"));
+				unitRuleCache.put("" + rp.getRuleType(), rp);
 			}
 			rsRule.close();
 			ruleStat.close();

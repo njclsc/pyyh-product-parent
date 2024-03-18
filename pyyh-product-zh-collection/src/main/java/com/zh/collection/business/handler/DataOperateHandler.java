@@ -34,7 +34,7 @@ public class DataOperateHandler extends ChannelInboundHandlerAdapter{
 		// TODO Auto-generated method stub
 		//获取缓存
 		String localAddress = ctx.channel().localAddress().toString().substring(1);
-		CachePojo<String, UnitPojo, String, AreaPojo, String, DevicePojo, String, TagPojo, String, List<RulePojo>, String, TimlyPojo> cache = ContainerUtil.getCaches().get(localAddress);
+		CachePojo<String, UnitPojo, String, AreaPojo, String, DevicePojo, String, TagPojo, String, RulePojo, String, TimlyPojo> cache = ContainerUtil.getCaches().get(localAddress);
 		if(cache == null){
 			return;
 		}
@@ -72,7 +72,9 @@ public class DataOperateHandler extends ChannelInboundHandlerAdapter{
 					tp.setOldDeviceId(tp.getCurrentDeviceId());
 					tp.setOldDeviceTime(tp.getCurrentDeviceTime());
 					tp.setCurrentDeviceId(antId);
+					if(!antId.equals(tp.getOldDeviceId())){
 					tp.setCurrentDeviceTime(sdf.format(new Date()));
+					}
 					tp.setHbStationId(deviceId);
 					tp.setMappingAddress(localAddress);
 					//设置区域类型方便后续业务处理

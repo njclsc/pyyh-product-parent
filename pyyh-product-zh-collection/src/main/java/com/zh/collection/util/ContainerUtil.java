@@ -22,7 +22,7 @@ public class ContainerUtil {
 	private static String rootPath;
 	private static ThreadPoolExecutor threadPool;
 	private static LinkedBlockingQueue<Object> inQueue = new LinkedBlockingQueue<>();
-	private static HashMap<String, CachePojo<String, UnitPojo, String, AreaPojo, String, DevicePojo, String, TagPojo, String, List<RulePojo>, String, TimlyPojo>> caches = new HashMap<>();
+	private static HashMap<String, CachePojo<String, UnitPojo, String, AreaPojo, String, DevicePojo, String, TagPojo, String, RulePojo, String, TimlyPojo>> caches = new HashMap<>();
 	public static DataSource getDataSource() {
 		return dataSource;
 	}
@@ -39,11 +39,11 @@ public class ContainerUtil {
 		ContainerUtil.rootPath = rootPath;
 	}
 
-	public static HashMap<String, CachePojo<String, UnitPojo, String, AreaPojo, String, DevicePojo, String, TagPojo, String, List<RulePojo>, String, TimlyPojo>> getCaches() {
+	public static HashMap<String, CachePojo<String, UnitPojo, String, AreaPojo, String, DevicePojo, String, TagPojo, String, RulePojo, String, TimlyPojo>> getCaches() {
 		return caches;
 	}
 
-	public static void setCaches(HashMap<String, CachePojo<String, UnitPojo, String, AreaPojo, String, DevicePojo, String, TagPojo, String, List<RulePojo>, String, TimlyPojo>> caches) {
+	public static void setCaches(HashMap<String, CachePojo<String, UnitPojo, String, AreaPojo, String, DevicePojo, String, TagPojo, String, RulePojo, String, TimlyPojo>> caches) {
 		ContainerUtil.caches = caches;
 	}
 

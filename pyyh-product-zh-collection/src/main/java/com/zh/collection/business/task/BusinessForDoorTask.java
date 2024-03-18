@@ -2,9 +2,11 @@ package com.zh.collection.business.task;
 
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import com.zh.collection.pojo.AreaPojo;
 import com.zh.collection.pojo.DevicePojo;
+import com.zh.collection.pojo.RulePojo;
 import com.zh.collection.pojo.TimlyPojo;
 import com.zh.collection.util.ContainerUtil;
 
@@ -13,27 +15,57 @@ public class BusinessForDoorTask implements Runnable{
 	private HashMap<String, DevicePojo> devices;
 	private HashMap<String, AreaPojo> areas;
 	private SimpleDateFormat sdf;
-	public BusinessForDoorTask(TimlyPojo tp, HashMap<String, DevicePojo> devices, HashMap<String, AreaPojo> areas){
+	private RulePojo doorRule;
+	private RulePojo parkingRule;
+	private RulePojo sureRule;
+	private LinkedBlockingQueue<Object> inQueue;
+	public BusinessForDoorTask(TimlyPojo tp, HashMap<String, DevicePojo> devices, HashMap<String, AreaPojo> areas, RulePojo doorRule, RulePojo parkingRule, RulePojo sureRule){
 		this.tp = tp;
 		this.devices = devices;
 		this.areas = areas;
 		this.sdf = ContainerUtil.getSdf();
+		this.doorRule = doorRule;
+		this.inQueue = ContainerUtil.getInQueue();
+		this.parkingRule = parkingRule;
+		this.sureRule = sureRule;
 	}
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
 		try{
-		String oldDevId = tp.getOldDeviceId();
-		String curDevId = tp.getCurrentDeviceId();
-		AreaPojo oap = areas.get("" + devices.get(oldDevId).getAreaIndex());
-		AreaPojo cap = areas.get("" + devices.get(curDevId).getAreaIndex());
-		System.out.println(oap.getType() + "   " + cap.getType());
-		System.out.println("door operate " + oldDevId + "  " + curDevId + "  " + tp.getCurrentDeviceTime());
-		if((oap.getType() == 1 && cap.getType() == 1) || cap.getType() == 1){
-			System.out.println("进");
-		}else if((oap.getType() == 0 && cap.getType() == 0) || cap.getType() == 0){
-			System.out.println("出");
-		}
+			long timeFlag = doorRule.getTime();
+			long currTime = sdf.parse(tp.getCurrentDeviceTime()).getTime();
+			//进出延迟判断
+			if(System.currentTimeMillis() - currTime < timeFlag){
+				this.inQueue.offer(tp);
+				return;
+			}
+			//违停通知判断
+			String pt = tp.getPositionType();
+			if(pt != null && pt.equals("into")){
+				long timeFlag1 = parkingRule.getTime();
+				long timeFlag2 = sureRule.getTime();
+				if(System.currentTimeMillis() - currTime >= timeFlag2){
+					System.out.println("保存违停记录！");
+					return;
+				}else if(System.currentTimeMillis() - currTime >= timeFlag1){
+					System.out.println("发送违停通知！");
+				}
+			}
+			String oldDevId = tp.getOldDeviceId();
+			String curDevId = tp.getCurrentDeviceId();
+			AreaPojo oap = areas.get("" + devices.get(oldDevId).getAreaIndex());
+			AreaPojo cap = areas.get("" + devices.get(curDevId).getAreaIndex());
+			System.out.println(oap.getType() + "   " + cap.getType());
+			System.out.println("door operate " + oldDevId + "  " + curDevId + "  " + tp.getCurrentDeviceTime());
+			if((oap.getType() == 1 && cap.getType() == 1) || cap.getType() == 1){
+				System.out.println("进");
+				//判断进入后  加入队列  违停通知判断
+				tp.setPositionType("into");
+				this.inQueue.offer(tp);
+			}else if((oap.getType() == 0 && cap.getType() == 0) || cap.getType() == 0){
+				System.out.println("出");
+			}
 		}catch(Exception e){
 			e.printStackTrace();
 		}

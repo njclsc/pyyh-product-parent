@@ -31,9 +31,10 @@ public class BusinessForStartAllTask implements Runnable{
 				
 				if(tp != null){
 					String localAddress = tp.getMappingAddress();
-					CachePojo<String, UnitPojo, String, AreaPojo, String, DevicePojo, String, TagPojo, String, List<RulePojo>, String, TimlyPojo> cache = ContainerUtil.getCaches().get(localAddress);
+					CachePojo<String, UnitPojo, String, AreaPojo, String, DevicePojo, String, TagPojo, String, RulePojo, String, TimlyPojo> cache = ContainerUtil.getCaches().get(localAddress);
 					HashMap<String, AreaPojo> areas = cache.getAreaCache();
 					HashMap<String, DevicePojo> devices = cache.getDeviceCache();
+					HashMap<String, RulePojo> rules = cache.getRuleCache();
 					//door operate 
 					String oldDevId = tp.getOldDeviceId();
 					String curDevId = tp.getCurrentDeviceId();
@@ -42,7 +43,7 @@ public class BusinessForStartAllTask implements Runnable{
 						int curAreaType = areas.get("" + devices.get(curDevId).getAreaIndex()).getType();
 						int oldAreaType = areas.get("" + devices.get(oldDevId).getAreaIndex()).getType();
 						if(oldAreaType < 2 && curAreaType < 2){
-							threadPool.execute(new BusinessForDoorTask(tp, devices, areas));
+							threadPool.execute(new BusinessForDoorTask(tp, devices, areas, rules.get("" + 2), rules.get("" + 0), rules.get("" + 1)));
 						}else if(oldAreaType == 2 && curAreaType == 2){
 							threadPool.execute(new BusinessForParkingTask(tp, devices, areas));
 						}

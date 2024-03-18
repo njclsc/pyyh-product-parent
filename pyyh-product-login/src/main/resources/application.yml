@@ -1,5 +1,5 @@
 server:
-  port: 6000
+  port: 16000
   servlet:
     context-path: /login
 

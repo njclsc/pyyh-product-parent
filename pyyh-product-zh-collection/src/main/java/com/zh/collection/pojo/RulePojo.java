@@ -10,4 +10,5 @@ public class RulePojo {
 	private String ruleName;
 	private int ruleType;
 	private int areaIndex;
+	private int time;
 }
