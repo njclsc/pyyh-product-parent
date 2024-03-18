@@ -118,11 +118,11 @@ CREATE TABLE `tb_14_vehicle` (
   `status` int(2) DEFAULT NULL COMMENT '0:以安装1:已通过;2:已驳回;3:待审核',
   `reason` varchar(150) DEFAULT NULL COMMENT '审核信息备注',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
 /*Data for the table `tb_14_vehicle` */
 
-insert  into `tb_14_vehicle`(`id`,`ownerName`,`ownerType`,`movePhone`,`ownerNumber`,`vehicleType`,`vehicleBrand`,`vehicleColor`,`rfidId1`,`rfidId2`,`validity`,`registDate`,`photos`,`status`,`reason`) values (1,'gg',0,'1','gg',0,'TJDW','rgb',NULL,NULL,NULL,'2024-03-17 18:11:44',NULL,3,NULL),(2,'gg',0,'1','gg',0,'TJDW','rgb',NULL,NULL,NULL,'2024-03-18 10:20:51',NULL,3,NULL);
+insert  into `tb_14_vehicle`(`id`,`ownerName`,`ownerType`,`movePhone`,`ownerNumber`,`vehicleType`,`vehicleBrand`,`vehicleColor`,`rfidId1`,`rfidId2`,`validity`,`registDate`,`photos`,`status`,`reason`) values (1,'gg',0,'1','gg',0,'TJDW','rgb',NULL,NULL,NULL,'2024-03-17 18:11:44',NULL,3,NULL),(2,'gg',0,'1','gg',0,'TJDW','rgb',NULL,NULL,NULL,'2024-03-18 10:20:51',NULL,3,NULL),(3,'gg',0,'1','gg',0,'TJDW','rgb',NULL,NULL,NULL,'2024-03-18 20:29:24',NULL,3,NULL),(4,'neijunchao',0,'1','gg',0,'TJDW','rgb',NULL,NULL,NULL,'2024-03-18 20:32:09',NULL,3,NULL),(5,'neijunchao',0,'1','gg',0,'TJDW','rgb',NULL,NULL,NULL,'2024-03-18 20:35:25',NULL,3,NULL),(6,'neijunchao',0,'1','gg',0,'TJDW','rgb',NULL,NULL,NULL,'2024-03-18 20:36:58',NULL,3,NULL);
 
 /*Table structure for table `tb_1_area` */
 
@@ -167,11 +167,11 @@ CREATE TABLE `tb_1_rule` (
   `areaIndex` int(11) DEFAULT NULL COMMENT '关联区域',
   `time` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 /*Data for the table `tb_1_rule` */
 
-insert  into `tb_1_rule`(`id`,`ruleName`,`ruleType`,`areaIndex`,`time`) values (1,'door',2,NULL,5000),(2,'parking',0,NULL,20000),(3,'parking1',1,NULL,60000);
+insert  into `tb_1_rule`(`id`,`ruleName`,`ruleType`,`areaIndex`,`time`) values (1,'door',2,NULL,5000),(2,'send',0,NULL,10000),(3,'save',1,NULL,20000);
 
 /*Table structure for table `tb_1_tag` */
 
@@ -314,7 +314,7 @@ CREATE TABLE `tb_sys_unit` (
 
 /*Data for the table `tb_sys_unit` */
 
-insert  into `tb_sys_unit`(`id`,`unitName`,`unitCode`,`parentUnit`,`unitType`,`channelAddr`) values (1,'上海正晗电子','ZHDZ_D_01',NULL,0,'192.168.3.188:10006'),(14,'x1','TJDW',0,1,'192.168.3.188:10007');
+insert  into `tb_sys_unit`(`id`,`unitName`,`unitCode`,`parentUnit`,`unitType`,`channelAddr`) values (1,'上海正晗电子','ZHDZ_D_01',NULL,0,'192.168.4.109:10006'),(14,'x1','TJDW',0,1,'192.168.3.188:10007');
 
 /*Table structure for table `tb_tmp_area` */
 
