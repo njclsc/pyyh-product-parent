@@ -45,26 +45,38 @@ public class BusinessForDoorTask implements Runnable{
 			if(pt != null && pt.equals("into")){
 				long timeFlag1 = parkingRule.getTime();
 				long timeFlag2 = sureRule.getTime();
-				if(System.currentTimeMillis() - currTime >= timeFlag2){
+				String action = tp.getActionInfo();
+				if(System.currentTimeMillis() - currTime >= timeFlag2 && action.equals("send")){
 					System.out.println("保存违停记录！");
+					
+					tp.setActionInfo("save");
 					return;
-				}else if(System.currentTimeMillis() - currTime >= timeFlag1){
+				}else if(System.currentTimeMillis() - currTime >= timeFlag1 && action.equals("none")){
 					System.out.println("发送违停通知！");
+					
+					tp.setActionInfo("send");
+					this.inQueue.offer(tp);
+					return;
 				}
+				this.inQueue.offer(tp);
 			}
 			String oldDevId = tp.getOldDeviceId();
 			String curDevId = tp.getCurrentDeviceId();
 			AreaPojo oap = areas.get("" + devices.get(oldDevId).getAreaIndex());
 			AreaPojo cap = areas.get("" + devices.get(curDevId).getAreaIndex());
-			System.out.println(oap.getType() + "   " + cap.getType());
-			System.out.println("door operate " + oldDevId + "  " + curDevId + "  " + tp.getCurrentDeviceTime());
-			if((oap.getType() == 1 && cap.getType() == 1) || cap.getType() == 1){
+//			System.out.println(oap.getType() + "   " + cap.getType());
+//			System.out.println("door operate " + oldDevId + "  " + curDevId + "  " + tp.getCurrentDeviceTime());
+			if(((oap.getType() == 1 && cap.getType() == 1) || cap.getType() == 1) && (!"into".equals(tp.getPositionType()))){
 				System.out.println("进");
 				//判断进入后  加入队列  违停通知判断
+				tp.setActionInfo("none");
 				tp.setPositionType("into");
 				this.inQueue.offer(tp);
-			}else if((oap.getType() == 0 && cap.getType() == 0) || cap.getType() == 0){
+			}else if(((oap.getType() == 0 && cap.getType() == 0) || cap.getType() == 0) && (!"out".equals(tp.getPositionType()))){
 				System.out.println("出");
+				
+				tp.setActionInfo("none");
+				tp.setPositionType("out");
 			}
 		}catch(Exception e){
 			e.printStackTrace();

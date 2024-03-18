@@ -15,4 +15,5 @@ public class TimlyPojo {
 	private String hbStationId;
 	private String mappingAddress;
 	private String positionType;
+	private String actionInfo = "none";
 }

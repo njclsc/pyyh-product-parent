@@ -52,9 +52,9 @@ DROP TABLE IF EXISTS `tb_14_rule`;
 CREATE TABLE `tb_14_rule` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
   `ruleName` varchar(50) DEFAULT NULL COMMENT '规则名称',
-  `ruleType` int(11) DEFAULT NULL COMMENT '0:违停提醒时间;1:确认违停时间',
+  `ruleType` int(11) DEFAULT NULL COMMENT '0:违停提醒时间;1:确认违停时间;2:进出延时判断时间',
   `areaIndex` int(11) DEFAULT NULL COMMENT '关联区域',
-  `time` int(3) DEFAULT NULL COMMENT '规则时限(单位：分钟)',
+  `time` int(11) DEFAULT NULL COMMENT '规则时限(单位：毫秒)',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -133,9 +133,11 @@ CREATE TABLE `tb_1_area` (
   `areaName` varchar(100) DEFAULT NULL COMMENT '区域名称',
   `type` int(2) DEFAULT NULL COMMENT '0:门禁1：停车场2：公寓',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 /*Data for the table `tb_1_area` */
+
+insert  into `tb_1_area`(`id`,`areaName`,`type`) values (1,'大门0',0),(2,'大门1',1),(3,'停车场0',2);
 
 /*Table structure for table `tb_1_device` */
 
@@ -148,9 +150,11 @@ CREATE TABLE `tb_1_device` (
   `type` int(11) DEFAULT NULL COMMENT '设备类型0:中心网关；1：低频地感',
   `refreshTime` varchar(30) DEFAULT NULL COMMENT '刷新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 /*Data for the table `tb_1_device` */
+
+insert  into `tb_1_device`(`id`,`deviceId`,`areaIndex`,`type`,`refreshTime`) values (1,'0058',NULL,0,NULL),(2,'0001',1,1,NULL),(3,'0002',2,1,NULL),(4,'0003',3,1,NULL);
 
 /*Table structure for table `tb_1_rule` */
 
@@ -161,10 +165,13 @@ CREATE TABLE `tb_1_rule` (
   `ruleName` varchar(50) DEFAULT NULL COMMENT '规则名称',
   `ruleType` int(11) DEFAULT NULL COMMENT '规则类型',
   `areaIndex` int(11) DEFAULT NULL COMMENT '关联区域',
+  `time` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 /*Data for the table `tb_1_rule` */
+
+insert  into `tb_1_rule`(`id`,`ruleName`,`ruleType`,`areaIndex`,`time`) values (1,'door',2,NULL,5000),(2,'parking',0,NULL,20000),(3,'parking1',1,NULL,60000);
 
 /*Table structure for table `tb_1_tag` */
 
@@ -193,9 +200,11 @@ CREATE TABLE `tb_1_timly` (
   `currentDeviceTime` varchar(50) DEFAULT NULL COMMENT '当前设备时间',
   `hbStationId` varchar(50) DEFAULT NULL COMMENT '2.4G基站',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 /*Data for the table `tb_1_timly` */
+
+insert  into `tb_1_timly`(`id`,`tagId`,`oldDeviceId`,`currentDeviceId`,`oldDeviceTime`,`currentDeviceTime`,`hbStationId`) values (1,'000001',NULL,NULL,NULL,NULL,NULL);
 
 /*Table structure for table `tb_1_vehicle` */
 
@@ -305,7 +314,7 @@ CREATE TABLE `tb_sys_unit` (
 
 /*Data for the table `tb_sys_unit` */
 
-insert  into `tb_sys_unit`(`id`,`unitName`,`unitCode`,`parentUnit`,`unitType`,`channelAddr`) values (1,'上海正晗电子','ZHDZ_D_01',NULL,0,'192.168.3.188:10006'),(13,'uu','TJDW',0,1,NULL),(14,'x1','TJDW',0,1,NULL);
+insert  into `tb_sys_unit`(`id`,`unitName`,`unitCode`,`parentUnit`,`unitType`,`channelAddr`) values (1,'上海正晗电子','ZHDZ_D_01',NULL,0,'192.168.3.188:10006'),(14,'x1','TJDW',0,1,'192.168.3.188:10007');
 
 /*Table structure for table `tb_tmp_area` */
 
@@ -314,7 +323,7 @@ DROP TABLE IF EXISTS `tb_tmp_area`;
 CREATE TABLE `tb_tmp_area` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
   `areaName` varchar(100) DEFAULT NULL COMMENT '区域名称',
-  `type` int(2) DEFAULT NULL COMMENT '0:门禁1：停车场2：公寓',
+  `type` int(2) DEFAULT NULL COMMENT '0:门禁外；1门禁内2：停车场3：公寓',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -354,7 +363,7 @@ DROP TABLE IF EXISTS `tb_tmp_rule`;
 CREATE TABLE `tb_tmp_rule` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
   `ruleName` varchar(50) DEFAULT NULL COMMENT '规则名称',
-  `ruleType` int(11) DEFAULT NULL COMMENT '0:违停提醒时间;1:确认违停时间',
+  `ruleType` int(11) DEFAULT NULL COMMENT '0:违停提醒时间;1:确认违停时间;2:进出延时判断时间',
   `areaIndex` int(11) DEFAULT NULL COMMENT '关联区域：0：所有区域',
   `time` int(3) DEFAULT NULL COMMENT '规则时限(单位：分钟)',
   PRIMARY KEY (`id`)
