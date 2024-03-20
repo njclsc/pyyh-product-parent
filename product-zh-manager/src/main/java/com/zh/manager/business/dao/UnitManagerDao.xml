@@ -5,4 +5,39 @@
 	<insert id="add" parameterType = "com.zh.manager.business.pojo.UnitPojo" useGeneratedKeys="true" keyProperty="id">
 		insert into tb_sys_unit(unitName, unitCode, parentUnit, unitType) values(#{unitName}, #{unitCode}, ${parentUnit}, ${unitType})
 	</insert>
+	<delete id="delete" parameterType = "com.zh.manager.business.pojo.UnitPojo">
+		delete from tb_sys_unit where id = ${id}
+	</delete>
+	<delete id="dropTable" parameterType = "com.zh.manager.business.pojo.UnitPojo">
+		drop tables if exists tb_${id}_area, tb_${id}_device,tb_${id}_rule,tb_${id}_tag,tb_${id}_timly,tb_${id}_vehicle
+	</delete>
+	<update id="update" parameterType = "com.zh.manager.business.pojo.UnitPojo">
+		update tb_sys_unit set unitName = #{unitName}, unitCode = #{unitCode}, unitType = ${unitType}, channelAddr = #{channelAddr}
+		where id = ${id}
+	</update>
+	<select id="find" parameterType = "com.zh.manager.business.pojo.UnitPojo" resultType = "com.zh.manager.business.pojo.UnitPojo">
+		select * from tb_sys_unit where 1 = 1
+		<if test="id != null and id != ''">
+			and id = ${id}
+		</if>
+		<if test="unitType != null and unitType != ''">
+			and unitType = ${unitType}
+		</if>
+		<if test="channelAddr != null and channelAddr != ''">
+			and channelAddr = #{channelAddr}
+		</if>
+		limit ${begin}, ${rows}
+	</select>
+	<select id="count" parameterType = "com.zh.manager.business.pojo.UnitPojo" resultType = "Integer">
+		select count(*) from tb_sys_unit where 1 = 1
+		<if test="id != null and id != ''">
+			and id = ${id}
+		</if>
+		<if test="unitType != null and unitType != ''">
+			and unitType = ${unitType}
+		</if>
+		<if test="channelAddr != null and channelAddr != ''">
+			and channelAddr = #{channelAddr}
+		</if>
+	</select>
 </mapper>

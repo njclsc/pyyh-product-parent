@@ -5,13 +5,11 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class UnitPojo {
+public class RolePojo {
 	private int id;
-	private String unitName;
-	private String unitCode;
-	private int parentUnit;
-	private int unitType;
-	private String channelAddr;
+	private String roleName;
+	private int unitIndex;
+	private String authority;
 	private String token;
 	private int pages;
 	private int begin;

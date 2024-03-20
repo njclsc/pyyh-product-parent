@@ -12,6 +12,7 @@ public class UserPojo {
 	private String accountName;
 	private String password;
 	private int unitIndex;
+	private int unitType = -1;
 	private int roleIndex;
 	private boolean login;
 	private List<String> readAuthority;

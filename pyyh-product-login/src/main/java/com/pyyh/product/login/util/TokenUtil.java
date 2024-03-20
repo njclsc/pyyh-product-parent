@@ -23,6 +23,7 @@ public class TokenUtil {
 		p_map.put("id", user.getId());
 		p_map.put("accountName", user.getAccountName());
 		p_map.put("unitIndex", user.getUnitIndex());
+		p_map.put("unitType", user.getUnitType());
 		p_map.put("isLogin", user.isLogin());
 		p_map.put("readAuthority", user.getReadAuthority());
 		p_map.put("writeAuthority", user.getWriteAuthority());

@@ -3,7 +3,9 @@
 
 <mapper namespace="com.pyyh.product.login.business.dao.ILoginDao">
 	<select id="findUser" parameterType = "com.pyyh.product.login.pojo.UserPojo" resultType = "com.pyyh.product.login.pojo.UserPojo">
-		select * from tb_sys_account where accountName = #{accountName} and unitIndex = ${unitIndex}
+		select * from tb_sys_account 
+		left join tb_sys_unit on tb_sys_unit.id = tb_sys_account.unitIndex
+		where accountName = #{accountName} and unitIndex = ${unitIndex}
 	</select>
 	
 	<select id="findRole" parameterType = "com.pyyh.product.login.pojo.UserPojo" resultType = "com.pyyh.product.login.pojo.RolePojo">

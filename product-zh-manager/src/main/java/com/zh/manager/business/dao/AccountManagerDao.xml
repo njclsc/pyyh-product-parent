@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zh.manager.business.dao.IAccountManagerDao">
+	<insert id="add" parameterType = "com.zh.manager.business.pojo.AccountPojo" useGeneratedKeys="true" keyProperty="id">
+		insert into tb_sys_account(accountName, password, unitIndex, roleIndex) values(
+			#{accountName}, #{password}, ${unitIndex}, ${roleIndex}
+		)
+	</insert>
+	<delete id="delete" parameterType = "com.zh.manager.business.pojo.AccountPojo">
+		delete from tb_sys_account where accountName = #{accountName} and unitIndex = ${unitIndex}
+	</delete>
+	<update id="update" parameterType = "com.zh.manager.business.pojo.AccountPojo">
+		update tb_sys_account set password = #{password}, roleIndex = ${roleIndex}
+		where accountName = #{accountName} and unitIndex = ${unitIndex}
+	</update>
+	<select id="find" parameterType = "com.zh.manager.business.pojo.AccountPojo" resultType = "com.zh.manager.business.pojo.AccountPojo">
+		select id, accountName, unitIndex, roleIndex from tb_sys_account where 1 = 1
+		<if test="id != null and id != ''">
+			and id = ${id}
+		</if>
+		<if test="unitIndex != null and unitIndex != ''">
+			and unitIndex = ${unitIndex}
+		</if>
+		<if test="accountName != null and accountName != ''">
+			and accountName = #{accountName}
+		</if>
+		<if test="roleIndex != null and roleIndex != ''">
+			and roleIndexe = ${roleIndex}
+		</if>
+		limit ${begin}, ${rows}
+	</select>
+	<select id="count" parameterType = "com.zh.manager.business.pojo.AccountPojo" resultType = "Integer">
+		select count(*) from tb_sys_account where 1 = 1
+		<if test="id != null and id != ''">
+			and id = ${id}
+		</if>
+		<if test="unitIndex != null and unitIndex != ''">
+			and unitIndex = ${unitIndex}
+		</if>
+		<if test="accountName != null and accountName != ''">
+			and accountName = #{accountName}
+		</if>
+		<if test="roleIndex != null and roleIndex != ''">
+			and roleIndexe = ${roleIndex}
+		</if>
+	</select>
+	
+	
+	
+	
+	
+</mapper>

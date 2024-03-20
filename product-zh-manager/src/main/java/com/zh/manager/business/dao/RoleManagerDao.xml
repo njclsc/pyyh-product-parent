@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zh.manager.business.dao.IRoleManagerDao">
+	<insert id="add" parameterType = "com.zh.manager.business.pojo.RolePojo" useGeneratedKeys="true" keyProperty="id">
+		insert into tb_sys_role(roleName, unitIndex, authority) values(#{roleName}, ${unitIndex}, #{authority})
+	</insert>
+	<delete id="delete" parameterType = "com.zh.manager.business.pojo.RolePojo">
+		delete from tb_sys_role where roleName = #{roleName} and unitIndex = ${unitIndex}
+	</delete>
+	<update id="update" parameterType = "com.zh.manager.business.pojo.RolePojo">
+		update tb_sys_role set authority = #{authority} where roleName = #{roleName} and unitIndex = ${unitIndex}
+	</update>
+	<select id="find" parameterType = "com.zh.manager.business.pojo.RolePojo" resultType = "com.zh.manager.business.pojo.RolePojo">
+		select * from tb_sys_role where 1 = 1
+		<if test="id != null and id != ''">
+			and id = ${id}
+		</if>
+		<if test="roleName != null and roleName != ''">
+			and roleName = #{roleName}
+		</if>
+		<if test="unitIndex != null and unitIndex != ''">
+			and unitIndex = ${unitIndex}
+		</if>
+		limit ${begin}, ${rows}
+	</select>
+	
+	<select id="count" parameterType = "com.zh.manager.business.pojo.RolePojo" resultType = "Integer">
+		select count(*) from tb_sys_role where 1 = 1
+		<if test="id != null and id != ''">
+			and id = ${id}
+		</if>
+		<if test="roleName != null and roleName != ''">
+			and roleName = #{roleName}
+		</if>
+		<if test="unitIndex != null and unitIndex != ''">
+			and unitIndex = ${unitIndex}
+		</if>
+	</select>
+	<select id="loadMenu" parameterType = "com.zh.manager.business.pojo.MenuPojo" resultType = "com.zh.manager.business.pojo.MenuPojo">
+		select * from tb_sys_menu where 1 = 1
+		<if test="parentIndex != null and parentIndex != ''">
+			and parentIndex = ${parentIndex}
+		</if>
+		<if test="excludeIndex != null and excludeIndex != ''">
+			and id != ${excludeIndex}
+		</if>
+		order by menuPosition asc
+	
+	</select>
+</mapper>

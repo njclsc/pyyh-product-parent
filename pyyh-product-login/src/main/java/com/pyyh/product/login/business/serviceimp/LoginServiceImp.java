@@ -38,6 +38,9 @@ public class LoginServiceImp implements ILoginService{
 			user.setLogin(true);
 			rp.setMessage("登录成功");
 			rp.setResult("success");
+			//设置token元素
+			UserPojo _user = loginDao.findUser(user);
+			user.setUnitType(_user.getUnitType());
 			//加载权限资源
 			JSONObject infos = loadMenu(user);
 			rp.setToken(TokenUtil.createToken(user));
