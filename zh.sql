@@ -118,11 +118,11 @@ CREATE TABLE `tb_14_vehicle` (
   `status` int(2) DEFAULT NULL COMMENT '0:以安装1:已通过;2:已驳回;3:待审核',
   `reason` varchar(150) DEFAULT NULL COMMENT '审核信息备注',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 /*Data for the table `tb_14_vehicle` */
 
-insert  into `tb_14_vehicle`(`id`,`ownerName`,`ownerType`,`movePhone`,`ownerNumber`,`vehicleType`,`vehicleBrand`,`vehicleColor`,`rfidId1`,`rfidId2`,`validity`,`registDate`,`photos`,`status`,`reason`) values (1,'gg',0,'1','gg',0,'TJDW','rgb',NULL,NULL,NULL,'2024-03-17 18:11:44',NULL,3,NULL),(2,'gg',0,'1','gg',0,'TJDW','rgb',NULL,NULL,NULL,'2024-03-18 10:20:51',NULL,3,NULL),(3,'gg',0,'1','gg',0,'TJDW','rgb',NULL,NULL,NULL,'2024-03-18 20:29:24',NULL,3,NULL),(4,'neijunchao',0,'1','gg',0,'TJDW','rgb',NULL,NULL,NULL,'2024-03-18 20:32:09',NULL,3,NULL),(5,'neijunchao',0,'1','gg',0,'TJDW','rgb',NULL,NULL,NULL,'2024-03-18 20:35:25',NULL,3,NULL),(6,'neijunchao',0,'1','gg',0,'TJDW','rgb',NULL,NULL,NULL,'2024-03-18 20:36:58',NULL,3,NULL);
+insert  into `tb_14_vehicle`(`id`,`ownerName`,`ownerType`,`movePhone`,`ownerNumber`,`vehicleType`,`vehicleBrand`,`vehicleColor`,`rfidId1`,`rfidId2`,`validity`,`registDate`,`photos`,`status`,`reason`) values (1,'gg',0,'1','gg',0,'TJDW','rgb',NULL,NULL,NULL,'2024-03-17 18:11:44',NULL,3,NULL),(2,'gg',0,'1','gg',0,'TJDW','rgb',NULL,NULL,NULL,'2024-03-18 10:20:51',NULL,3,NULL);
 
 /*Table structure for table `tb_1_area` */
 
@@ -167,11 +167,11 @@ CREATE TABLE `tb_1_rule` (
   `areaIndex` int(11) DEFAULT NULL COMMENT '关联区域',
   `time` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 /*Data for the table `tb_1_rule` */
 
-insert  into `tb_1_rule`(`id`,`ruleName`,`ruleType`,`areaIndex`,`time`) values (1,'door',2,NULL,5000),(2,'send',0,NULL,10000),(3,'save',1,NULL,20000);
+insert  into `tb_1_rule`(`id`,`ruleName`,`ruleType`,`areaIndex`,`time`) values (1,'door',2,NULL,5000),(2,'parking',0,NULL,20000),(3,'parking1',1,NULL,60000);
 
 /*Table structure for table `tb_1_tag` */
 
@@ -243,12 +243,13 @@ CREATE TABLE `tb_sys_account` (
   `password` varchar(50) DEFAULT NULL COMMENT '密码',
   `unitIndex` int(11) DEFAULT NULL COMMENT '单位索引',
   `roleIndex` int(11) DEFAULT NULL COMMENT '角色索引',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `ACCOUNT_KEY` (`accountName`,`unitIndex`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 
 /*Data for the table `tb_sys_account` */
 
-insert  into `tb_sys_account`(`id`,`accountName`,`password`,`unitIndex`,`roleIndex`) values (1,'zh','33',1,1);
+insert  into `tb_sys_account`(`id`,`accountName`,`password`,`unitIndex`,`roleIndex`) values (1,'zh','33',1,1),(2,'zh1','xx',14,6);
 
 /*Table structure for table `tb_sys_menu` */
 
@@ -266,7 +267,7 @@ CREATE TABLE `tb_sys_menu` (
 
 /*Data for the table `tb_sys_menu` */
 
-insert  into `tb_sys_menu`(`id`,`menuName`,`menuPosition`,`parentIndex`,`sourceUrl`,`icon`) values (1,'主页',0,-1,'/1',NULL),(2,'数据列表',0,1,'/1/1',NULL),(3,'数据看板',1,1,'/1/2',NULL),(4,'车辆业务',1,-1,'/2',NULL),(5,'设备管理',2,-1,'/3',NULL),(6,'标签管理',0,5,'/3/1',NULL),(7,'基站管理',1,5,'/3/2',NULL),(8,'系统日志',3,-1,'/4',NULL),(9,'报警数据',0,8,'/4/1',NULL),(10,'违停数据',1,8,'/4/2',NULL),(11,'系统配置',4,-1,'/5',NULL),(12,'用户管理',0,11,'/5/1',NULL),(13,'单位管理',1,11,'/5/2',NULL),(14,'组织管理',2,11,'/5/3',NULL),(15,'角色管理',3,11,'/5/4',NULL),(16,'区域管理',4,11,'/5/5',NULL),(17,'车辆注册',0,4,'/2/1',NULL);
+insert  into `tb_sys_menu`(`id`,`menuName`,`menuPosition`,`parentIndex`,`sourceUrl`,`icon`) values (1,'主页',0,-1,'/1',NULL),(2,'数据列表',0,1,'/1/1',NULL),(3,'数据看板',1,1,'/1/2',NULL),(4,'车辆业务',1,-1,'/2',NULL),(5,'设备管理',2,-1,'/3',NULL),(6,'标签管理',0,5,'/3/1',NULL),(7,'基站管理',1,5,'/3/2',NULL),(8,'系统日志',3,-1,'/4',NULL),(9,'报警数据',0,8,'/4/1',NULL),(10,'违停数据',1,8,'/4/2',NULL),(11,'系统配置',4,-1,'/5',NULL),(12,'用户管理',0,11,'/5/1',NULL),(13,'单位管理',1,11,'/5/2',NULL),(14,'组织管理',2,11,'/5/3',NULL),(15,'角色管理',3,11,'/car/dataRole.html',NULL),(16,'区域管理',4,11,'/5/5',NULL),(17,'车辆注册',0,4,'/2/1',NULL);
 
 /*Table structure for table `tb_sys_orginization` */
 
@@ -291,12 +292,13 @@ CREATE TABLE `tb_sys_role` (
   `roleName` varchar(50) DEFAULT NULL COMMENT '角色名称',
   `unitIndex` int(11) DEFAULT NULL COMMENT '单位索引',
   `authority` varchar(500) DEFAULT NULL COMMENT '拥有权限',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `ROLE_KEY` (`roleName`,`unitIndex`)
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 
 /*Data for the table `tb_sys_role` */
 
-insert  into `tb_sys_role`(`id`,`roleName`,`unitIndex`,`authority`) values (1,'管理员',1,'r_-1#w_2,3,6,7,9,10,12,13,14,15,16,17'),(2,'普通用户',1,'r_2,3#w_7');
+insert  into `tb_sys_role`(`id`,`roleName`,`unitIndex`,`authority`) values (1,'管理员',1,'r_-1#w_2,3,6,7,9,10,12,13,14,15,16,17'),(2,'普通用户',1,'r_2,3#w_7'),(3,'role1',1,'xxxggg'),(6,'测试',14,'r_2,3#w_7'),(7,'667',0,'888'),(8,'88',0,'7'),(9,'44',0,'22'),(10,'9955',0,'33'),(11,'哈哈哈',0,'23'),(12,'6',0,'6'),(13,'66',0,'661'),(14,'',0,'999');
 
 /*Table structure for table `tb_sys_unit` */
 
@@ -310,11 +312,11 @@ CREATE TABLE `tb_sys_unit` (
   `unitType` int(2) DEFAULT NULL COMMENT '0：开发商 1:学校；2：小区',
   `channelAddr` varchar(50) DEFAULT NULL COMMENT '接收硬件数据地址，一单位对应一个',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
 
 /*Data for the table `tb_sys_unit` */
 
-insert  into `tb_sys_unit`(`id`,`unitName`,`unitCode`,`parentUnit`,`unitType`,`channelAddr`) values (1,'上海正晗电子','ZHDZ_D_01',NULL,0,'192.168.4.109:10006'),(14,'x1','TJDW',0,1,'192.168.3.188:10007');
+insert  into `tb_sys_unit`(`id`,`unitName`,`unitCode`,`parentUnit`,`unitType`,`channelAddr`) values (1,'上海正晗电子','ZHDZ_D_01',NULL,0,'192.168.3.188:10006'),(14,'zh1','TJDW1',0,1,'192.168.3.188:11007');
 
 /*Table structure for table `tb_tmp_area` */
 
