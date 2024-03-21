@@ -26,7 +26,7 @@ public class OperateUtil {
 		int cpuNum = Runtime.getRuntime().availableProcessors();
 		return new ThreadPoolExecutor(
 				cpuNum * 2,
-				cpuNum * 2 + 2,
+				cpuNum * 2 + 5,
 				60,
 				TimeUnit.SECONDS,
 				new ArrayBlockingQueue<Runnable>(50000),

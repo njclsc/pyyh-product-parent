@@ -4,14 +4,13 @@ import java.net.InetSocketAddress;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSONObject;
+import com.zh.collection.business.task.BusinessForCacheRefreshTask;
 import com.zh.collection.business.task.BusinessForStartAllTask;
 import com.zh.collection.lizer.UDPChannelinitializer;
 import com.zh.collection.pojo.AreaPojo;
@@ -59,7 +58,8 @@ public class InitApplication {
 		ContainerUtil.setThreadPool(OperateUtil.createThreadPool());
 		//业务处理
 		ContainerUtil.getThreadPool().execute(new BusinessForStartAllTask());
-		
+		//管理事件与缓存更新
+		ContainerUtil.getThreadPool().execute(new BusinessForCacheRefreshTask());
 		return "";
 	}
 	private void cacheLoad() throws Exception{

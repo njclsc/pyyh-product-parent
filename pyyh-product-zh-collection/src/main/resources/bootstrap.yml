@@ -3,4 +3,4 @@ spring:
     nacos:
       discovery:
         namespace: 447a6abe-ec2b-48c3-827f-546a6b0cb509
-        server-addr: 192.168.4.109:8848
+        server-addr: 192.168.3.188:8848
