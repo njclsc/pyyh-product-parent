@@ -74,7 +74,6 @@ public class BusinessForDoorTask implements Runnable{
 				this.inQueue.offer(tp);
 			}else if(((oap.getType() == 0 && cap.getType() == 0) || cap.getType() == 0) && (!"out".equals(tp.getPositionType()))){
 				System.out.println("出");
-				
 				tp.setActionInfo("none");
 				tp.setPositionType("out");
 			}

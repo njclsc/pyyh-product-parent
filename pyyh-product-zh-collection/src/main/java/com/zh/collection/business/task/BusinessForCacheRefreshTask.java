@@ -36,13 +36,13 @@ public class BusinessForCacheRefreshTask implements Runnable{
 			try{
 				cacheRefresh();
 				
-				System.out.println(JSONObject.toJSONString(caches));
-				Thread.sleep(5000);
+//				System.out.println(JSONObject.toJSONString(caches));
+				Thread.sleep(300000);
 			}catch(Exception e){
 				e.printStackTrace();
 			}finally{
 				try {
-					Thread.sleep(5000);
+					Thread.sleep(300000);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

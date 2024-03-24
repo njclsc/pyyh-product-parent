@@ -91,7 +91,7 @@ public class RoleManagerServiceImp implements IManagerService, IMenuService{
 	}
 	public Object loadMenu(String token){
 		Map<String, Claim> tkInf = ToolUtil.tokenParse(token);
-		//权限菜单按unitType分割(> 1 剔除单位管理    == 1  添加单位管理)
+		//权限菜单按unitType分割(> 0 剔除单位管理    == 0  添加单位管理)
 		int unitType = tkInf.get("unitType").asInt();
 		MenuPojo m1v1 = new MenuPojo();
 		m1v1.setParentIndex(-1);

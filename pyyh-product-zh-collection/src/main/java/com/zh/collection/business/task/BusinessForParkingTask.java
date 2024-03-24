@@ -25,7 +25,8 @@ public class BusinessForParkingTask implements Runnable{
 		System.out.println(oap.getType() + "   " + cap.getType());
 		System.out.println("parking operate" + oldDevId + "  " + curDevId + "  " + tp.getCurrentDeviceTime());
 		if(oap.getType() == 2 && cap.getType() == 2 && oldDevId.equals(curDevId)){
-			System.out.println(cap.getAreaName());
+			tp.setActionInfo("none");
+			tp.setPositionType("parking");
 		}
 	}
 

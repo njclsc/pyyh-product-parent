@@ -22,7 +22,12 @@ public class BusinessForApartmentTask implements Runnable{
 		String curDevId = tp.getCurrentDeviceId();
 		String hbDevId = tp.getHbStationId();
 		AreaPojo cap = areas.get("" + devices.get(hbDevId).getAreaIndex());
-		System.out.println("apartment operate");
-		System.out.println(cap.getAreaName());
+//		System.out.println("apartment operate");
+//		System.out.println(cap.getAreaName());
+		if(tp.getPositionType() != null && (tp.getPositionType().equals("into") || tp.getPositionType().equals("parking"))){
+//			System.out.println(cap.getAreaName());
+			tp.setPositionType("apartment");
+			tp.setActionInfo("alarm");
+		}
 	}
 }
