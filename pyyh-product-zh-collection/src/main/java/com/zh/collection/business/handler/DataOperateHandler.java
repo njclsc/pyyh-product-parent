@@ -72,9 +72,9 @@ public class DataOperateHandler extends ChannelInboundHandlerAdapter{
 					tp.setOldDeviceId(tp.getCurrentDeviceId());
 					tp.setOldDeviceTime(tp.getCurrentDeviceTime());
 					tp.setCurrentDeviceId(antId);
-					if(!antId.equals(tp.getOldDeviceId())){
+//					if(!antId.equals(tp.getOldDeviceId())){
 					tp.setCurrentDeviceTime(sdf.format(new Date()));
-					}
+//					}
 					tp.setHbStationId(deviceId);
 					tp.setMappingAddress(localAddress);
 					//设置区域类型方便后续业务处理

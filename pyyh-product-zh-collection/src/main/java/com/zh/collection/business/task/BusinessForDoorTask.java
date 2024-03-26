@@ -19,6 +19,7 @@ public class BusinessForDoorTask implements Runnable{
 	private RulePojo parkingRule;
 	private RulePojo sureRule;
 	private LinkedBlockingQueue<Object> inQueue;
+	private LinkedBlockingQueue<Object> saveQueue;
 	public BusinessForDoorTask(TimlyPojo tp, HashMap<String, DevicePojo> devices, HashMap<String, AreaPojo> areas, RulePojo doorRule, RulePojo parkingRule, RulePojo sureRule){
 		this.tp = tp;
 		this.devices = devices;
@@ -26,6 +27,7 @@ public class BusinessForDoorTask implements Runnable{
 		this.sdf = ContainerUtil.getSdf();
 		this.doorRule = doorRule;
 		this.inQueue = ContainerUtil.getInQueue();
+		this.saveQueue = ContainerUtil.getSaveQueue();
 		this.parkingRule = parkingRule;
 		this.sureRule = sureRule;
 	}
@@ -37,6 +39,7 @@ public class BusinessForDoorTask implements Runnable{
 			long currTime = sdf.parse(tp.getCurrentDeviceTime()).getTime();
 			//进出延迟判断
 			if(System.currentTimeMillis() - currTime < timeFlag){
+				tp.setActionInfo("none");
 				this.inQueue.offer(tp);
 				return;
 			}
@@ -48,12 +51,11 @@ public class BusinessForDoorTask implements Runnable{
 				String action = tp.getActionInfo();
 				if(System.currentTimeMillis() - currTime >= timeFlag2 && action.equals("send")){
 					System.out.println("保存违停记录！");
-					
 					tp.setActionInfo("save");
+					this.saveQueue.offer(tp);
 					return;
 				}else if(System.currentTimeMillis() - currTime >= timeFlag1 && action.equals("none")){
 					System.out.println("发送违停通知！");
-					
 					tp.setActionInfo("send");
 					this.inQueue.offer(tp);
 					return;

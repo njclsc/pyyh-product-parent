@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSONObject;
 import com.zh.collection.business.task.BusinessForCacheRefreshTask;
+import com.zh.collection.business.task.BusinessForSaveTask;
 import com.zh.collection.business.task.BusinessForStartAllTask;
 import com.zh.collection.lizer.UDPChannelinitializer;
 import com.zh.collection.pojo.AreaPojo;
@@ -58,6 +59,8 @@ public class InitApplication {
 		ContainerUtil.setThreadPool(OperateUtil.createThreadPool());
 		//业务处理
 		ContainerUtil.getThreadPool().execute(new BusinessForStartAllTask());
+		//数据持久化
+		ContainerUtil.getThreadPool().execute(new BusinessForSaveTask());
 		//管理事件与缓存更新
 		ContainerUtil.getThreadPool().execute(new BusinessForCacheRefreshTask());
 		return "";
