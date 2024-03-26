@@ -29,6 +29,7 @@ public class ToolUtil {
 		sql.append("areaIndex INT(11) DEFAULT NULL COMMENT '关联区域id',");
 		sql.append("type INT(11) DEFAULT NULL COMMENT '设备类型0:中心网关；1：低频地感',");
 		sql.append("refreshTime VARCHAR(30) DEFAULT NULL COMMENT '刷新时间',");
+		sql.append("status INT(2) DEFAULT NULL COMMENT '设备状态0：正常1：异常',");
 		sql.append("PRIMARY KEY (id),");
 		sql.append("UNIQUE KEY DEVID_INDEX (deviceId)");
 		sql.append(") ENGINE=INNODB DEFAULT CHARSET=utf8");
