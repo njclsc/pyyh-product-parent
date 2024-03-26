@@ -3,6 +3,7 @@ package com.zh.manager.business.quartz;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.Map.Entry;
@@ -14,7 +15,9 @@ import org.quartz.JobExecutionException;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 
 import com.alibaba.fastjson.JSONObject;
+import com.zh.manager.business.pojo.WebSocketPushDevPojo;
 import com.zh.manager.business.pojo.WebSocketPushPojo;
+import com.zh.manager.business.pojo.WebSocketPushSevenDayPojo;
 import com.zh.manager.config.DataSourceConfiguer;
 import com.zh.manager.util.ContainerUtil;
 
@@ -63,41 +66,71 @@ public class WebSocketSendTask extends QuartzJobBean{
 					wspp.setAreaNumber(intoNum);
 					//近7日登记车辆
 					long cur = System.currentTimeMillis();
-					long begin = cur - 604800000L;
-					String[] _begin = ContainerUtil.getSdf().format(begin).split(" ");
-					String[] _cur = ContainerUtil.getSdf().format(cur).split(" ");
-					String begin1 = _begin[0] + " 00:00:00";
-					String end = _cur[0] + " 23:59:59";
-					String sql3 = "select count(*) as nearDay from tb_" + keys[0] + "_vehicle where status = 0 and registDate between '" + 
-							begin1 + "' and '" + end + "'";
-					Statement stat3 = con.createStatement();
-					ResultSet rs3 = stat3.executeQuery(sql3);
-					rs3.next();
-					int nearDayNum = rs3.getInt("nearDay");
-					rs3.close();
-					stat3.close();
-					wspp.setNearNum(nearDayNum);
+					WebSocketPushSevenDayPojo wspsdp = new WebSocketPushSevenDayPojo();
+					wspsdp.setDate(new ArrayList<String>());
+					wspsdp.setRegistNumber(new ArrayList<Integer>());
+					for(int i = 6; i >= 0; i--){
+						long bt = cur - (i * 86400000L);
+						String sbt = ContainerUtil.getSdf().format(bt).split(" ")[0];
+						String sql3 = "select count(*) as nearDay from tb_" + keys[0] + "_vehicle where status = 0 and registDate like '" +
+								sbt + "%'";
+						Statement stat3 = con.createStatement();
+						ResultSet rs3 = stat3.executeQuery(sql3);
+						rs3.next();
+						int nearDayNum = rs3.getInt("nearDay");
+						rs3.close();
+						stat3.close();
+						wspsdp.getDate().add(sbt.substring(5));
+						wspsdp.getRegistNumber().add(nearDayNum);
+					}
+//					long begin = cur - 604800000L;
+//					String[] _begin = ContainerUtil.getSdf().format(begin).split(" ");
+//					String[] _cur = ContainerUtil.getSdf().format(cur).split(" ");
+//					String begin1 = _begin[0] + " 00:00:00";
+//					String end = _cur[0] + " 23:59:59";
+//					String sql3 = "select count(*) as nearDay from tb_" + keys[0] + "_vehicle where status = 0 and registDate between '" + 
+//							begin1 + "' and '" + end + "'";
+//					Statement stat3 = con.createStatement();
+//					ResultSet rs3 = stat3.executeQuery(sql3);
+//					rs3.next();
+//					int nearDayNum = rs3.getInt("nearDay");
+//					rs3.close();
+//					stat3.close();
+					wspp.setNearNum(wspsdp);
+					
 					//设备状态
-					String sql4 = "select count(*) as devNum from tb_" + keys[0] + "_device";
+					wspp.setDevNum(new ArrayList<WebSocketPushDevPojo>());
+					WebSocketPushDevPojo nomoreDev = new WebSocketPushDevPojo();
+					String sql4 = "select count(*) as devNum from tb_" + keys[0] + "_device where status = 0";
 					Statement stat4 = con.createStatement();
 					ResultSet rs4 = stat4.executeQuery(sql4);
 					rs4.next();
 					int devNum = rs4.getInt("devNum");
-					wspp.setDevNum(devNum);
+					nomoreDev.setValue(devNum);
+					nomoreDev.setName("在线");
+//					wspp.setDevNum(devNum);
+					rs4.close();
+					stat4.close();
+					wspp.getDevNum().add(nomoreDev);
 					//问题设备
+					WebSocketPushDevPojo excDev = new WebSocketPushDevPojo();
 					String sql5 = "select count(*) as excNum from tb_" + keys[0] + "_device where status > 0";
 					Statement stat5 = con.createStatement();
 					ResultSet rs5 = stat5.executeQuery(sql5);
 					rs5.next();
 					int excNum = rs5.getInt("excNum");
-					int norNum = devNum - excNum;
-					wspp.setExcDevNum(excNum);
-					wspp.setNomoreNum(norNum);
+//					wspp.setExcDevNum(excNum);
+//					wspp.setNomoreNum(norNum);
+					excDev.setValue(excNum);
+					excDev.setName("离线");
+					rs5.close();
+					stat5.close();
+					wspp.getDevNum().add(excDev);
 					//报警
 					
-					System.out.println(total + "  " + todayNum + "  " + intoNum + "  " + nearDayNum + "  " + devNum + "  " + 
-					excNum + "  " + norNum);
-					sess.getBasicRemote().sendObject(JSONObject.toJSONString(wspp));
+//					System.out.println(total + "  " + todayNum + "  " + intoNum + "  " + nearDayNum + "  " + devNum + "  " + 
+//					excNum + "  " + norNum);
+					sess.getBasicRemote().sendText(JSONObject.toJSONString(wspp));
 				}catch(Exception e){
 					e.printStackTrace();
 				}

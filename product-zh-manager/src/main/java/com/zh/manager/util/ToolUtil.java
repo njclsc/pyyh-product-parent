@@ -80,9 +80,20 @@ public class ToolUtil {
 		sql.append("photos varchar(500) DEFAULT NULL COMMENT '照片',");
 		sql.append("status INT(2) DEFAULT NULL COMMENT '0:以安装1:已通过;2:已驳回;3:待审核',");
 		sql.append("reason VARCHAR(150) DEFAULT NULL COMMENT '审核信息备注',");
-		
 		sql.append("PRIMARY KEY (id)");
 		sql.append(") ENGINE=INNODB DEFAULT CHARSET=utf8");
+		
+		sql.append("###CREATE TABLE tb_tmp_alarm (");
+		sql.append("id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,");
+		sql.append("tagId VARCHAR(20) DEFAULT NULL,");
+		sql.append("alarmType INT(2) DEFAULT NULL COMMENT '报警类型0:过期1:违停2:电瓶入楼',");
+		sql.append("position varchar(20) DEFAULT NULL COMMENT '位置对应设备ID',");
+		sql.append("ownerName varchar(30) DEFAULT NULL,");
+		sql.append("areaName VARCHAR(50) DEFAULT NULL,");
+		sql.append("ownerType varchar(20) DEFAULT NULL COMMENT '车主类型',");
+		sql.append("dateTime VARCHAR(30) DEFAULT NULL COMMENT '报警时间',");
+		sql.append("PRIMARY KEY (id)");
+		sql.append(") ENGINE=InnoDB DEFAULT CHARSET=utf8");
 		String[] sqls = sql.toString().split("###");
 		Connection con = DataSourceConfiguer.getDataSource().getConnection();
 		for(String sql1 : sqls){

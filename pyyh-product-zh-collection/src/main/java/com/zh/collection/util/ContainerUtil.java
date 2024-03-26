@@ -22,6 +22,7 @@ public class ContainerUtil {
 	private static String rootPath;
 	private static ThreadPoolExecutor threadPool;
 	private static LinkedBlockingQueue<Object> inQueue = new LinkedBlockingQueue<>();
+	private static LinkedBlockingQueue<Object> saveQueue = new LinkedBlockingQueue<>();
 	private static HashMap<String, CachePojo<String, UnitPojo, String, AreaPojo, String, DevicePojo, String, TagPojo, String, RulePojo, String, TimlyPojo>> caches = new HashMap<>();
 	public static DataSource getDataSource() {
 		return dataSource;
@@ -53,6 +54,14 @@ public class ContainerUtil {
 
 	public static void setSdf(SimpleDateFormat sdf) {
 		ContainerUtil.sdf = sdf;
+	}
+
+	public static LinkedBlockingQueue<Object> getSaveQueue() {
+		return saveQueue;
+	}
+
+	public static void setSaveQueue(LinkedBlockingQueue<Object> saveQueue) {
+		ContainerUtil.saveQueue = saveQueue;
 	}
 
 	public static ThreadPoolExecutor getThreadPool() {

@@ -1,5 +1,7 @@
 package com.zh.manager.business.pojo;
 
+import java.util.List;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,8 +12,8 @@ public class WebSocketPushPojo {
 	private int registNumber;
 	private int todayRegistNumber;
 	private int areaNumber;
-	private int nearNum;
-	private int devNum;
+	private WebSocketPushSevenDayPojo nearNum;
+	private List<WebSocketPushDevPojo> devNum;
 	private int excDevNum;
 	private int nomoreNum;
 }
