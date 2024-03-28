@@ -15,6 +15,7 @@ import com.zh.collection.pojo.RulePojo;
 import com.zh.collection.pojo.TagPojo;
 import com.zh.collection.pojo.TimlyPojo;
 import com.zh.collection.pojo.UnitPojo;
+import com.zh.collection.pojo.VehiclePojo;
 import com.zh.collection.util.ContainerUtil;
 
 import io.netty.channel.ChannelHandlerContext;
@@ -34,7 +35,7 @@ public class DataOperateHandler extends ChannelInboundHandlerAdapter{
 		// TODO Auto-generated method stub
 		//获取缓存
 		String localAddress = ctx.channel().localAddress().toString().substring(1);
-		CachePojo<String, UnitPojo, String, AreaPojo, String, DevicePojo, String, TagPojo, String, RulePojo, String, TimlyPojo> cache = ContainerUtil.getCaches().get(localAddress);
+		CachePojo<String, UnitPojo, AreaPojo, DevicePojo, TagPojo, RulePojo, TimlyPojo, VehiclePojo> cache = ContainerUtil.getCaches().get(localAddress);
 		if(cache == null){
 			return;
 		}

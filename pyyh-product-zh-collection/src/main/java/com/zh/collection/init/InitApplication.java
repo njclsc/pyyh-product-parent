@@ -22,6 +22,7 @@ import com.zh.collection.pojo.TagPojo;
 import com.zh.collection.pojo.TimlyPojo;
 import com.zh.collection.pojo.UDPConfigPojo;
 import com.zh.collection.pojo.UnitPojo;
+import com.zh.collection.pojo.VehiclePojo;
 import com.zh.collection.util.ContainerUtil;
 import com.zh.collection.util.OperateUtil;
 
@@ -75,7 +76,7 @@ public class InitApplication {
 		
 		while(rs.next()){
 			try{
-			CachePojo<String, UnitPojo, String, AreaPojo, String, DevicePojo, String, TagPojo, String, RulePojo, String, TimlyPojo> cp = new CachePojo<>();
+			CachePojo<String, UnitPojo, AreaPojo, DevicePojo, TagPojo, RulePojo, TimlyPojo, VehiclePojo> cp = new CachePojo<>();
 			//单位
 			HashMap<String, UnitPojo> ups = new HashMap<>();
 			UnitPojo up = new UnitPojo();
@@ -127,8 +128,11 @@ public class InitApplication {
 				TagPojo tp = new TagPojo();
 				tp.setId(rsTag.getInt("id"));
 				tp.setTagId(rsTag.getString("tagId"));
+				tp.setVehicleIndex(rsTag.getInt("vehicleIndex"));
 				tp.setStatus(rsTag.getInt("status"));
 				tp.setType(rsTag.getInt("type"));
+				tp.setInstallDate(rsTag.getString("installDate"));
+				tp.setExpire(rsTag.getBoolean("expire"));
 				unitTagCache.put(tp.getTagId(), tp);
 			}
 			rsTag.close();
@@ -171,7 +175,32 @@ public class InitApplication {
 			timlyStat.close();
 			cp.setTimlyCache(unitTimlyCache);
 			//车辆
-			
+			HashMap<String, VehiclePojo> vehicleCache = new HashMap<>();
+			Statement vehicleStat = con.createStatement();
+			String sqlVehicle = "select * from tb_" + up.getId() + "_vehicle";
+			ResultSet rsVehicle = vehicleStat.executeQuery(sqlVehicle);
+			while(rsVehicle.next()){
+				VehiclePojo vp = new VehiclePojo();
+				vp.setId(rsVehicle.getInt("id"));
+				vp.setOwnerName(rsVehicle.getString("ownerName"));
+				vp.setOwnerType(rsVehicle.getInt("ownerType"));
+				vp.setMovePhone(rsVehicle.getString("movePhone"));
+				vp.setOwnerNumber(rsVehicle.getString("ownerNumber"));
+				vp.setVehicleType(rsVehicle.getInt("vehicleType"));
+				vp.setVehicleBrand(rsVehicle.getString("vehicleBrand"));
+				vp.setVehicleColor(rsVehicle.getString("vehicleColor"));
+				vp.setRfidId1(rsVehicle.getString("rfidId1"));
+				vp.setRfidId2(rsVehicle.getString("rfidId2"));
+				vp.setValidity(rsVehicle.getInt("validity"));
+				vp.setRegistDate(rsVehicle.getString("registDate"));
+				vp.setPhotos(rsVehicle.getString("photos"));
+				vp.setStatus(rsVehicle.getInt("status"));
+				vp.setReason(rsVehicle.getString("reason"));
+				vehicleCache.put("" + vp.getId(), vp);
+			}
+			cp.setVehicleCache(vehicleCache);
+			rsVehicle.close();
+			vehicleStat.close();
 			
 			ContainerUtil.getCaches().put(up.getChannelAddr(), cp);
 			}catch(Exception e){

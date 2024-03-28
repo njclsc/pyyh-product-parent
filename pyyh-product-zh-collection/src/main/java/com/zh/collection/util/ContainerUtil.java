@@ -15,6 +15,7 @@ import com.zh.collection.pojo.RulePojo;
 import com.zh.collection.pojo.TagPojo;
 import com.zh.collection.pojo.TimlyPojo;
 import com.zh.collection.pojo.UnitPojo;
+import com.zh.collection.pojo.VehiclePojo;
 
 public class ContainerUtil {
 	private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -23,7 +24,7 @@ public class ContainerUtil {
 	private static ThreadPoolExecutor threadPool;
 	private static LinkedBlockingQueue<Object> inQueue = new LinkedBlockingQueue<>();
 	private static LinkedBlockingQueue<Object> saveQueue = new LinkedBlockingQueue<>();
-	private static HashMap<String, CachePojo<String, UnitPojo, String, AreaPojo, String, DevicePojo, String, TagPojo, String, RulePojo, String, TimlyPojo>> caches = new HashMap<>();
+	private static HashMap<String, CachePojo<String, UnitPojo, AreaPojo, DevicePojo, TagPojo, RulePojo, TimlyPojo, VehiclePojo>> caches = new HashMap<>();
 	public static DataSource getDataSource() {
 		return dataSource;
 	}
@@ -40,13 +41,7 @@ public class ContainerUtil {
 		ContainerUtil.rootPath = rootPath;
 	}
 
-	public static HashMap<String, CachePojo<String, UnitPojo, String, AreaPojo, String, DevicePojo, String, TagPojo, String, RulePojo, String, TimlyPojo>> getCaches() {
-		return caches;
-	}
-
-	public static void setCaches(HashMap<String, CachePojo<String, UnitPojo, String, AreaPojo, String, DevicePojo, String, TagPojo, String, RulePojo, String, TimlyPojo>> caches) {
-		ContainerUtil.caches = caches;
-	}
+	
 
 	public static SimpleDateFormat getSdf() {
 		return sdf;
@@ -54,6 +49,15 @@ public class ContainerUtil {
 
 	public static void setSdf(SimpleDateFormat sdf) {
 		ContainerUtil.sdf = sdf;
+	}
+
+	public static HashMap<String, CachePojo<String, UnitPojo, AreaPojo, DevicePojo, TagPojo, RulePojo, TimlyPojo, VehiclePojo>> getCaches() {
+		return caches;
+	}
+
+	public static void setCaches(
+			HashMap<String, CachePojo<String, UnitPojo, AreaPojo, DevicePojo, TagPojo, RulePojo, TimlyPojo, VehiclePojo>> caches) {
+		ContainerUtil.caches = caches;
 	}
 
 	public static LinkedBlockingQueue<Object> getSaveQueue() {

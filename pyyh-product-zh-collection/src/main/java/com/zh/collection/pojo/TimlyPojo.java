@@ -16,4 +16,6 @@ public class TimlyPojo {
 	private String mappingAddress;
 	private String positionType;
 	private String actionInfo = "none";
+	//0=标签过期;1=进门后违停;2=电瓶入楼
+	private int saveType;
 }

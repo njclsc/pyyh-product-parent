@@ -1,5 +1,6 @@
 package com.zh.collection.business.task;
 
+import java.util.HashMap;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 
@@ -10,6 +11,7 @@ import com.zh.collection.pojo.RulePojo;
 import com.zh.collection.pojo.TagPojo;
 import com.zh.collection.pojo.TimlyPojo;
 import com.zh.collection.pojo.UnitPojo;
+import com.zh.collection.pojo.VehiclePojo;
 import com.zh.collection.util.ContainerUtil;
 
 public class BusinessForSaveTask implements Runnable{
@@ -26,10 +28,17 @@ public class BusinessForSaveTask implements Runnable{
 			try{
 				TimlyPojo tp = (TimlyPojo)saveQueue.poll();
 				if(tp != null){
-					CachePojo<String, UnitPojo, String, AreaPojo, String, DevicePojo, String, TagPojo, String, RulePojo, String, TimlyPojo> cache = ContainerUtil.getCaches().get(tp.getMappingAddress());
-					String tagId = tp.getTagId();
-					
-					System.out.println("-->>>" + cache.getDeviceCache().get(tp.getCurrentDeviceId()).getType());
+					CachePojo<String, UnitPojo, AreaPojo, DevicePojo, TagPojo, RulePojo, TimlyPojo, VehiclePojo> cache = ContainerUtil.getCaches().get(tp.getMappingAddress());
+					UnitPojo unit = cache.getUnitCache().get(tp.getMappingAddress());
+					int alarm = tp.getSaveType();
+					//进门后违停
+					if(alarm == 1){
+						threadPool.execute(new BusinessForSaveAlarm0(tp, cache, unit.getId()));
+					//电瓶入楼
+					}else if(alarm == 2){
+						threadPool.execute(new BusinessForSaveAlarm1(tp, cache, unit.getId()));
+					}
+//					System.out.println("-->>>" + cache.getDeviceCache().get(tp.getCurrentDeviceId()).getType());
 				}
 				
 				

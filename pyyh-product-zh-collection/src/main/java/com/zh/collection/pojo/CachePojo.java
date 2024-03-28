@@ -7,11 +7,12 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class CachePojo<UnitK, UnitV, AreaK, AreaV, DeviceK, DeviceV, tagK, tagV, ruleK, ruleV, timlyK, timlyV> {
-	private HashMap<UnitK, UnitV> unitCache;
-	private HashMap<AreaK, AreaV> areaCache;
-	private HashMap<DeviceK, DeviceV> deviceCache;
-	private HashMap<tagK, tagV> tagCache;
-	private HashMap<ruleK, ruleV> ruleCache;
-	private HashMap<timlyK, timlyV> timlyCache;
+public class CachePojo<K, UnitV, AreaV, DeviceV, tagV, ruleV, timlyV, vehicleV> {
+	private HashMap<K, UnitV> unitCache;
+	private HashMap<K, AreaV> areaCache;
+	private HashMap<K, DeviceV> deviceCache;
+	private HashMap<K, tagV> tagCache;
+	private HashMap<K, ruleV> ruleCache;
+	private HashMap<K, timlyV> timlyCache;
+	private HashMap<K, vehicleV> vehicleCache;
 }

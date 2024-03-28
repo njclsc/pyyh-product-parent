@@ -13,6 +13,7 @@ import com.zh.collection.pojo.RulePojo;
 import com.zh.collection.pojo.TagPojo;
 import com.zh.collection.pojo.TimlyPojo;
 import com.zh.collection.pojo.UnitPojo;
+import com.zh.collection.pojo.VehiclePojo;
 import com.zh.collection.util.ContainerUtil;
 
 public class BusinessForStartAllTask implements Runnable{
@@ -31,10 +32,24 @@ public class BusinessForStartAllTask implements Runnable{
 				
 				if(tp != null){
 					String localAddress = tp.getMappingAddress();
-					CachePojo<String, UnitPojo, String, AreaPojo, String, DevicePojo, String, TagPojo, String, RulePojo, String, TimlyPojo> cache = ContainerUtil.getCaches().get(localAddress);
+					CachePojo<String, UnitPojo, AreaPojo, DevicePojo, TagPojo, RulePojo, TimlyPojo, VehiclePojo> cache = ContainerUtil.getCaches().get(localAddress);
 					HashMap<String, AreaPojo> areas = cache.getAreaCache();
 					HashMap<String, DevicePojo> devices = cache.getDeviceCache();
 					HashMap<String, RulePojo> rules = cache.getRuleCache();
+					HashMap<String, TagPojo> tags = cache.getTagCache();
+					
+					
+					//expire
+					long diff = System.currentTimeMillis() - ContainerUtil.getSdf().parse(tags.get(tp.getTagId()).getInstallDate()).getTime();
+					if(diff >= 0 && !tags.get(tp.getTagId()).isExpire()){
+						tags.get(tp.getTagId()).setExpire(true);
+						UnitPojo up = cache.getUnitCache().get(localAddress);
+						threadPool.execute(new BusinessForTagExpire(tp, cache, up.getId()));
+					}else if(diff < 0 && tags.get(tp.getTagId()).isExpire()){
+						tags.get(tp.getTagId()).setExpire(false);
+					}
+					
+					
 					//door operate 
 					String oldDevId = tp.getOldDeviceId();
 					String curDevId = tp.getCurrentDeviceId();
@@ -47,7 +62,8 @@ public class BusinessForStartAllTask implements Runnable{
 						}else if(oldAreaType == 2 && curAreaType == 2){
 							threadPool.execute(new BusinessForParkingTask(tp, devices, areas));
 						}
-						//由于只是一包数据判断  不可靠  有可能要增加一个oldHbStationId;
+					//apartment operate
+					//由于只是一包数据判断  不可靠  有可能要增加一个oldHbStationId;
 					}else if(hbArea > 0){
 						int hbAreaType = areas.get("" + hbArea).getType();
 						if(hbAreaType == 3){

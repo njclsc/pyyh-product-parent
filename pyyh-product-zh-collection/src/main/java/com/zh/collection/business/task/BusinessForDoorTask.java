@@ -52,6 +52,7 @@ public class BusinessForDoorTask implements Runnable{
 				if(System.currentTimeMillis() - currTime >= timeFlag2 && action.equals("send")){
 					System.out.println("保存违停记录！");
 					tp.setActionInfo("save");
+					tp.setSaveType(1);
 					this.saveQueue.offer(tp);
 					return;
 				}else if(System.currentTimeMillis() - currTime >= timeFlag1 && action.equals("none")){

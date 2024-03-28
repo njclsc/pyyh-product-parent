@@ -16,13 +16,14 @@ import com.zh.collection.pojo.RulePojo;
 import com.zh.collection.pojo.TagPojo;
 import com.zh.collection.pojo.TimlyPojo;
 import com.zh.collection.pojo.UnitPojo;
+import com.zh.collection.pojo.VehiclePojo;
 import com.zh.collection.util.ContainerUtil;
 
 public class BusinessForCacheRefreshTask implements Runnable{
 	private DataSource dataSource;
 	private String sql_unit;
 	private String sql_other;
-	private HashMap<String, CachePojo<String, UnitPojo, String, AreaPojo, String, DevicePojo, String, TagPojo, String, RulePojo, String, TimlyPojo>> caches;
+	private HashMap<String, CachePojo<String, UnitPojo, AreaPojo, DevicePojo, TagPojo, RulePojo, TimlyPojo, VehiclePojo>> caches;
 	public BusinessForCacheRefreshTask(){
 		this.dataSource = ContainerUtil.getDataSource();
 		this.sql_unit = "select * from tb_sym_operate_logger where module = 'unit'";
@@ -161,7 +162,7 @@ public class BusinessForCacheRefreshTask implements Runnable{
 			return;
 		}else{
 			if(action.equals("add")){
-				CachePojo<String, UnitPojo, String, AreaPojo, String, DevicePojo, String, TagPojo, String, RulePojo, String, TimlyPojo> cp = new CachePojo<>();
+				CachePojo<String, UnitPojo, AreaPojo, DevicePojo, TagPojo, RulePojo, TimlyPojo, VehiclePojo> cp = new CachePojo<>();
 				//单位[此缓存只保存本单位一个元素]
 				HashMap<String, UnitPojo> ups = new HashMap<>();
 				UnitPojo up = new UnitPojo();
@@ -192,7 +193,7 @@ public class BusinessForCacheRefreshTask implements Runnable{
 				
 				ContainerUtil.getCaches().put(address, cp);
 			}else if(action.equals("update")){
-				CachePojo<String, UnitPojo, String, AreaPojo, String, DevicePojo, String, TagPojo, String, RulePojo, String, TimlyPojo> cp = caches.get(oldAddress);
+				CachePojo<String, UnitPojo, AreaPojo, DevicePojo, TagPojo, RulePojo, TimlyPojo, VehiclePojo> cp = caches.get(oldAddress);
 				cp.getUnitCache().remove(oldAddress);
 				cp.getUnitCache().put(address, _up);
 			}else if(action.equals("delete")){

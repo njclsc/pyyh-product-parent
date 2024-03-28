@@ -32,6 +32,7 @@ public class BusinessForApartmentTask implements Runnable{
 //			System.out.println(cap.getAreaName());
 			tp.setPositionType("apartment");
 			tp.setActionInfo("alarm");
+			tp.setSaveType(2);
 			this.saveQueue.offer(tp);
 		}
 	}
