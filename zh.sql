@@ -16,115 +16,26 @@ CREATE DATABASE /*!32312 IF NOT EXISTS*/`db_zh_bicycle` /*!40100 DEFAULT CHARACT
 
 USE `db_zh_bicycle`;
 
-/*Table structure for table `tb_14_area` */
+/*Table structure for table `tb_1_alarm` */
 
-DROP TABLE IF EXISTS `tb_14_area`;
+DROP TABLE IF EXISTS `tb_1_alarm`;
 
-CREATE TABLE `tb_14_area` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `areaName` varchar(100) DEFAULT NULL COMMENT '区域名称',
-  `type` int(2) DEFAULT NULL COMMENT '0:门禁1：停车场2：公寓',
+CREATE TABLE `tb_1_alarm` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `tagId` varchar(20) DEFAULT NULL,
+  `alarmType` int(2) DEFAULT NULL COMMENT '报警类型0:过期1:违停2:电瓶入楼',
+  `position` varchar(20) DEFAULT NULL COMMENT '位置对应设备ID',
+  `ownerName` varchar(30) DEFAULT NULL,
+  `areaName` varchar(50) DEFAULT NULL,
+  `ownerType` varchar(20) DEFAULT NULL COMMENT '车主类型',
+  `dateTime` varchar(30) DEFAULT NULL COMMENT '报警时间',
+  `status` int(1) DEFAULT NULL COMMENT '0:以处理；1：未处理',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4904 DEFAULT CHARSET=utf8;
 
-/*Data for the table `tb_14_area` */
+/*Data for the table `tb_1_alarm` */
 
-insert  into `tb_14_area`(`id`,`areaName`,`type`) values (1,'a1',3),(2,'a2',4);
-
-/*Table structure for table `tb_14_device` */
-
-DROP TABLE IF EXISTS `tb_14_device`;
-
-CREATE TABLE `tb_14_device` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `deviceId` varchar(50) DEFAULT NULL COMMENT '设备ID',
-  `areaIndex` int(11) DEFAULT NULL COMMENT '关联区域id',
-  `type` int(11) DEFAULT NULL COMMENT '设备类型0:中心网关；1：低频地感',
-  `refreshTime` varchar(30) DEFAULT NULL COMMENT '刷新时间',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `DEVID_INDEX` (`deviceId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-/*Data for the table `tb_14_device` */
-
-/*Table structure for table `tb_14_rule` */
-
-DROP TABLE IF EXISTS `tb_14_rule`;
-
-CREATE TABLE `tb_14_rule` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `ruleName` varchar(50) DEFAULT NULL COMMENT '规则名称',
-  `ruleType` int(11) DEFAULT NULL COMMENT '0:违停提醒时间;1:确认违停时间;2:进出延时判断时间',
-  `areaIndex` int(11) DEFAULT NULL COMMENT '关联区域',
-  `time` int(11) DEFAULT NULL COMMENT '规则时限(单位：毫秒)',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-/*Data for the table `tb_14_rule` */
-
-/*Table structure for table `tb_14_tag` */
-
-DROP TABLE IF EXISTS `tb_14_tag`;
-
-CREATE TABLE `tb_14_tag` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `tagId` varchar(50) DEFAULT NULL COMMENT '标签id',
-  `status` int(3) DEFAULT NULL COMMENT '状态',
-  `type` int(11) DEFAULT NULL COMMENT '类型0:带低频1；2.4G',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `DEV_INDEX` (`tagId`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
-
-/*Data for the table `tb_14_tag` */
-
-insert  into `tb_14_tag`(`id`,`tagId`,`status`,`type`) values (4,'2',1,1);
-
-/*Table structure for table `tb_14_timly` */
-
-DROP TABLE IF EXISTS `tb_14_timly`;
-
-CREATE TABLE `tb_14_timly` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `tagId` varchar(50) DEFAULT NULL COMMENT '标签Id',
-  `oldDeviceId` varchar(50) DEFAULT NULL COMMENT '上一设备id',
-  `currentDeviceId` varchar(50) DEFAULT NULL COMMENT '当前设备id',
-  `oldDeviceTime` varchar(50) DEFAULT NULL COMMENT '上一设备时间',
-  `currentDeviceTime` varchar(50) DEFAULT NULL COMMENT '当前设备时间',
-  `hbStationId` varchar(50) DEFAULT NULL COMMENT '2.4G基站',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `TAG_INDEX` (`tagId`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
-
-/*Data for the table `tb_14_timly` */
-
-insert  into `tb_14_timly`(`id`,`tagId`,`oldDeviceId`,`currentDeviceId`,`oldDeviceTime`,`currentDeviceTime`,`hbStationId`) values (4,'2',NULL,NULL,NULL,NULL,NULL);
-
-/*Table structure for table `tb_14_vehicle` */
-
-DROP TABLE IF EXISTS `tb_14_vehicle`;
-
-CREATE TABLE `tb_14_vehicle` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `ownerName` varchar(11) DEFAULT NULL COMMENT '车主姓名',
-  `ownerType` int(3) DEFAULT NULL COMMENT '车主身份',
-  `movePhone` varchar(30) DEFAULT NULL COMMENT '电话',
-  `ownerNumber` varchar(30) DEFAULT NULL COMMENT '学工业主号',
-  `vehicleType` int(3) DEFAULT NULL COMMENT '车辆类型',
-  `vehicleBrand` varchar(30) DEFAULT NULL COMMENT '车辆品牌',
-  `vehicleColor` varchar(11) DEFAULT NULL COMMENT '颜色',
-  `rfidId1` varchar(30) DEFAULT NULL COMMENT '设备1ID',
-  `rfidId2` varchar(30) DEFAULT NULL COMMENT '设备2ID',
-  `validity` int(5) DEFAULT NULL COMMENT '有效期 单位 月份',
-  `registDate` varchar(30) DEFAULT NULL COMMENT '注册时间',
-  `photos` varchar(500) DEFAULT NULL COMMENT '照片',
-  `status` int(2) DEFAULT NULL COMMENT '0:以安装1:已通过;2:已驳回;3:待审核',
-  `reason` varchar(150) DEFAULT NULL COMMENT '审核信息备注',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
-
-/*Data for the table `tb_14_vehicle` */
-
-insert  into `tb_14_vehicle`(`id`,`ownerName`,`ownerType`,`movePhone`,`ownerNumber`,`vehicleType`,`vehicleBrand`,`vehicleColor`,`rfidId1`,`rfidId2`,`validity`,`registDate`,`photos`,`status`,`reason`) values (1,'gg',0,'1','gg',0,'TJDW','rgb',NULL,NULL,NULL,'2024-03-17 18:11:44',NULL,3,NULL),(2,'gg',0,'1','gg',0,'TJDW','rgb',NULL,NULL,NULL,'2024-03-18 10:20:51',NULL,3,NULL);
+insert  into `tb_1_alarm`(`id`,`tagId`,`alarmType`,`position`,`ownerName`,`areaName`,`ownerType`,`dateTime`,`status`) values (4901,'000001',0,'','gg','2','','2024-03-29 13:22:37',1),(4902,'000001',1,'','gg','2','','2024-03-29 13:26:08',1),(4903,'000001',2,'','gg','4','','2024-03-29 13:26:19',1);
 
 /*Table structure for table `tb_1_alarm_2024_03` */
 
@@ -150,11 +61,11 @@ CREATE TABLE `tb_1_area` (
   `areaName` varchar(100) DEFAULT NULL COMMENT '区域名称',
   `type` int(2) DEFAULT NULL COMMENT '0:门禁1：停车场2：公寓',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 /*Data for the table `tb_1_area` */
 
-insert  into `tb_1_area`(`id`,`areaName`,`type`) values (1,'大门0',0),(2,'大门1',1),(3,'停车场0',2);
+insert  into `tb_1_area`(`id`,`areaName`,`type`) values (1,'大门0',0),(2,'大门1',1),(3,'停车场0',2),(4,'宿舍楼',3);
 
 /*Table structure for table `tb_1_device` */
 
@@ -168,11 +79,11 @@ CREATE TABLE `tb_1_device` (
   `refreshTime` varchar(30) DEFAULT NULL COMMENT '刷新时间',
   `status` int(2) DEFAULT NULL COMMENT '设备状态',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 /*Data for the table `tb_1_device` */
 
-insert  into `tb_1_device`(`id`,`deviceId`,`areaIndex`,`type`,`refreshTime`,`status`) values (1,'0058',NULL,0,NULL,0),(2,'0001',1,1,NULL,1),(3,'0002',2,1,NULL,1),(4,'0003',3,1,NULL,0);
+insert  into `tb_1_device`(`id`,`deviceId`,`areaIndex`,`type`,`refreshTime`,`status`) values (1,'0058',NULL,0,NULL,0),(2,'0001',1,1,NULL,0),(3,'0002',2,1,NULL,0),(4,'0003',3,1,NULL,0),(5,'0059',4,0,NULL,0);
 
 /*Table structure for table `tb_1_rule` */
 
@@ -189,7 +100,7 @@ CREATE TABLE `tb_1_rule` (
 
 /*Data for the table `tb_1_rule` */
 
-insert  into `tb_1_rule`(`id`,`ruleName`,`ruleType`,`areaIndex`,`time`) values (1,'door',2,NULL,5000),(2,'parking',0,NULL,20000),(3,'parking1',1,NULL,60000);
+insert  into `tb_1_rule`(`id`,`ruleName`,`ruleType`,`areaIndex`,`time`) values (1,'door',2,NULL,5000),(2,'parking',0,NULL,10000),(3,'parking1',1,NULL,15000);
 
 /*Table structure for table `tb_1_tag` */
 
@@ -198,13 +109,18 @@ DROP TABLE IF EXISTS `tb_1_tag`;
 CREATE TABLE `tb_1_tag` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
   `tagId` varchar(50) DEFAULT NULL COMMENT '标签id',
+  `vehicleIndex` int(11) DEFAULT NULL COMMENT '对应车辆',
   `status` int(3) DEFAULT NULL COMMENT '状态',
   `type` int(11) DEFAULT NULL COMMENT '类型0:带低频1；2.4G',
   `installDate` varchar(30) DEFAULT NULL COMMENT '安装时间',
+  `expire` tinyint(1) DEFAULT '0' COMMENT '是否过期',
+  `expireDateTime` varchar(30) DEFAULT NULL COMMENT '过期时刻',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 /*Data for the table `tb_1_tag` */
+
+insert  into `tb_1_tag`(`id`,`tagId`,`vehicleIndex`,`status`,`type`,`installDate`,`expire`,`expireDateTime`) values (1,'000001',3,NULL,NULL,'2024-01-01 00:00:00',1,'2024-03-01 00:00:00');
 
 /*Table structure for table `tb_1_timly` */
 
@@ -247,26 +163,11 @@ CREATE TABLE `tb_1_vehicle` (
   `reason` varchar(150) DEFAULT NULL,
   `position` varchar(10) DEFAULT NULL COMMENT '车辆位置out:不在园区',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
 /*Data for the table `tb_1_vehicle` */
 
-insert  into `tb_1_vehicle`(`id`,`ownerName`,`ownerType`,`movePhone`,`ownerNumber`,`vehicleType`,`vehicleBrand`,`vehicleColor`,`rfidId1`,`rfidId2`,`validity`,`registDate`,`photos`,`status`,`reason`,`position`) values (3,'gg',0,'1','gg',0,'TJDW','rgb',NULL,NULL,NULL,'2024-03-22 13:58:56',NULL,0,NULL,NULL),(5,'ggxx',0,'1','gggg',1,'TJDW','rgbxx',NULL,NULL,NULL,'2024-03-25 14:00:41',NULL,0,'西部',NULL);
-
-/*Table structure for table `tb_30_tag` */
-
-DROP TABLE IF EXISTS `tb_30_tag`;
-
-CREATE TABLE `tb_30_tag` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `tagId` varchar(50) DEFAULT NULL COMMENT '标签id',
-  `status` int(3) DEFAULT NULL COMMENT '状态',
-  `type` int(11) DEFAULT NULL COMMENT '类型0:带低频1；2.4G',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `DEV_INDEX` (`tagId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-/*Data for the table `tb_30_tag` */
+insert  into `tb_1_vehicle`(`id`,`ownerName`,`ownerType`,`movePhone`,`ownerNumber`,`vehicleType`,`vehicleBrand`,`vehicleColor`,`rfidId1`,`rfidId2`,`validity`,`registDate`,`photos`,`status`,`reason`,`position`) values (3,'gg',0,'1','gg',0,'TJDW','rgb',NULL,NULL,NULL,'2024-03-01 13:58:56',NULL,0,NULL,NULL),(5,'ggxx',0,'1','gggg',1,'TJDW','rgbxx',NULL,NULL,NULL,'2024-03-02 14:00:41',NULL,0,'西部',NULL);
 
 /*Table structure for table `tb_sym_operate_logger` */
 
@@ -281,7 +182,7 @@ CREATE TABLE `tb_sym_operate_logger` (
   `oldAddress` varchar(30) DEFAULT NULL COMMENT '数据更新前的单位地址，因为是缓存的key',
   `key` varchar(30) DEFAULT NULL COMMENT '缓存中的key',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Data for the table `tb_sym_operate_logger` */
 
@@ -297,11 +198,11 @@ CREATE TABLE `tb_sys_account` (
   `roleIndex` int(11) DEFAULT NULL COMMENT '角色索引',
   PRIMARY KEY (`id`),
   UNIQUE KEY `ACCOUNT_KEY` (`accountName`,`unitIndex`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 /*Data for the table `tb_sys_account` */
 
-insert  into `tb_sys_account`(`id`,`accountName`,`password`,`unitIndex`,`roleIndex`) values (1,'zh','33',1,1),(2,'zh1','xx',14,6);
+insert  into `tb_sys_account`(`id`,`accountName`,`password`,`unitIndex`,`roleIndex`) values (1,'zh','33',1,1);
 
 /*Table structure for table `tb_sys_menu` */
 
@@ -364,11 +265,11 @@ CREATE TABLE `tb_sys_unit` (
   `unitType` int(2) DEFAULT NULL COMMENT '0：开发商 1:学校；2：小区',
   `channelAddr` varchar(50) DEFAULT NULL COMMENT '接收硬件数据地址，一单位对应一个',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8;
 
 /*Data for the table `tb_sys_unit` */
 
-insert  into `tb_sys_unit`(`id`,`unitName`,`unitCode`,`parentUnit`,`unitType`,`channelAddr`) values (1,'上海正晗电子','ZHDZ_D_01',NULL,0,'192.168.3.188:10006'),(14,'zh1','TJDW1',0,1,'192.168.3.188:11007'),(27,'uu','TJDW',0,1,NULL),(28,'uu','TJDW',0,1,NULL),(29,'uu','TJDW',0,1,NULL),(30,'uu','TJDW',0,1,NULL);
+insert  into `tb_sys_unit`(`id`,`unitName`,`unitCode`,`parentUnit`,`unitType`,`channelAddr`) values (1,'上海正晗电子','ZHDZ_D_01',NULL,0,'192.168.3.188:10006');
 
 /*Table structure for table `tb_tmp_alarm` */
 
@@ -383,6 +284,7 @@ CREATE TABLE `tb_tmp_alarm` (
   `areaName` varchar(50) DEFAULT NULL,
   `ownerType` varchar(20) DEFAULT NULL COMMENT '车主类型',
   `dateTime` varchar(30) DEFAULT NULL COMMENT '报警时间',
+  `status` int(1) DEFAULT NULL COMMENT '0:以处理；1：未处理',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -451,9 +353,12 @@ DROP TABLE IF EXISTS `tb_tmp_tag`;
 CREATE TABLE `tb_tmp_tag` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
   `tagId` varchar(50) DEFAULT NULL COMMENT '标签id',
+  `vehicleIndex` int(11) DEFAULT NULL COMMENT '对应车辆',
   `status` int(3) DEFAULT NULL COMMENT '状态',
   `type` int(11) DEFAULT NULL COMMENT '类型0:带低频1；2.4G',
   `installDate` varchar(30) DEFAULT NULL COMMENT '安装时间',
+  `expire` tinyint(1) DEFAULT '0' COMMENT '是否过期',
+  `expireDateTime` varchar(30) DEFAULT NULL COMMENT '过期时刻',
   PRIMARY KEY (`id`),
   UNIQUE KEY `DEV_INDEX` (`tagId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
