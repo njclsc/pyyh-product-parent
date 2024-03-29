@@ -39,10 +39,10 @@ public class BusinessForTagExpire implements Runnable{
 			Statement stat = con.createStatement();
 			StringBuffer sb = new StringBuffer();
 			sb.append("insert into tb_");sb.append(unitIndex);
-			sb.append("_alarm(tagId, alarmType, position, ownerName, areaName, ownerType, dateTime) values('");
+			sb.append("_alarm(tagId, alarmType, position, ownerName, areaName, ownerType, dateTime,status) values('");
 			sb.append(tagId);sb.append("', ");sb.append(0);sb.append(", '', '");sb.append(vp.getOwnerName());
 			sb.append("', '");sb.append(ap.getId());sb.append("','', '");
-			sb.append(curTime); sb.append("')");
+			sb.append(curTime); sb.append("', 1");sb.append(")");
 			stat.executeUpdate(sb.toString());
 			stat.close();
 			Statement stat1 = con.createStatement();

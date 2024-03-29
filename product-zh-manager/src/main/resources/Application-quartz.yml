@@ -14,6 +14,7 @@ spring:
             
 custom: 
   quartzCron: "*/2 * * * * ?"
+  quartzCron_alarm: "*/2 * * * * ?"
   jobGroupName: jobGroupName
   triggerGroupName: triggerGroupName
   websocketJobName: websocket

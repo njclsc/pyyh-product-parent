@@ -25,6 +25,7 @@ public class WebSocketServer {
 		String unitIndex = parameter.get(0);
 		if(unitIndex != null){
 			ContainerUtil.getEndpointSession().put(unitIndex + "_" + sid, session);
+			
 		}
 		System.out.println(ContainerUtil.getEndpointSession().size() + "  open-->");
 	}

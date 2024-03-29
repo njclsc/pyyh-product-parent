@@ -13,4 +13,5 @@ public class TagPojo {
 	private int type;
 	private String installDate;
 	private boolean expire;
+	private String expireDateTime;
 }

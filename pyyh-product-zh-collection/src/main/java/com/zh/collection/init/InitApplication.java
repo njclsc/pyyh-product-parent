@@ -133,6 +133,7 @@ public class InitApplication {
 				tp.setType(rsTag.getInt("type"));
 				tp.setInstallDate(rsTag.getString("installDate"));
 				tp.setExpire(rsTag.getBoolean("expire"));
+				tp.setExpireDateTime(rsTag.getString("expireDateTime"));
 				unitTagCache.put(tp.getTagId(), tp);
 			}
 			rsTag.close();

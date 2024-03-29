@@ -42,6 +42,7 @@ public class ToolUtil {
 		sql.append("type INT(11) DEFAULT NULL COMMENT '类型0:带低频1；2.4G',");
 		sql.append("installDate VARCHAR(30) DEFAULT NULL COMMENT '安装时间',");
 		sql.append("expire tinyint(1) DEFAULT '0' COMMENT '是否过期',");
+		sql.append("expireDateTime INT(30) DEFAULT NULL COMMENT '过期时刻',");
 		sql.append("PRIMARY KEY (id),");
 		sql.append("UNIQUE KEY DEV_INDEX (tagId)");
 		sql.append(") ENGINE=INNODB DEFAULT CHARSET=utf8");

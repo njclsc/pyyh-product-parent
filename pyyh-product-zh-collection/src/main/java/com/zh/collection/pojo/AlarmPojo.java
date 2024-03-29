@@ -14,4 +14,5 @@ public class AlarmPojo {
 	private String areaName;
 	private String ownerType;
 	private String dateTime;
+	private int status;
 }

@@ -149,6 +149,16 @@ public class BusinessForCacheRefreshTask implements Runnable{
 				tags.put(tp.getTagId(), tp);
 				timlys.put(tmp.getTagId(), tmp);
 			}
+		}else if(module.equals("vehicle")){
+			HashMap<String, VehiclePojo> vehicles = cp.getVehicleCache();
+			VehiclePojo vp = JSONObject.toJavaObject(JSONObject.parseObject(data), VehiclePojo.class);
+			if(action.equals("add")){
+				vehicles.put("" + vp.getId(), vp);
+			}else if(action.equals("delete")){
+				vehicles.remove("" + vp.getId());
+			}else if(action.equals("update")){
+				vehicles.put("" + vp.getId(), vp);
+			}
 		}
 	}
 	//单位同步
@@ -190,7 +200,8 @@ public class BusinessForCacheRefreshTask implements Runnable{
 				HashMap<String, TimlyPojo> unitTimlyCache = new HashMap<>();
 				cp.setTimlyCache(unitTimlyCache);
 				//车辆
-				
+				HashMap<String, VehiclePojo> vehicleCache = new HashMap<>();
+				cp.setVehicleCache(vehicleCache);
 				ContainerUtil.getCaches().put(address, cp);
 			}else if(action.equals("update")){
 				CachePojo<String, UnitPojo, AreaPojo, DevicePojo, TagPojo, RulePojo, TimlyPojo, VehiclePojo> cp = caches.get(oldAddress);

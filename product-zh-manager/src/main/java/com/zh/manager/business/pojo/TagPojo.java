@@ -8,7 +8,11 @@ import lombok.Setter;
 public class TagPojo {
 	private int id;
 	private String tagId;
+	private int vehicleIndex;
 	private int status;
 	private int type;
 	private int unitIndex;
+	private String installDate;
+	private boolean expire;
+	private String expireDateTime;
 }

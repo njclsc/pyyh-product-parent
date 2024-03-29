@@ -1,11 +1,9 @@
 package com.zh.collection.business.task;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 
-import com.alibaba.fastjson.JSONObject;
 import com.zh.collection.pojo.AreaPojo;
 import com.zh.collection.pojo.CachePojo;
 import com.zh.collection.pojo.DevicePojo;
@@ -40,13 +38,15 @@ public class BusinessForStartAllTask implements Runnable{
 					
 					
 					//expire
-					long diff = System.currentTimeMillis() - ContainerUtil.getSdf().parse(tags.get(tp.getTagId()).getInstallDate()).getTime();
+					long diff = System.currentTimeMillis() - ContainerUtil.getSdf().parse(tags.get(tp.getTagId()).getExpireDateTime()).getTime();
 					if(diff >= 0 && !tags.get(tp.getTagId()).isExpire()){
 						tags.get(tp.getTagId()).setExpire(true);
 						UnitPojo up = cache.getUnitCache().get(localAddress);
 						threadPool.execute(new BusinessForTagExpire(tp, cache, up.getId()));
 					}else if(diff < 0 && tags.get(tp.getTagId()).isExpire()){
+						UnitPojo up = cache.getUnitCache().get(localAddress);
 						tags.get(tp.getTagId()).setExpire(false);
+						threadPool.execute(new BusinessForTagRecoveryExpire(tp, cache, up.getId()));
 					}
 					
 					
