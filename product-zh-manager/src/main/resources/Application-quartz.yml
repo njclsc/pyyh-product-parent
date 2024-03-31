@@ -13,8 +13,9 @@ spring:
             threadsInheritContextClassLoaderOfInitializingThread: true
             
 custom: 
-  quartzCron: "*/2 * * * * ?"
-  quartzCron_alarm: "*/2 * * * * ?"
+  quartzCron: "*/3 * * * * ?"
+  quartzCron_alarm: "*/3 * * * * ?"
+  quartzCron_clear: "*/1 * * * * ?"
   jobGroupName: jobGroupName
   triggerGroupName: triggerGroupName
   websocketJobName: websocket

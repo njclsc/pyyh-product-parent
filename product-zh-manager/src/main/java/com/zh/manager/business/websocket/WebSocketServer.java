@@ -1,5 +1,6 @@
 package com.zh.manager.business.websocket;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -25,7 +26,7 @@ public class WebSocketServer {
 		String unitIndex = parameter.get(0);
 		if(unitIndex != null){
 			ContainerUtil.getEndpointSession().put(unitIndex + "_" + sid, session);
-			
+			ContainerUtil.getAlarmIds().put(unitIndex + "_" + sid, new ArrayList<String>());
 		}
 		System.out.println(ContainerUtil.getEndpointSession().size() + "  open-->");
 	}
@@ -41,8 +42,10 @@ public class WebSocketServer {
 		String unitIndex = parameter.get(0);
 		if(unitIndex != null){
 			ContainerUtil.getEndpointSession().remove(unitIndex + "_" + sid);
+			ContainerUtil.getAlarmIds().remove(unitIndex + "_" + sid);
 		}
 		System.out.println(ContainerUtil.getEndpointSession().size() + "  close-->");
+		System.out.println(ContainerUtil.getAlarmIds().size() + "  close-->");
 	}
 	@OnError
 	public void onError(Throwable t){}

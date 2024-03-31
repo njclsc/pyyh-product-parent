@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.zh.manager.business.quartz.WebSocketCacheClearTask;
 import com.zh.manager.business.quartz.WebSocketSendAlarmTask;
 import com.zh.manager.business.quartz.WebSocketSendTask;
 
@@ -21,6 +22,8 @@ public class QuartzConfig {
 	private String cron;
 	@Value("${custom.quartzCron_alarm}")
 	private String cronAlarm;
+	@Value("${custom.quartzCron_clear}")
+	private String cronClear;
 	@Value("${custom.jobGroupName}")
 	private String jobGroupName;
 	@Value("${custom.triggerGroupName}")
@@ -38,9 +41,14 @@ public class QuartzConfig {
 		JobDetail jobDetailAlarm = JobBuilder.newJob(WebSocketSendAlarmTask.class).withIdentity(websocketJobName + "alarm", jobGroupName).build();
 		Trigger triggerAlarm = TriggerBuilder.newTrigger().withIdentity(websocketTriggerName + "alarm", triggerGroupName)
 				.withSchedule(CronScheduleBuilder.cronSchedule(cronAlarm)).build();
+		
+		JobDetail jobDetailClear = JobBuilder.newJob(WebSocketCacheClearTask.class).withIdentity(websocketJobName + "clear", jobGroupName).build();
+		Trigger triggerClear = TriggerBuilder.newTrigger().withIdentity(websocketTriggerName + "clear", triggerGroupName)
+				.withSchedule(CronScheduleBuilder.cronSchedule(cronClear)).build();
 		try {
 			scheduler.scheduleJob(jobDetail, trigger);
 			scheduler.scheduleJob(jobDetailAlarm, triggerAlarm);
+			scheduler.scheduleJob(jobDetailClear, triggerClear);
 		} catch (SchedulerException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
