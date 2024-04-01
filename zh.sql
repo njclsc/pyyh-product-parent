@@ -31,11 +31,11 @@ CREATE TABLE `tb_1_alarm` (
   `dateTime` varchar(30) DEFAULT NULL COMMENT '报警时间',
   `status` int(1) DEFAULT NULL COMMENT '0:以处理；1：未处理',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4904 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4918 DEFAULT CHARSET=utf8;
 
 /*Data for the table `tb_1_alarm` */
 
-insert  into `tb_1_alarm`(`id`,`tagId`,`alarmType`,`position`,`ownerName`,`areaName`,`ownerType`,`dateTime`,`status`) values (4901,'000001',0,'','gg','2','','2024-03-29 13:22:37',1),(4902,'000001',1,'','gg','2','','2024-03-29 13:26:08',1),(4903,'000001',2,'','gg','4','','2024-03-29 13:26:19',1);
+insert  into `tb_1_alarm`(`id`,`tagId`,`alarmType`,`position`,`ownerName`,`areaName`,`ownerType`,`dateTime`,`status`) values (4901,'000001',0,'','gg','2','','2024-03-29 13:22:37',1),(4902,'000002',1,'','gg','2','','2024-03-29 13:26:08',1),(4903,'000003',2,'','gg','4','','2024-03-29 13:26:19',1),(4904,'000004',1,'','gg','2','','2024-03-30 08:27:12',1),(4905,'000005',2,'','gg','4','','2024-03-30 08:27:45',1),(4906,'000005',0,'','诸葛亮','2','','2024-04-01 12:43:16',1),(4907,'000004',0,'','诸葛亮','2','','2024-04-01 12:45:02',1),(4908,'000003',0,'','诸葛亮','2','','2024-04-01 12:45:03',1),(4909,'000002',0,'','诸葛亮','2','','2024-04-01 12:46:55',1),(4910,'000002',1,'','诸葛亮','2','','2024-04-01 12:47:00',1),(4911,'000001',0,'','诸葛亮','2','','2024-04-01 12:47:03',1),(4912,'000001',1,'','诸葛亮','2','','2024-04-01 12:55:15',1),(4913,'000001',0,'','诸葛亮','2','','2024-04-01 12:55:44',1),(4914,'000001',1,'','诸葛亮','2','','2024-04-01 13:00:43',1),(4915,'000001',1,'','诸葛亮','2','','2024-04-01 15:54:55',1),(4916,'000001',1,'','诸葛亮','2','','2024-04-01 17:51:59',1),(4917,'000001',2,'','诸葛亮','4','','2024-04-01 17:52:26',1);
 
 /*Table structure for table `tb_1_alarm_2024_03` */
 
@@ -83,7 +83,7 @@ CREATE TABLE `tb_1_device` (
 
 /*Data for the table `tb_1_device` */
 
-insert  into `tb_1_device`(`id`,`deviceId`,`areaIndex`,`type`,`refreshTime`,`status`) values (1,'0058',NULL,0,NULL,0),(2,'0001',1,1,NULL,0),(3,'0002',2,1,NULL,0),(4,'0003',3,1,NULL,0),(5,'0059',4,0,NULL,0);
+insert  into `tb_1_device`(`id`,`deviceId`,`areaIndex`,`type`,`refreshTime`,`status`) values (1,'0058',NULL,0,'2024-04-01 17:51:44',1),(2,'0001',1,1,'null',1),(3,'0002',2,1,'null',1),(4,'0003',3,1,'null',1),(5,'0059',4,0,'2024-04-01 17:57:18',1);
 
 /*Table structure for table `tb_1_rule` */
 
@@ -96,11 +96,11 @@ CREATE TABLE `tb_1_rule` (
   `areaIndex` int(11) DEFAULT NULL COMMENT '关联区域',
   `time` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 /*Data for the table `tb_1_rule` */
 
-insert  into `tb_1_rule`(`id`,`ruleName`,`ruleType`,`areaIndex`,`time`) values (1,'door',2,NULL,5000),(2,'parking',0,NULL,10000),(3,'parking1',1,NULL,15000);
+insert  into `tb_1_rule`(`id`,`ruleName`,`ruleType`,`areaIndex`,`time`) values (1,'door',2,NULL,5000),(2,'parking',0,NULL,10000),(3,'parking1',1,NULL,15000),(4,'offline',5,NULL,60000);
 
 /*Table structure for table `tb_1_tag` */
 
@@ -116,11 +116,11 @@ CREATE TABLE `tb_1_tag` (
   `expire` tinyint(1) DEFAULT '0' COMMENT '是否过期',
   `expireDateTime` varchar(30) DEFAULT NULL COMMENT '过期时刻',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 /*Data for the table `tb_1_tag` */
 
-insert  into `tb_1_tag`(`id`,`tagId`,`vehicleIndex`,`status`,`type`,`installDate`,`expire`,`expireDateTime`) values (1,'000001',3,NULL,NULL,'2024-01-01 00:00:00',1,'2024-03-01 00:00:00');
+insert  into `tb_1_tag`(`id`,`tagId`,`vehicleIndex`,`status`,`type`,`installDate`,`expire`,`expireDateTime`) values (1,'000001',3,NULL,NULL,'2024-01-01 00:00:00',1,'2024-03-01 00:00:00'),(2,'000002',5,NULL,NULL,NULL,0,'2024-05-01 00:00:00'),(3,'000003',7,NULL,NULL,NULL,0,'2024-06-01 00:00:00'),(4,'000004',8,NULL,NULL,NULL,0,'2024-07-01 00:00:00'),(5,'000005',9,NULL,NULL,NULL,0,'2024-08-01 00:00:00');
 
 /*Table structure for table `tb_1_timly` */
 
@@ -163,11 +163,11 @@ CREATE TABLE `tb_1_vehicle` (
   `reason` varchar(150) DEFAULT NULL,
   `position` varchar(10) DEFAULT NULL COMMENT '车辆位置out:不在园区',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 
 /*Data for the table `tb_1_vehicle` */
 
-insert  into `tb_1_vehicle`(`id`,`ownerName`,`ownerType`,`movePhone`,`ownerNumber`,`vehicleType`,`vehicleBrand`,`vehicleColor`,`rfidId1`,`rfidId2`,`validity`,`registDate`,`photos`,`status`,`reason`,`position`) values (3,'gg',0,'1','gg',0,'TJDW','rgb',NULL,NULL,NULL,'2024-03-01 13:58:56',NULL,0,NULL,NULL),(5,'ggxx',0,'1','gggg',1,'TJDW','rgbxx',NULL,NULL,NULL,'2024-03-02 14:00:41',NULL,0,'西部',NULL);
+insert  into `tb_1_vehicle`(`id`,`ownerName`,`ownerType`,`movePhone`,`ownerNumber`,`vehicleType`,`vehicleBrand`,`vehicleColor`,`rfidId1`,`rfidId2`,`validity`,`registDate`,`photos`,`status`,`reason`,`position`) values (3,'诸葛亮',0,'18647874141','1',0,'绿亮','红',NULL,NULL,NULL,'2024-03-31 13:58:56',NULL,0,NULL,'into'),(5,'孙权',0,'18647874142','2',1,'绿亮','黄',NULL,NULL,NULL,'2024-03-28 14:00:41',NULL,0,'西部','into'),(7,'曹操',NULL,'18647874143','3',1,'绿亮','蓝',NULL,NULL,NULL,'2024-03-30 14:00:41',NULL,0,NULL,'into'),(8,'刘备',NULL,'18647874144','4',1,'绿亮','黑',NULL,NULL,NULL,'2024-03-31 14:00:41',NULL,0,NULL,'into'),(9,'司马懿',NULL,'18647874145','5',1,'绿亮','黑',NULL,NULL,NULL,'2024-03-26 14:00:41',NULL,0,NULL,'into');
 
 /*Table structure for table `tb_sym_operate_logger` */
 
@@ -198,7 +198,7 @@ CREATE TABLE `tb_sys_account` (
   `roleIndex` int(11) DEFAULT NULL COMMENT '角色索引',
   PRIMARY KEY (`id`),
   UNIQUE KEY `ACCOUNT_KEY` (`accountName`,`unitIndex`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 /*Data for the table `tb_sys_account` */
 
@@ -216,11 +216,11 @@ CREATE TABLE `tb_sys_menu` (
   `sourceUrl` varchar(150) DEFAULT NULL COMMENT '菜单资源连接',
   `icon` varchar(50) DEFAULT NULL COMMENT '菜单图标',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
 
 /*Data for the table `tb_sys_menu` */
 
-insert  into `tb_sys_menu`(`id`,`menuName`,`menuPosition`,`parentIndex`,`sourceUrl`,`icon`) values (1,'主页',0,-1,'/1',NULL),(2,'数据列表',0,1,'/1/1',NULL),(3,'数据看板',1,1,'/1/2',NULL),(4,'车辆业务',1,-1,'/2',NULL),(5,'设备管理',2,-1,'/3',NULL),(6,'标签管理',0,5,'/3/1',NULL),(7,'基站管理',1,5,'/3/2',NULL),(8,'系统日志',3,-1,'/4',NULL),(9,'报警数据',0,8,'/4/1',NULL),(10,'违停数据',1,8,'/4/2',NULL),(11,'系统配置',4,-1,'/5',NULL),(12,'用户管理',0,11,'/5/1',NULL),(13,'单位管理',1,11,'/car/dataUnit.html',NULL),(14,'组织管理',2,11,'/5/3',NULL),(15,'角色管理',3,11,'/car/dataRole.html',NULL),(16,'区域管理',4,11,'/5/5',NULL),(17,'车辆注册',0,4,'/2/1',NULL);
+insert  into `tb_sys_menu`(`id`,`menuName`,`menuPosition`,`parentIndex`,`sourceUrl`,`icon`) values (1,'主页',0,-1,'/1','/car/assets/svg/sy.svg'),(3,'数据看板',5,-1,'/car/carData/index.html','/car/assets/svg/sjkb.svg'),(4,'车辆业务',1,-1,'/1','/car/assets/svg/ddc.svg'),(5,'设备管理',2,-1,'','/car/assets/svg/sbgl.svg'),(6,'标签管理',0,5,'/car/views/dataLabel.html',NULL),(7,'基站管理',1,5,'/car/views/dataDevice.html',NULL),(8,'系统日志',3,-1,'/1','/car/assets/svg/xtrz.svg'),(9,'报警数据',0,8,'/car/views/dataAlarm.html',NULL),(10,'违停数据',1,8,'/1',NULL),(11,'系统配置',4,-1,'/1','/car/assets/svg/xt.svg'),(12,'用户管理',0,11,'/car/views/dataUser.html',NULL),(13,'单位管理',1,11,'/car/views/dataUnit.html',NULL),(14,'组织管理',2,11,'/car/views/dataOrganization.html',NULL),(15,'角色管理',3,11,'/car/views/dataRole.html',NULL),(16,'区域管理',4,11,'/car/views/dataArea.html',NULL),(17,'车辆注册',0,4,'/car/views/dataRegister.html',NULL);
 
 /*Table structure for table `tb_sys_orginization` */
 
@@ -265,7 +265,7 @@ CREATE TABLE `tb_sys_unit` (
   `unitType` int(2) DEFAULT NULL COMMENT '0：开发商 1:学校；2：小区',
   `channelAddr` varchar(50) DEFAULT NULL COMMENT '接收硬件数据地址，一单位对应一个',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 /*Data for the table `tb_sys_unit` */
 
@@ -338,7 +338,7 @@ DROP TABLE IF EXISTS `tb_tmp_rule`;
 CREATE TABLE `tb_tmp_rule` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
   `ruleName` varchar(50) DEFAULT NULL COMMENT '规则名称',
-  `ruleType` int(11) DEFAULT NULL COMMENT '0:违停提醒时间;1:确认违停时间;2:进出延时判断时间;3:公寓2.4G规则;4:标签过期时间',
+  `ruleType` int(11) DEFAULT NULL COMMENT '0:违停提醒时间;1:确认违停时间;2:进出延时判断时间;3:公寓2.4G规则;4:标签过期时间;5:设备离线时间',
   `areaIndex` int(11) DEFAULT NULL COMMENT '关联区域：0：所有区域',
   `time` int(3) DEFAULT NULL COMMENT '规则时限(单位：分钟)',
   PRIMARY KEY (`id`)

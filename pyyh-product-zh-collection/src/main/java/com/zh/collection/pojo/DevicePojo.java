@@ -11,4 +11,5 @@ public class DevicePojo {
 	private int areaIndex;
 	private int type;
 	private String refreshTime;
+	private int status;
 }

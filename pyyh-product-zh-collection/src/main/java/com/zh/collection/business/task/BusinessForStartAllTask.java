@@ -27,7 +27,6 @@ public class BusinessForStartAllTask implements Runnable{
 		while(true){
 			try{
 				TimlyPojo tp = (TimlyPojo)inQueue.poll();
-				
 				if(tp != null){
 					String localAddress = tp.getMappingAddress();
 					CachePojo<String, UnitPojo, AreaPojo, DevicePojo, TagPojo, RulePojo, TimlyPojo, VehiclePojo> cache = ContainerUtil.getCaches().get(localAddress);
@@ -35,16 +34,15 @@ public class BusinessForStartAllTask implements Runnable{
 					HashMap<String, DevicePojo> devices = cache.getDeviceCache();
 					HashMap<String, RulePojo> rules = cache.getRuleCache();
 					HashMap<String, TagPojo> tags = cache.getTagCache();
-					
-					
+					UnitPojo up = cache.getUnitCache().get(localAddress);
 					//expire
 					long diff = System.currentTimeMillis() - ContainerUtil.getSdf().parse(tags.get(tp.getTagId()).getExpireDateTime()).getTime();
 					if(diff >= 0 && !tags.get(tp.getTagId()).isExpire()){
 						tags.get(tp.getTagId()).setExpire(true);
-						UnitPojo up = cache.getUnitCache().get(localAddress);
+//						UnitPojo up = cache.getUnitCache().get(localAddress);
 						threadPool.execute(new BusinessForTagExpire(tp, cache, up.getId()));
 					}else if(diff < 0 && tags.get(tp.getTagId()).isExpire()){
-						UnitPojo up = cache.getUnitCache().get(localAddress);
+//						UnitPojo up = cache.getUnitCache().get(localAddress);
 						tags.get(tp.getTagId()).setExpire(false);
 						threadPool.execute(new BusinessForTagRecoveryExpire(tp, cache, up.getId()));
 					}

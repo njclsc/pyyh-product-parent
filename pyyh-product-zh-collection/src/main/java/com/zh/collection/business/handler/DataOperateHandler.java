@@ -8,6 +8,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 
 import com.alibaba.fastjson.JSONObject;
+import com.zh.collection.business.task.BusinessForDeviceStatusTask;
 import com.zh.collection.pojo.AreaPojo;
 import com.zh.collection.pojo.CachePojo;
 import com.zh.collection.pojo.DevicePojo;
@@ -44,13 +45,15 @@ public class DataOperateHandler extends ChannelInboundHandlerAdapter{
 		String data = String.valueOf(msg);
 		String deviceId = data.substring(4, 8);
 		String cmdType = data.substring(8, 10);
+		String dt = sdf.format(new Date());
+		HashMap<String, DevicePojo> devs = cache.getDeviceCache();
 		if(cmdType.equals("41")){
 			//设备处理
-			HashMap<String, DevicePojo> devs = cache.getDeviceCache();
 //			System.out.println("设备" + devs);
 			//------------------------------
-			
-			
+			//设备
+			DevicePojo dp = devs.get(deviceId);
+			dp.setRefreshTime(dt);
 			//实时缓存
 			HashMap<String, TimlyPojo> timly = cache.getTimlyCache();
 			//标签处理
@@ -74,7 +77,7 @@ public class DataOperateHandler extends ChannelInboundHandlerAdapter{
 					tp.setOldDeviceTime(tp.getCurrentDeviceTime());
 					tp.setCurrentDeviceId(antId);
 //					if(!antId.equals(tp.getOldDeviceId())){
-					tp.setCurrentDeviceTime(sdf.format(new Date()));
+					tp.setCurrentDeviceTime(dt);
 //					}
 					tp.setHbStationId(deviceId);
 					tp.setMappingAddress(localAddress);
@@ -86,6 +89,10 @@ public class DataOperateHandler extends ChannelInboundHandlerAdapter{
 				
 			}
 			System.out.println(deviceId + "  " + cmdType + "  " + tagNum + " " + ctx.channel().localAddress().toString().substring(1));
+		}else if(cmdType.equals("42")){
+			//设备
+			DevicePojo dp = devs.get(deviceId);
+			dp.setRefreshTime(dt);
 		}else{
 			ctx.fireChannelRead(msg);
 		}

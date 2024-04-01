@@ -102,9 +102,9 @@ public class LoginServiceImp implements ILoginService{
 				}
 			}
 			mp.setChildren(mlv2s);
-			if(mp.getChildren().size() == 0){
-				itrLv1.remove();
-			}
+//			if(mp.getChildren().size() == 0){
+//				itrLv1.remove();
+//			}
 		}
 		JSONObject obj = new JSONObject();
 		obj.put("readAuthority", readAuthority);
