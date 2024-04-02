@@ -1,29 +1,43 @@
 package com.zh.collection.business.task;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import javax.sql.DataSource;
+
 import com.zh.collection.pojo.AreaPojo;
 import com.zh.collection.pojo.DevicePojo;
 import com.zh.collection.pojo.RulePojo;
+import com.zh.collection.pojo.TagPojo;
 import com.zh.collection.pojo.TimlyPojo;
+import com.zh.collection.pojo.UnitPojo;
+import com.zh.collection.pojo.VehiclePojo;
 import com.zh.collection.util.ContainerUtil;
 
 public class BusinessForDoorTask implements Runnable{
+	private Connection con;
+	private UnitPojo up;
 	private TimlyPojo tp;
 	private HashMap<String, DevicePojo> devices;
 	private HashMap<String, AreaPojo> areas;
+	private HashMap<String, TagPojo> tags;
+	private HashMap<String, VehiclePojo> vehicles;
 	private SimpleDateFormat sdf;
 	private RulePojo doorRule;
 	private RulePojo parkingRule;
 	private RulePojo sureRule;
 	private LinkedBlockingQueue<Object> inQueue;
 	private LinkedBlockingQueue<Object> saveQueue;
-	public BusinessForDoorTask(TimlyPojo tp, HashMap<String, DevicePojo> devices, HashMap<String, AreaPojo> areas, RulePojo doorRule, RulePojo parkingRule, RulePojo sureRule){
+	public BusinessForDoorTask(UnitPojo up, TimlyPojo tp, HashMap<String, TagPojo> tags, HashMap<String, VehiclePojo> vehicles, HashMap<String, DevicePojo> devices, HashMap<String, AreaPojo> areas, RulePojo doorRule, RulePojo parkingRule, RulePojo sureRule){
+		this.up = up;
 		this.tp = tp;
 		this.devices = devices;
 		this.areas = areas;
+		this.tags = tags;
+		this.vehicles = vehicles;
 		this.sdf = ContainerUtil.getSdf();
 		this.doorRule = doorRule;
 		this.inQueue = ContainerUtil.getInQueue();
@@ -35,6 +49,7 @@ public class BusinessForDoorTask implements Runnable{
 	public void run() {
 		// TODO Auto-generated method stub
 		try{
+			this.con = ContainerUtil.getDataSource().getConnection();
 			long timeFlag = doorRule.getTime();
 			long currTime = sdf.parse(tp.getCurrentDeviceTime()).getTime();
 			//进出延迟判断
@@ -74,15 +89,31 @@ public class BusinessForDoorTask implements Runnable{
 				//判断进入后  加入队列  违停通知判断
 				tp.setActionInfo("none");
 				tp.setPositionType("into");
+				VehiclePojo vp = vehicles.get("" + tags.get(tp.getTagId()).getVehicleIndex());
+				vp.setPosition("into");
+				saveVehicleStatus(vp);
 				this.inQueue.offer(tp);
 			}else if(((oap.getType() == 0 && cap.getType() == 0) || cap.getType() == 0) && (!"out".equals(tp.getPositionType()))){
 				System.out.println("出");
 				tp.setActionInfo("none");
 				tp.setPositionType("out");
+				VehiclePojo vp = vehicles.get("" + tags.get(tp.getTagId()).getVehicleIndex());
+				vp.setPosition("out");
+				saveVehicleStatus(vp);
 			}
 		}catch(Exception e){
 			e.printStackTrace();
+		}finally{
+			try {
+				con.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
-
+	//报错车辆状态
+	private void saveVehicleStatus(VehiclePojo vp){
+		System.out.println(up.getId() + "---" + vp.getPosition());
+	}
 }

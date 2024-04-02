@@ -45,7 +45,7 @@ public class BusinessForDeviceStatusTask implements Runnable{
 				while(rs.next()){
 					String addr = rs.getString("channelAddr");
 					CachePojo cache = caches.get(addr);
-					UnitPojo up = (UnitPojo) cache.getUnitCache().get(addr);
+					UnitPojo up = (UnitPojo) cache.getUnitCache().get(addr);//null 值判断
 					String id = "" + up.getId();
 					long offlineRule = ((RulePojo)cache.getRuleCache().get("5")).getTime();
 					HashMap<String, DevicePojo> dps = cache.getDeviceCache();
@@ -87,21 +87,6 @@ public class BusinessForDeviceStatusTask implements Runnable{
 				}
 			}
 		}
-//		DevicePojo dp = devs.get(devId);
-//		dp.setRefreshTime(sdf.format(new Date()));
-//		try {
-//			System.out.println(dataSource);
-//			Connection con = dataSource.getConnection();
-//			Statement stat = con.createStatement();
-//			String sql = "update tb_" + unitIndex + "_device set status = 1, refreshTime = '" + dp.getRefreshTime() + 
-//					"' where deviceId = '" + devId + "'";
-//			stat.executeUpdate(sql);
-//			stat.close();
-//			con.close();
-//		} catch (SQLException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
 		
 	}
 

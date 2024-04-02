@@ -34,6 +34,7 @@ public class BusinessForStartAllTask implements Runnable{
 					HashMap<String, DevicePojo> devices = cache.getDeviceCache();
 					HashMap<String, RulePojo> rules = cache.getRuleCache();
 					HashMap<String, TagPojo> tags = cache.getTagCache();
+					HashMap<String, VehiclePojo> vehicles = cache.getVehicleCache();
 					UnitPojo up = cache.getUnitCache().get(localAddress);
 					//expire
 					long diff = System.currentTimeMillis() - ContainerUtil.getSdf().parse(tags.get(tp.getTagId()).getExpireDateTime()).getTime();
@@ -56,7 +57,7 @@ public class BusinessForStartAllTask implements Runnable{
 						int curAreaType = areas.get("" + devices.get(curDevId).getAreaIndex()).getType();
 						int oldAreaType = areas.get("" + devices.get(oldDevId).getAreaIndex()).getType();
 						if(oldAreaType < 2 && curAreaType < 2){
-							threadPool.execute(new BusinessForDoorTask(tp, devices, areas, rules.get("" + 2), rules.get("" + 0), rules.get("" + 1)));
+							threadPool.execute(new BusinessForDoorTask(up, tp, tags, vehicles, devices, areas, rules.get("" + 2), rules.get("" + 0), rules.get("" + 1)));
 						}else if(oldAreaType == 2 && curAreaType == 2){
 							threadPool.execute(new BusinessForParkingTask(tp, devices, areas));
 						}
