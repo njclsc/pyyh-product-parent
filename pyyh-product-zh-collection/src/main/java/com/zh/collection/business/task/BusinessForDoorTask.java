@@ -2,11 +2,10 @@ package com.zh.collection.business.task;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.concurrent.LinkedBlockingQueue;
-
-import javax.sql.DataSource;
 
 import com.zh.collection.pojo.AreaPojo;
 import com.zh.collection.pojo.DevicePojo;
@@ -113,7 +112,13 @@ public class BusinessForDoorTask implements Runnable{
 		}
 	}
 	//报错车辆状态
-	private void saveVehicleStatus(VehiclePojo vp){
-		System.out.println(up.getId() + "---" + vp.getPosition());
+	private void saveVehicleStatus(VehiclePojo vp) throws Exception{
+		Statement stat = con.createStatement();
+		String sql = "update tb_" + up.getId() + "_vehicle set position = '" + vp.getPosition() + "' where id = '" + 
+				vp.getId() + "'";
+		stat.executeUpdate(sql);
+		stat.close();
+//		System.out.println(up.getId() + "---" + vp.getPosition());
+		
 	}
 }

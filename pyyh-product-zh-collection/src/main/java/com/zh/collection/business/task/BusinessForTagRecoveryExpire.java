@@ -12,6 +12,7 @@ import com.zh.collection.pojo.TagPojo;
 import com.zh.collection.pojo.TimlyPojo;
 import com.zh.collection.pojo.UnitPojo;
 import com.zh.collection.pojo.VehiclePojo;
+import com.zh.collection.util.ContainerUtil;
 
 public class BusinessForTagRecoveryExpire implements Runnable{
 	private TimlyPojo tp;
@@ -27,6 +28,7 @@ public class BusinessForTagRecoveryExpire implements Runnable{
 		// TODO Auto-generated method stub
 		Connection con = null;
 		try{
+			con = ContainerUtil.getDataSource().getConnection();
 			String tagId = tp.getTagId();
 			Statement stat1 = con.createStatement();
 			String sql = "update tb_" + unitIndex + "_tag set expire = false where tagId = '" + tagId + "'";
