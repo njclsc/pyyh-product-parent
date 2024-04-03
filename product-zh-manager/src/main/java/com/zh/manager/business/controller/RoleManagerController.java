@@ -43,7 +43,7 @@ public class RoleManagerController {
 		return rms.findAll(rp);
 	}
 	@RequestMapping("loadMenu")
-	public Object loadMenu(@RequestBody RolePojo rp, HttpServletRequest req){
+	public Object loadMenu(HttpServletRequest req){
 		return ms.loadMenu(req.getHeader("zh-token"));
 	}
 }

@@ -247,11 +247,11 @@ CREATE TABLE `tb_sys_role` (
   `authority` varchar(500) DEFAULT NULL COMMENT '拥有权限',
   PRIMARY KEY (`id`),
   UNIQUE KEY `ROLE_KEY` (`roleName`,`unitIndex`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
 
 /*Data for the table `tb_sys_role` */
 
-insert  into `tb_sys_role`(`id`,`roleName`,`unitIndex`,`authority`) values (1,'管理员',1,'r_-1#w_2,3,6,7,9,10,12,13,14,15,16,17'),(2,'普通用户',1,'r_2,3#w_7'),(3,'role1',1,'xxxggg'),(6,'测试',14,'r_2,3#w_7'),(7,'667',0,'888'),(8,'88',0,'7'),(9,'44',0,'22'),(10,'9955',0,'33'),(11,'哈哈哈',0,'23'),(12,'6',0,'6'),(13,'66',0,'661'),(14,'',0,'999'),(15,NULL,0,NULL);
+insert  into `tb_sys_role`(`id`,`roleName`,`unitIndex`,`authority`) values (1,'管理员',1,'r_-1#w_2,3,6,7,9,10,12,13,14,15,16,17'),(2,'普通用户',1,'r_2,3#w_7'),(3,'role1',1,'xxxggg'),(6,'测试',14,'r_2,3#w_7'),(7,'667',0,'888'),(8,'88',0,'7'),(9,'44',0,'22'),(10,'9955',0,'33'),(11,'哈哈哈',0,'23'),(12,'6',0,'6'),(13,'66',0,'661'),(14,'',0,'999'),(15,NULL,0,NULL),(16,'7686',0,'1017'),(17,'76867',0,'2012;1010;1017');
 
 /*Table structure for table `tb_sys_unit` */
 

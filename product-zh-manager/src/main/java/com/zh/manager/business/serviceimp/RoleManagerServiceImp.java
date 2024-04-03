@@ -1,5 +1,6 @@
 package com.zh.manager.business.serviceimp;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +26,7 @@ public class RoleManagerServiceImp implements IManagerService, IMenuService{
 		// TODO Auto-generated method stub
 		ResponsePojo rp = new ResponsePojo();
 		try{
+			
 		int flag = rmd.add((RolePojo)p);
 		if(flag > 0){
 			rp.setMessage("角色添加成功");
@@ -99,12 +101,24 @@ public class RoleManagerServiceImp implements IManagerService, IMenuService{
 		Iterator<MenuPojo> itrLv1 = mlv1s.iterator();
 		while(itrLv1.hasNext()){
 			MenuPojo mp = itrLv1.next();
+			mp.setName(mp.getMenuName());
 			MenuPojo mlv2 = new MenuPojo();
 			mlv2.setParentIndex(mp.getId());
 			if(unitType > 0){	
 				mlv2.setExcludeIndex(13);
 			}
 			List<MenuPojo> mlv2s = rmd.loadMenu(mlv2);
+			for(MenuPojo _mp : mlv2s){
+				_mp.setChildren(new ArrayList<MenuPojo>());
+				_mp.setName(_mp.getMenuName());
+				MenuPojo mpr = new MenuPojo();
+				mpr.setId(1000 + _mp.getId());
+				mpr.setName("可读");
+				MenuPojo mpw = new MenuPojo();
+				mpw.setId(2000 + _mp.getId());
+				mpw.setName("可写");
+				_mp.getChildren().add(mpr);_mp.getChildren().add(mpw);
+			}
 			mp.setChildren(mlv2s);
 			if(mp.getChildren().size() == 0){
 				itrLv1.remove();

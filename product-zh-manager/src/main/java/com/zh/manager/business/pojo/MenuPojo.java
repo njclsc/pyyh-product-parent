@@ -10,10 +10,13 @@ import lombok.Setter;
 public class MenuPojo {
 	private int id;
 	private String menuName;
+	private String name;
 	private int menuPosition;
 	private int parentIndex;
 	private String sourceUrl;
 	private List<MenuPojo> children;
 	private String icon;
 	private int excludeIndex;
+	private boolean read;
+	private boolean write;
 }
