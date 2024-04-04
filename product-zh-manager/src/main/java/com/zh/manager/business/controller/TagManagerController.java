@@ -1,5 +1,7 @@
 package com.zh.manager.business.controller;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,19 +21,23 @@ public class TagManagerController {
 	private IManagerService tms;
 	
 	@RequestMapping("add")
-	public ResponsePojo add(@RequestBody TagPojo rp){
+	public ResponsePojo add(@RequestBody TagPojo rp, HttpServletRequest req){
+		rp.setToken(req.getHeader("zh-token"));
 		return tms.add(rp);
 	}
 	@RequestMapping("delete")
-	public ResponsePojo delete(@RequestBody TagPojo rp){
+	public ResponsePojo delete(@RequestBody TagPojo rp, HttpServletRequest req){
+		rp.setToken(req.getHeader("zh-token"));
 		return tms.delete(rp);
 	}
 	@RequestMapping("update")
-	public ResponsePojo update(@RequestBody TagPojo rp){
+	public ResponsePojo update(@RequestBody TagPojo rp, HttpServletRequest req){
+		rp.setToken(req.getHeader("zh-token"));
 		return tms.update(rp);
 	}
 	@RequestMapping("find")
-	public ResponsePojo find(@RequestBody TagPojo rp){
+	public ResponsePojo find(@RequestBody TagPojo rp, HttpServletRequest req){
+		rp.setToken(req.getHeader("zh-token"));
 		return tms.findAll(rp);
 	}
 }

@@ -15,4 +15,8 @@ public class TagPojo {
 	private String installDate;
 	private boolean expire;
 	private String expireDateTime;
+	private String token;
+	private int pages;
+	private int begin;
+	private int rows;
 }
