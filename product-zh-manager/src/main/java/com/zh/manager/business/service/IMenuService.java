@@ -1,5 +1,7 @@
 package com.zh.manager.business.service;
 
+import com.zh.manager.business.pojo.RolePojo;
+
 public interface IMenuService {
-	public Object loadMenu(String token);
+	public Object loadMenu(RolePojo rp);
 }

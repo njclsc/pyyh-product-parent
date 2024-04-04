@@ -2,5 +2,5 @@ spring:
   cloud:
     nacos:
       discovery:
-        namespace: ac7c02b9-286d-47b0-aec6-d4478613a874
-        server-addr: 192.168.3.188:8848
+        namespace: 447a6abe-ec2b-48c3-827f-546a6b0cb509
+        server-addr: 192.168.4.109:8848

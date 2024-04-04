@@ -19,4 +19,5 @@ public class MenuPojo {
 	private int excludeIndex;
 	private boolean read;
 	private boolean write;
+	private boolean checked;
 }

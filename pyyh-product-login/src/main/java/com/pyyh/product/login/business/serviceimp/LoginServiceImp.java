@@ -62,28 +62,25 @@ public class LoginServiceImp implements ILoginService{
 		//获取角色
 		RolePojo rp = loginDao.findRole(user);
 		user.setRoleIndex(rp.getId());
-		String[] rwInfo = rp.getAuthority().split("#");
+		String[] rwInfo = rp.getAuthority().split(",");
 		//菜单加载比较时使用
 		List<String> children = new ArrayList<>();
 		//权限加载时使用
 		List<String> readAuthority = new ArrayList<>();
 		List<String> writeAuthority = new ArrayList<>();
-		//读
-		if(!rwInfo[0].contains("-1")){
-			for(String s : rwInfo[0].split("_")[1].split(",")){
-				children.add(s);
-				readAuthority.add(s);
+		for(String s : rwInfo){
+			int menuIndex = Integer.parseInt(s);
+			if(menuIndex < 2000 && menuIndex > 1000){
+				children.add("" + (menuIndex - 1000));
+				readAuthority.add("" + s);
+			}else if(menuIndex > 2000){
+				children.add("" + (menuIndex - 2000));
+				writeAuthority.add("" + s);
 			}
 		}
 		user.setReadAuthority(readAuthority);
-		//写
-		if(!rwInfo[1].contains("-1")){
-			for(String s : rwInfo[1].split("_")[1].split(",")){
-				children.add(s);
-				writeAuthority.add(s);
-			}
-		}
 		user.setWriteAuthority(writeAuthority);
+		
 		//获取一级菜单
 		MenuPojo mlv1 = new MenuPojo();
 		mlv1.setParentIndex(-1);
@@ -102,9 +99,9 @@ public class LoginServiceImp implements ILoginService{
 				}
 			}
 			mp.setChildren(mlv2s);
-//			if(mp.getChildren().size() == 0){
-//				itrLv1.remove();
-//			}
+			if(mp.getChildren().size() == 0 && mp.getId() != 1 && mp.getId() != 3){
+				itrLv1.remove();
+			}
 		}
 		JSONObject obj = new JSONObject();
 		obj.put("readAuthority", readAuthority);

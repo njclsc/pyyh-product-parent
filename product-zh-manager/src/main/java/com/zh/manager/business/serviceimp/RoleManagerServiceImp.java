@@ -1,6 +1,7 @@
 package com.zh.manager.business.serviceimp;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -26,8 +27,18 @@ public class RoleManagerServiceImp implements IManagerService, IMenuService{
 		// TODO Auto-generated method stub
 		ResponsePojo rp = new ResponsePojo();
 		try{
-			
-		int flag = rmd.add((RolePojo)p);
+		RolePojo role = (RolePojo)p;
+		Map<String, Claim> claims = ToolUtil.tokenParse(role.getToken());
+		int unitIndex = claims.get("unitIndex").asInt();
+		List<String> userAuthority = claims.get("writeAuthority").asList(String.class);
+		role.setUnitIndex(unitIndex);
+		String authority = role.getAuthority();
+		if(!userAuthority.contains("2015")){
+			rp.setMessage("权限不足");
+			rp.setResult("fail");
+			return (T)rp;
+		}
+		int flag = rmd.add(role);
 		if(flag > 0){
 			rp.setMessage("角色添加成功");
 			rp.setResult("success");
@@ -37,7 +48,7 @@ public class RoleManagerServiceImp implements IManagerService, IMenuService{
 		}
 		}catch(Exception e){
 			e.printStackTrace();
-			rp.setMessage("角色添加失败");
+			rp.setMessage("角色名称已存在");
 			rp.setResult("fail");
 		}
 		return (T)rp;
@@ -47,7 +58,17 @@ public class RoleManagerServiceImp implements IManagerService, IMenuService{
 	public <T, P> T delete(P p) {
 		// TODO Auto-generated method stub
 		ResponsePojo rp = new ResponsePojo();
-		rmd.delete((RolePojo)p);
+		RolePojo role = (RolePojo)p;
+		Map<String, Claim> claims = ToolUtil.tokenParse(role.getToken());
+		int unitIndex = claims.get("unitIndex").asInt();
+		List<String> userAuthority = claims.get("writeAuthority").asList(String.class);
+		role.setUnitIndex(unitIndex);
+		if(!userAuthority.contains("2015")){
+			rp.setMessage("权限不足");
+			rp.setResult("fail");
+			return (T)rp;
+		}
+		rmd.delete(role);
 		rp.setMessage("角色删除成功");
 		rp.setResult("success");
 		return (T)rp;
@@ -57,8 +78,17 @@ public class RoleManagerServiceImp implements IManagerService, IMenuService{
 	public <T, P> T update(P p) {
 		// TODO Auto-generated method stub
 		ResponsePojo rp = new ResponsePojo();
-		RolePojo ap = (RolePojo)p;
-		rmd.update(ap);
+		RolePojo role = (RolePojo)p;
+		Map<String, Claim> claims = ToolUtil.tokenParse(role.getToken());
+		int unitIndex = claims.get("unitIndex").asInt();
+		List<String> userAuthority = claims.get("writeAuthority").asList(String.class);
+		role.setUnitIndex(unitIndex);
+		if(!userAuthority.contains("2015")){
+			rp.setMessage("权限不足");
+			rp.setResult("fail");
+			return (T)rp;
+		}
+		rmd.update(role);
 		rp.setMessage("角色修改成功");
 		rp.setResult("success");
 		return (T)rp;
@@ -73,28 +103,42 @@ public class RoleManagerServiceImp implements IManagerService, IMenuService{
 	@Override
 	public <T, P> T findAll(P p) {
 		// TODO Auto-generated method stub
-		RolePojo ap = (RolePojo)p;
-		Map<String, Claim> tkInf = ToolUtil.tokenParse(ap.getToken());
-		ap.setUnitIndex(tkInf.get("unitIndex").asInt());
-		int pages = ap.getPages();
-		int rows = ap.getRows();
+		ResponsePojo rep = new ResponsePojo();
+		RolePojo role = (RolePojo)p;
+		Map<String, Claim> claims = ToolUtil.tokenParse(role.getToken());
+		int unitIndex = claims.get("unitIndex").asInt();
+		List<String> readAuthority = claims.get("writeAuthority").asList(String.class);
+		List<String> userAuthority = claims.get("writeAuthority").asList(String.class);
+		role.setUnitIndex(unitIndex);
+		if(!readAuthority.contains("1015") && !userAuthority.contains("2015")){
+			rep.setMessage("权限不足");
+			rep.setResult("fail");
+			return (T)rep;
+		}
+		int pages = role.getPages();
+		int rows = role.getRows();
 		int begin = (pages - 1) * rows;
-		ap.setBegin(begin);
-		List<RolePojo> aps = rmd.find(ap);
-		int count = rmd.count(ap);
+		role.setBegin(begin);
+		List<RolePojo> aps = rmd.find(role);
+		int count = rmd.count(role);
 		ResultPojo rp = new ResultPojo();
 		rp.setTotal(count);
 		rp.setData(aps);
-		ResponsePojo rep = new ResponsePojo();
+		
 		rep.setMessage("");
 		rep.setResult("success");
 		rep.setSource(rp);
 		return (T)rep;
 	}
-	public Object loadMenu(String token){
-		Map<String, Claim> tkInf = ToolUtil.tokenParse(token);
+	public Object loadMenu(RolePojo p){
+		RolePojo rp = (RolePojo)p;
+		Map<String, Claim> claims = ToolUtil.tokenParse(rp.getToken());
 		//权限菜单按unitType分割(> 0 剔除单位管理    == 0  添加单位管理)
-		int unitType = tkInf.get("unitType").asInt();
+		int unitIndex = claims.get("unitIndex").asInt();
+		rp.setUnitIndex(unitIndex);
+		//修改时回显(查出角色权限设置回显)
+		System.out.println(rp.getAuthority());
+		
 		MenuPojo m1v1 = new MenuPojo();
 		m1v1.setParentIndex(-1);
 		List<MenuPojo> mlv1s = rmd.loadMenu(m1v1);
@@ -104,7 +148,7 @@ public class RoleManagerServiceImp implements IManagerService, IMenuService{
 			mp.setName(mp.getMenuName());
 			MenuPojo mlv2 = new MenuPojo();
 			mlv2.setParentIndex(mp.getId());
-			if(unitType > 0){	
+			if(rp.getUnitIndex() > 0){	
 				mlv2.setExcludeIndex(13);
 			}
 			List<MenuPojo> mlv2s = rmd.loadMenu(mlv2);
@@ -117,12 +161,24 @@ public class RoleManagerServiceImp implements IManagerService, IMenuService{
 				MenuPojo mpw = new MenuPojo();
 				mpw.setId(2000 + _mp.getId());
 				mpw.setName("可写");
+				if(rp.getAuthority() != null){
+					if(rp.getAuthority().contains("" + mpr.getId())){
+						mpr.setChecked(true);
+					}else{
+						mpr.setChecked(false);
+					}
+					if(rp.getAuthority().contains("" + mpw.getId())){
+						mpw.setChecked(true);
+					}else{
+						mpw.setChecked(false);
+					}
+				}
 				_mp.getChildren().add(mpr);_mp.getChildren().add(mpw);
 			}
 			mp.setChildren(mlv2s);
-			if(mp.getChildren().size() == 0){
-				itrLv1.remove();
-			}
+//			if(mp.getChildren().size() == 0){
+//				itrLv1.remove();
+//			}
 		}
 		return (Object)mlv1s;
 	}

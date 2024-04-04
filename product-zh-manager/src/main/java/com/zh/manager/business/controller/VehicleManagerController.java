@@ -1,5 +1,7 @@
 package com.zh.manager.business.controller;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,7 +25,8 @@ public class VehicleManagerController {
 	private IAuditingService as;
 	
 	@RequestMapping("add")
-	public ResponsePojo add(@RequestBody VehiclePojo vp){
+	public ResponsePojo add(@RequestBody VehiclePojo vp, HttpServletRequest req){
+		vp.setToken(req.getHeader("zh-token"));
 		return vms.add(vp);
 	}
 	@RequestMapping("update")

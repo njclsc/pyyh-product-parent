@@ -22,4 +22,5 @@ public class VehiclePojo {
 	private int status;
 	private int unitIndex;
 	private String reason;
+	private String token;
 }
