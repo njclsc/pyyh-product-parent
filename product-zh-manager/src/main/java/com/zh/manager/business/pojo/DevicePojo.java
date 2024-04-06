@@ -12,4 +12,8 @@ public class DevicePojo {
 	private int type;
 	private String refreshTime;
 	private int unitIndex;
+	private String token;
+	private int pages;
+	private int begin;
+	private int rows;
 }

@@ -1,5 +1,7 @@
 package com.zh.manager.business.controller;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,23 +19,28 @@ public class DeviceManagerController {
 	@Qualifier("DeviceManagerServiceImp")
 	private IManagerService dms;
 	@RequestMapping("add")
-	public ResponsePojo add(@RequestBody DevicePojo rp){
+	public ResponsePojo add(@RequestBody DevicePojo rp, HttpServletRequest req){
+		rp.setToken(req.getHeader("zh-token"));
 		return dms.add(rp);
 	}
 	@RequestMapping("delete")
-	public ResponsePojo delete(@RequestBody DevicePojo rp){
+	public ResponsePojo delete(@RequestBody DevicePojo rp, HttpServletRequest req){
+		rp.setToken(req.getHeader("zh-token"));
 		return dms.delete(rp);
 	}
 	@RequestMapping("update")
-	public ResponsePojo update(@RequestBody DevicePojo rp){
+	public ResponsePojo update(@RequestBody DevicePojo rp, HttpServletRequest req){
+		rp.setToken(req.getHeader("zh-token"));
 		return dms.update(rp);
 	}
 	@RequestMapping("findById")
-	public ResponsePojo findById(@RequestBody DevicePojo rp){
+	public ResponsePojo findById(@RequestBody DevicePojo rp, HttpServletRequest req){
+		rp.setToken(req.getHeader("zh-token"));
 		return dms.findById(rp);
 	}
 	@RequestMapping("findAll")
-	public ResponsePojo findAll(@RequestBody DevicePojo rp){
+	public ResponsePojo findAll(@RequestBody DevicePojo rp, HttpServletRequest req){
+		rp.setToken(req.getHeader("zh-token"));
 		return dms.findAll(rp);
 	}
 }
