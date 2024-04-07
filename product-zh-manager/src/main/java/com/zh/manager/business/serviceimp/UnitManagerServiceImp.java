@@ -26,7 +26,9 @@ public class UnitManagerServiceImp implements IManagerService{
 		try{
 		UnitPojo up = (UnitPojo)p;
 		Map<String, Claim> tkInf = ToolUtil.tokenParse(up.getToken());
-		if(tkInf.get("unitType").asInt() != 0){
+		int unitIndex = tkInf.get("unitIndex").asInt();
+		List<String> userAuthority = tkInf.get("writeAuthority").asList(String.class);
+		if(tkInf.get("unitType").asInt() != 0 && !userAuthority.contains("2013")){
 			rp.setMessage("单位添加失败, 权限不足!");
 			rp.setResult("fail");
 			return (T)rp;

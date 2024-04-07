@@ -72,7 +72,7 @@ public class LoginServiceImp implements ILoginService{
 			int menuIndex = Integer.parseInt(s);
 			if(menuIndex < 2000 && menuIndex > 1000){
 				children.add("" + (menuIndex - 1000));
-				readAuthority.add("" + s);
+				writeAuthority.add("" + s);
 			}else if(menuIndex > 2000){
 				children.add("" + (menuIndex - 2000));
 				writeAuthority.add("" + s);
