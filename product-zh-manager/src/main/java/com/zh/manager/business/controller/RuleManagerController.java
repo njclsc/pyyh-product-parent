@@ -1,5 +1,7 @@
 package com.zh.manager.business.controller;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,23 +20,28 @@ public class RuleManagerController {
 	private IManagerService rms;
 	
 	@RequestMapping("add")
-	public ResponsePojo add(@RequestBody RulePojo rp){
+	public ResponsePojo add(@RequestBody RulePojo rp, HttpServletRequest req){
+		rp.setToken(req.getHeader("zh-token"));
 		return rms.add(rp);
 	}
 	@RequestMapping("update")
-	public ResponsePojo update(@RequestBody RulePojo rp){
+	public ResponsePojo update(@RequestBody RulePojo rp, HttpServletRequest req){
+		rp.setToken(req.getHeader("zh-token"));
 		return rms.update(rp);
 	}
 	@RequestMapping("delete")
-	public ResponsePojo delete(@RequestBody RulePojo rp){
+	public ResponsePojo delete(@RequestBody RulePojo rp, HttpServletRequest req){
+		rp.setToken(req.getHeader("zh-token"));
 		return rms.delete(rp);
 	}
 	@RequestMapping("findById")
-	public ResponsePojo findById(@RequestBody RulePojo rp){
+	public ResponsePojo findById(@RequestBody RulePojo rp, HttpServletRequest req){
+		rp.setToken(req.getHeader("zh-token"));
 		return rms.findById(rp);
 	}
 	@RequestMapping("findAll")
-	public ResponsePojo findAll(@RequestBody RulePojo rp){
+	public ResponsePojo findAll(@RequestBody RulePojo rp, HttpServletRequest req){
+		rp.setToken(req.getHeader("zh-token"));
 		return rms.findAll(rp);
 	}
 }

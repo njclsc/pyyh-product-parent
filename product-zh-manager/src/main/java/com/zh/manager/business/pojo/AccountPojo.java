@@ -15,4 +15,5 @@ public class AccountPojo {
 	private int pages;
 	private int begin;
 	private int rows;
+	private String token;
 }

@@ -2,8 +2,12 @@ package com.zh.manager.business.quartz;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
@@ -16,7 +20,7 @@ import org.springframework.scheduling.quartz.QuartzJobBean;
 
 import com.alibaba.fastjson.JSONObject;
 import com.zh.manager.business.pojo.PushAlarmPojo;
-import com.zh.manager.business.pojo.WebSocketPushPojo;
+import com.zh.manager.business.pojo.WebSocketPushSevenDayPojo;
 import com.zh.manager.config.DataSourceConfiguer;
 import com.zh.manager.util.ContainerUtil;
 
@@ -82,6 +86,7 @@ public class WebSocketSendAlarmTask extends QuartzJobBean{
 						sess.getBasicRemote().sendText(jb.toJSONString());
 						System.out.println("========>>> " + jb.toJSONString());
 					}
+					
 					rs.close();
 					stat.close();
 				}catch(Exception e){
@@ -97,5 +102,5 @@ public class WebSocketSendAlarmTask extends QuartzJobBean{
 			e.printStackTrace();
 		}
 	}
-
+	
 }

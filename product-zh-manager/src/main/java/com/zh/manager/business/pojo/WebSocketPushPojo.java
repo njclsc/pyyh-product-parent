@@ -16,4 +16,5 @@ public class WebSocketPushPojo {
 	private List<WebSocketPushDevPojo> devNum;
 	private int excDevNum;
 	private int nomoreNum;
+	private WebSocketPushSevenDayPojo nearAlarmNum;
 }

@@ -1,5 +1,7 @@
 package com.zh.manager.business.controller;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,19 +20,23 @@ public class AccountManagerController {
 	private IManagerService ams;
 	
 	@RequestMapping("add")
-	public ResponsePojo add(@RequestBody AccountPojo rp){
+	public ResponsePojo add(@RequestBody AccountPojo rp, HttpServletRequest req){
+		rp.setToken(req.getHeader("zh-token"));
 		return ams.add(rp);
 	}
 	@RequestMapping("delete")
-	public ResponsePojo delete(@RequestBody AccountPojo rp){
+	public ResponsePojo delete(@RequestBody AccountPojo rp, HttpServletRequest req){
+		rp.setToken(req.getHeader("zh-token"));
 		return ams.delete(rp);
 	}
 	@RequestMapping("update")
-	public ResponsePojo update(@RequestBody AccountPojo rp){
+	public ResponsePojo update(@RequestBody AccountPojo rp, HttpServletRequest req){
+		rp.setToken(req.getHeader("zh-token"));
 		return ams.update(rp);
 	}
 	@RequestMapping("find")
-	public ResponsePojo find(@RequestBody AccountPojo rp){
+	public ResponsePojo find(@RequestBody AccountPojo rp, HttpServletRequest req){
+		rp.setToken(req.getHeader("zh-token"));
 		return ams.findAll(rp);
 	}
 	

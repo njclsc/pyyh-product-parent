@@ -10,4 +10,6 @@ import lombok.Setter;
 public class WebSocketPushSevenDayPojo {
 	private List<String> date;
 	private List<Integer> registNumber;
+	private List<Integer> alarmNum;
+	private List<Integer> noOperate;
 }

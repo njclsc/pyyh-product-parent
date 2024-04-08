@@ -12,4 +12,8 @@ public class RulePojo {
 	private int areaIndex;
 	private int time;
 	private int unitIndex;
+	private String token;
+	private int pages;
+	private int begin;
+	private int rows;
 }
