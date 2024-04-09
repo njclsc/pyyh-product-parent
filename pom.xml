@@ -161,5 +161,6 @@
 		<module>pyyh-product-zh-manager</module>
 		<module>pyyh-product-zh-collection</module>
 		<module>product-zh-manager</module>
+		<module>pyyh-product-middware</module>
 	</modules>
 </project>
