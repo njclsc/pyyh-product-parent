@@ -14,6 +14,8 @@ import com.zh.collection.business.task.BusinessForCacheRefreshTask;
 import com.zh.collection.business.task.BusinessForDeviceStatusTask;
 import com.zh.collection.business.task.BusinessForSaveTask;
 import com.zh.collection.business.task.BusinessForStartAllTask;
+import com.zh.collection.business.task.Show_1_BusinessForStartAllTask;
+import com.zh.collection.lizer.Show_1_UDPChannelinitializer;
 import com.zh.collection.lizer.UDPChannelinitializer;
 import com.zh.collection.pojo.AreaPojo;
 import com.zh.collection.pojo.CachePojo;
@@ -49,7 +51,10 @@ public class InitApplication {
 			Bootstrap boot = new Bootstrap();
 			boot.group(work).channel(NioDatagramChannel.class).option(ChannelOption.RCVBUF_ALLOCATOR, 
 					new AdaptiveRecvByteBufAllocator(udpCnf.getMiniBuf(),
-						udpCnf.getInitBuf(), udpCnf.getMaxBuf())).handler(new UDPChannelinitializer());
+//						udpCnf.getInitBuf(), udpCnf.getMaxBuf())).handler(new UDPChannelinitializer());-----------------------------------
+						udpCnf.getInitBuf(), udpCnf.getMaxBuf())).handler(new Show_1_UDPChannelinitializer());
+			
+			
 			for(String s : udpCnf.getIpAddress()){
 				String[] tmpAddress = s.split(":");
 				ChannelFuture f = boot.bind(new InetSocketAddress(tmpAddress[0], Integer.parseInt(tmpAddress[1])));
@@ -60,7 +65,8 @@ public class InitApplication {
 		//创建线程池
 		ContainerUtil.setThreadPool(OperateUtil.createThreadPool());
 		//业务处理
-		ContainerUtil.getThreadPool().execute(new BusinessForStartAllTask());
+//		ContainerUtil.getThreadPool().execute(new BusinessForStartAllTask());-----------------------------------
+		ContainerUtil.getThreadPool().execute(new Show_1_BusinessForStartAllTask());
 		//数据持久化
 		ContainerUtil.getThreadPool().execute(new BusinessForSaveTask());
 		//设备状态刷新
