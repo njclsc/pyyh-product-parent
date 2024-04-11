@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zh.manager.business.dao.IAreaManagerDao">
+
+	<insert id="add" parameterType = "com.zh.manager.business.pojo.AreaPojo" useGeneratedKeys="true" keyProperty="id">
+		insert into tb_${unitIndex}_area(areaName, type) values(
+			#{areaName}, ${type}
+		)
+	</insert>
+	<delete id="delete" parameterType = "com.zh.manager.business.pojo.AreaPojo">
+		delete from tb_${unitIndex}_area where id = ${id}
+	</delete>
+	<update id="update" parameterType = "com.zh.manager.business.pojo.AreaPojo">
+		update tb_${unitIndex}_area set areaName = #{areaName}, type = ${type} where id = ${id}
+	</update>
+	<select id="find" parameterType = "com.zh.manager.business.pojo.AreaPojo" resultType = "com.zh.manager.business.pojo.AreaPojo">
+		select * from tb_${unitIndex}_area where 1 = 1
+		<if test="id != null and id != ''">
+			and id = ${id}
+		</if>
+		<if test="areaName != null and areaName != ''">
+			and areaName = #{areaName}
+		</if>
+		<if test="type != null and type != ''">
+			and type = ${type}
+		</if>
+		limit ${begin}, ${rows}
+	</select>
+	<select id="count" parameterType = "com.zh.manager.business.pojo.AreaPojo" resultType = "Integer">
+		select count(*) from tb_${unitIndex}_area where 1 = 1
+		<if test="id != null and id != ''">
+			and id = ${id}
+		</if>
+		<if test="areaName != null and areaName != ''">
+			and areaName = #{areaName}
+		</if>
+		<if test="type != null and type != ''">
+			and type = ${type}
+		</if>
+	</select>
+</mapper>

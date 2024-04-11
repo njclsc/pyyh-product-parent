@@ -10,6 +10,8 @@ import com.auth0.jwt.interfaces.Claim;
 import com.zh.manager.business.dao.IDeviceManagerDao;
 import com.zh.manager.business.pojo.DevicePojo;
 import com.zh.manager.business.pojo.ResponsePojo;
+import com.zh.manager.business.pojo.ResultPojo;
+import com.zh.manager.business.pojo.TagPojo;
 import com.zh.manager.business.service.IManagerService;
 import com.zh.manager.util.ToolUtil;
 
@@ -32,8 +34,16 @@ public class DeviceManagerServiceImp implements IManagerService{
 				rp.setResult("fail");
 				return (T)rp;
 			}
+			String devIdHex = ToolUtil.int2HexStr(Integer.parseInt(tp.getDeviceId()));
+			int diffLen = 4 - devIdHex.length();
+			for(int i = 0; i < diffLen; i++){
+				devIdHex = "0" + devIdHex;
+			}
+			tp.setDeviceId(devIdHex);
+			
+			
 			int flag = dmd.add(tp);
-			System.out.println(flag);
+//			System.out.println(flag);
 			if(flag > 0){
 				rp.setMessage("设备添加成功");
 				rp.setResult("success");
@@ -61,7 +71,6 @@ public class DeviceManagerServiceImp implements IManagerService{
 			rp.setResult("fail");
 			return (T)rp;
 		}
-		
 		dmd.delete(tp);
 		rp.setMessage("设备删除成功");
 		rp.setResult("success");
@@ -82,6 +91,12 @@ public class DeviceManagerServiceImp implements IManagerService{
 			rp.setResult("fail");
 			return (T)rp;
 		}
+		String devIdHex = ToolUtil.int2HexStr(Integer.parseInt(tp.getDeviceId()));
+		int diffLen = 4 - devIdHex.length();
+		for(int i = 0; i < diffLen; i++){
+			devIdHex = "0" + devIdHex;
+		}
+		tp.setDeviceId(devIdHex);
 		dmd.update(tp);
 		rp.setMessage("设备修改成功");
 		rp.setResult("success");
@@ -112,9 +127,31 @@ public class DeviceManagerServiceImp implements IManagerService{
 			rep.setResult("fail");
 			return (T)rep;
 		}
+		if(tp.getDeviceId() != null && !tp.getDeviceId().equals("")){
+			String deviceIdHex = ToolUtil.int2HexStr(Integer.parseInt(tp.getDeviceId()));
+			int diffLen = 4 - deviceIdHex.length();
+			for(int i = 0; i < diffLen; i++){
+				deviceIdHex = "0" + deviceIdHex;
+			}
+			tp.setDeviceId(deviceIdHex);
+		}
+		int pages = tp.getPages();
+		int rows = tp.getRows();
+		int begin = (pages - 1) * rows;
+		tp.setBegin(begin);
+		ResultPojo rp1 = new ResultPojo();
 		List<DevicePojo> rp = dmd.findAll(tp);
+		int total = dmd.count(tp);
+		for(DevicePojo tp1 : rp){
+			tp1.setDeviceId("" + ToolUtil.hexStr2Int(tp1.getDeviceId()));
+		}
+		rp1.setTotal(total);
+		rp1.setData(rp);
+		
+		
+		
 		rep.setResult("success");
-		rep.setSource(rp);
+		rep.setSource(rp1);
 		return (T)rep;
 	}
 

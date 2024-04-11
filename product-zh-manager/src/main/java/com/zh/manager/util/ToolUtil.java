@@ -13,7 +13,12 @@ public class ToolUtil {
 	public static Map<String, Claim> tokenParse(String token){
 		return JWT.decode(token).getClaims();
 	}
-	
+	public static String int2HexStr(int num){
+		return Integer.toHexString(num).toUpperCase();
+	}
+	public static int hexStr2Int(String str){
+		return Integer.parseInt(str, 16);
+	}
 	public static void createUnitAppDataTable(UnitPojo up) throws Exception{
 		StringBuffer sql = new StringBuffer();
 		sql.append("CREATE TABLE tb_tmp_area (");

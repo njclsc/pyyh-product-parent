@@ -2,16 +2,20 @@ package com.zh.manager.business.serviceimp;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.auth0.jwt.interfaces.Claim;
 import com.zh.manager.business.dao.IVehicleManagerDao;
 import com.zh.manager.business.pojo.ResponsePojo;
+import com.zh.manager.business.pojo.ResultPojo;
 import com.zh.manager.business.pojo.VehiclePojo;
 import com.zh.manager.business.service.IAuditingService;
 import com.zh.manager.business.service.IManagerService;
 import com.zh.manager.util.ContainerUtil;
+import com.zh.manager.util.ToolUtil;
 
 @Service("VehicleManagerServiceImp")
 public class VehicleManagerServiceImp implements IManagerService, IAuditingService{
@@ -23,6 +27,18 @@ public class VehicleManagerServiceImp implements IManagerService, IAuditingServi
 		ResponsePojo rp = new ResponsePojo();
 		try{
 		VehiclePojo up = (VehiclePojo)p;
+		
+		Map<String, Claim> claims = ToolUtil.tokenParse(up.getToken());
+		int unitIndex = claims.get("unitIndex").asInt();
+		List<String> userAuthority = claims.get("writeAuthority").asList(String.class);
+		up.setUnitIndex(unitIndex);
+		if(!userAuthority.contains("2017")){
+			rp.setMessage("权限不足");
+			rp.setResult("fail");
+			return (T)rp;
+		}
+		
+		System.out.println(up.getUnitIndex());
 		up.setStatus(3);
 		up.setRegistDate(ContainerUtil.getSdf().format(new Date()));
 		vmd.add(up);
@@ -45,9 +61,22 @@ public class VehicleManagerServiceImp implements IManagerService, IAuditingServi
 	@Override
 	public <T, P> T delete(P p) {
 		// TODO Auto-generated method stub
-		VehiclePojo up = (VehiclePojo)p;
-		vmd.delete(up);
 		ResponsePojo rp = new ResponsePojo();
+		VehiclePojo up = (VehiclePojo)p;
+		
+		Map<String, Claim> claims = ToolUtil.tokenParse(up.getToken());
+		int unitIndex = claims.get("unitIndex").asInt();
+		List<String> userAuthority = claims.get("writeAuthority").asList(String.class);
+		up.setUnitIndex(unitIndex);
+		if(!userAuthority.contains("2017")){
+			rp.setMessage("权限不足");
+			rp.setResult("fail");
+			return (T)rp;
+		}
+		
+		
+		vmd.delete(up);
+		
 		rp.setMessage("车辆删除成功!");
 		rp.setResult("success");
 		return (T)rp;
@@ -56,9 +85,22 @@ public class VehicleManagerServiceImp implements IManagerService, IAuditingServi
 	@Override
 	public <T, P> T update(P p) {
 		// TODO Auto-generated method stub
-		VehiclePojo up = (VehiclePojo)p;
-		vmd.update(up);
 		ResponsePojo rp = new ResponsePojo();
+		VehiclePojo up = (VehiclePojo)p;
+		
+		Map<String, Claim> claims = ToolUtil.tokenParse(up.getToken());
+		int unitIndex = claims.get("unitIndex").asInt();
+		List<String> userAuthority = claims.get("writeAuthority").asList(String.class);
+		up.setUnitIndex(unitIndex);
+		if(!userAuthority.contains("2017")){
+			rp.setMessage("权限不足");
+			rp.setResult("fail");
+			return (T)rp;
+		}
+		
+		
+		vmd.update(up);
+		
 		rp.setMessage("车辆修改成功!");
 		rp.setResult("success");
 		return (T)rp;
@@ -78,19 +120,46 @@ public class VehicleManagerServiceImp implements IManagerService, IAuditingServi
 	@Override
 	public <T, P> T findAll(P p) {
 		// TODO Auto-generated method stub
-		VehiclePojo up = (VehiclePojo)p;
-		List<VehiclePojo> ups = vmd.findByAll(up);
 		ResponsePojo rp = new ResponsePojo();
+		VehiclePojo up = (VehiclePojo)p;
+		Map<String, Claim> claims = ToolUtil.tokenParse(up.getToken());
+		int unitIndex = claims.get("unitIndex").asInt();
+		List<String> userAuthority = claims.get("writeAuthority").asList(String.class);
+		up.setUnitIndex(unitIndex);
+		if(!userAuthority.contains("1017") || (!userAuthority.contains("1017") && !userAuthority.contains("2017"))){
+			rp.setMessage("权限不足");
+			rp.setResult("fail");
+			return (T)rp;
+		}
+		
+		
+		
+		List<VehiclePojo> ups = vmd.findByAll(up);
+		ResultPojo rp1 = new ResultPojo();
+		rp1.setTotal(vmd.count(up));
+		rp1.setData(ups);
+		
+		
 		rp.setResult("success");
-		rp.setSource(ups);
+		rp.setSource(rp1);
 		return (T)rp;
 	}
 
 	@Override
 	public ResponsePojo auditing(VehiclePojo vp) {
 		// TODO Auto-generated method stub
-		vmd.auditing(vp);
 		ResponsePojo rp = new ResponsePojo();
+		VehiclePojo up = (VehiclePojo)vp;
+		Map<String, Claim> claims = ToolUtil.tokenParse(up.getToken());
+		int unitIndex = claims.get("unitIndex").asInt();
+		List<String> userAuthority = claims.get("writeAuthority").asList(String.class);
+		up.setUnitIndex(unitIndex);
+		if(!userAuthority.contains("2017")){
+			rp.setMessage("权限不足");
+			rp.setResult("fail");
+			return rp;
+		}
+		vmd.auditing(up);
 		rp.setResult("success");
 		if(vp.getStatus() == 2){
 			rp.setMessage("已驳回");
@@ -98,6 +167,7 @@ public class VehicleManagerServiceImp implements IManagerService, IAuditingServi
 			rp.setMessage("已通过");
 		}else if(vp.getStatus() == 0){
 			rp.setMessage("已安装");
+			System.out.println(up.getRfidId1() + "---->>>" + up.getRfidId2());
 		}
 		return rp;
 	}

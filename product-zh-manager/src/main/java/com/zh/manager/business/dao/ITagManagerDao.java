@@ -16,4 +16,5 @@ public interface ITagManagerDao {
 	public void update(TagPojo rp);
 	public TagPojo findById(TagPojo rp);
 	public List<TagPojo> findAll(TagPojo rp);
+	public int count(TagPojo rp);
 }

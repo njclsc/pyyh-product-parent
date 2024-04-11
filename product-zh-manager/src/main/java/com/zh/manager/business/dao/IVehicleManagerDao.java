@@ -12,6 +12,7 @@ public interface IVehicleManagerDao {
 	public int add(VehiclePojo UnitPojo);
 	public int update(VehiclePojo UnitPojo);
 	public VehiclePojo findById(VehiclePojo UnitPojo);
+	public int count(VehiclePojo UnitPojo);
 	public List<VehiclePojo> findByAll(VehiclePojo UnitPojo);
 	public void delete(VehiclePojo UnitPojo);
 	//审核

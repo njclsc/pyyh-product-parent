@@ -43,7 +43,9 @@ public class RoleManagerController {
 		return rms.findAll(rp);
 	}
 	@RequestMapping("loadMenu")
-	public Object loadMenu(@RequestBody RolePojo rp, HttpServletRequest req){
+	public Object loadMenu(HttpServletRequest req){
+		RolePojo rp = new RolePojo();
+		System.out.println("--->>>>---" + req.getParameter("id"));
 		rp.setToken(req.getHeader("zh-token"));
 		return ms.loadMenu(rp);
 	}

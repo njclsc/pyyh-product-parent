@@ -13,4 +13,5 @@ public interface IDeviceManagerDao {
 	public void delete(DevicePojo rp);
 	public DevicePojo findById(DevicePojo rp);
 	public List<DevicePojo> findAll(DevicePojo rp);
+	public int count(DevicePojo rp);
 }

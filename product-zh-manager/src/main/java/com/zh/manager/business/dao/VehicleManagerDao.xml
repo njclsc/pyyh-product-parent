@@ -15,8 +15,19 @@
 	<select id="findById" parameterType = "com.zh.manager.business.pojo.VehiclePojo" resultType = "com.zh.manager.business.pojo.VehiclePojo">
 		select * from tb_${unitIndex}_vehicle where id = ${id}
 	</select>
+	
 	<select id="findByAll" parameterType = "com.zh.manager.business.pojo.VehiclePojo" resultType = "com.zh.manager.business.pojo.VehiclePojo">
 		select * from tb_${unitIndex}_vehicle where 1 = 1
+		<if test="ownerName != null and ownerName != ''">
+			and ownerName = #{ownerName}
+		</if>
+		<if test="movePhone != null and movePhone!= ''">
+			and movePhone = #{movePhone}
+		</if>
+		limit ${begin}, ${rows}
+	</select>
+	<select id="count" parameterType = "com.zh.manager.business.pojo.VehiclePojo" resultType = "Integer">
+		select count(*) from tb_${unitIndex}_vehicle where 1 = 1
 		<if test="ownerName != null and ownerName != ''">
 			and ownerName = #{ownerName}
 		</if>
@@ -28,6 +39,13 @@
 		delete from tb_${unitIndex}_vehicle where id = ${id}
 	</delete>
 	<update id="auditing" parameterType = "com.zh.manager.business.pojo.VehiclePojo">
-		update tb_${unitIndex}_vehicle set status = ${status}, reason = #{reason} where id = ${id}
+		update tb_${unitIndex}_vehicle set
+		<if test="rfidId1 != null and rfidId1 != ''">
+			rfidId1 = #{rfidId1},
+		</if>
+		<if test="rfidId2 != null and rfidId2 != ''">
+			rfidId2 = #{rfidId2},
+		</if>
+		status = ${status}, reason = #{reason} where id = ${id}
 	</update>
 </mapper>

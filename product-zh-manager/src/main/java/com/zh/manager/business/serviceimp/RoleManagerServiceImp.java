@@ -131,13 +131,15 @@ public class RoleManagerServiceImp implements IManagerService, IMenuService{
 		return (T)rep;
 	}
 	public Object loadMenu(RolePojo p){
-		RolePojo rp = (RolePojo)p;
+		RolePojo rp = null;
+		if(p != null){
+			rp = (RolePojo)p;
+		}
 		Map<String, Claim> claims = ToolUtil.tokenParse(rp.getToken());
 		//权限菜单按unitType分割(> 0 剔除单位管理    == 0  添加单位管理)
 		int unitIndex = claims.get("unitIndex").asInt();
 		rp.setUnitIndex(unitIndex);
 		//修改时回显(查出角色权限设置回显)
-		System.out.println(rp.getAuthority());
 		
 		MenuPojo m1v1 = new MenuPojo();
 		m1v1.setParentIndex(-1);

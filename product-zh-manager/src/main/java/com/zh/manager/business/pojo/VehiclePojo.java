@@ -23,4 +23,7 @@ public class VehiclePojo {
 	private int unitIndex;
 	private String reason;
 	private String token;
+	private int pages;
+	private int begin;
+	private int rows;
 }

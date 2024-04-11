@@ -15,7 +15,7 @@
 		where accountName = #{accountName} and unitIndex = ${unitIndex}
 	</update>
 	<select id="find" parameterType = "com.zh.manager.business.pojo.AccountPojo" resultType = "com.zh.manager.business.pojo.AccountPojo">
-		select id, accountName, unitIndex, roleIndex from tb_sys_account where 1 = 1
+		select id, accountName, password, unitIndex, roleIndex from tb_sys_account where 1 = 1
 		<if test="id != null and id != ''">
 			and id = ${id}
 		</if>

@@ -30,23 +30,28 @@ public class VehicleManagerController {
 		return vms.add(vp);
 	}
 	@RequestMapping("update")
-	public ResponsePojo update(@RequestBody VehiclePojo vp){
+	public ResponsePojo update(@RequestBody VehiclePojo vp, HttpServletRequest req){
+		vp.setToken(req.getHeader("zh-token"));
 		return vms.update(vp);
 	}
 	@RequestMapping("findById")
-	public ResponsePojo findById(@RequestBody VehiclePojo vp){
+	public ResponsePojo findById(@RequestBody VehiclePojo vp, HttpServletRequest req){
+		vp.setToken(req.getHeader("zh-token"));
 		return vms.findById(vp);
 	}
 	@RequestMapping("findByAll")
-	public ResponsePojo findByAll(@RequestBody VehiclePojo vp){
+	public ResponsePojo findByAll(@RequestBody VehiclePojo vp, HttpServletRequest req){
+		vp.setToken(req.getHeader("zh-token"));
 		return vms.findAll(vp);
 	}
 	@RequestMapping("delete")
-	public ResponsePojo delete(@RequestBody VehiclePojo vp){
+	public ResponsePojo delete(@RequestBody VehiclePojo vp, HttpServletRequest req){
+		vp.setToken(req.getHeader("zh-token"));
 		return vms.delete(vp);
 	}
 	@RequestMapping("auditing")
-	public ResponsePojo auditing(@RequestBody VehiclePojo vp){
+	public ResponsePojo auditing(@RequestBody VehiclePojo vp, HttpServletRequest req){
+		vp.setToken(req.getHeader("zh-token"));
 		return as.auditing(vp);
 	}
 	

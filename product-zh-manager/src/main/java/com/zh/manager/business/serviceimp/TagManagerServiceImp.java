@@ -11,6 +11,7 @@ import com.zh.manager.business.dao.IDeviceManagerDao;
 import com.zh.manager.business.dao.ITagManagerDao;
 import com.zh.manager.business.pojo.DevicePojo;
 import com.zh.manager.business.pojo.ResponsePojo;
+import com.zh.manager.business.pojo.ResultPojo;
 import com.zh.manager.business.pojo.TagPojo;
 import com.zh.manager.business.service.IManagerService;
 import com.zh.manager.util.ToolUtil;
@@ -34,6 +35,12 @@ public class TagManagerServiceImp implements IManagerService{
 			rp.setResult("fail");
 			return (T)rp;
 		}
+		String tagIdHex = ToolUtil.int2HexStr(Integer.parseInt(tp.getTagId()));
+		int diffLen = 6 - tagIdHex.length();
+		for(int i = 0; i < diffLen; i++){
+			tagIdHex = "0" + tagIdHex;
+		}
+		tp.setTagId(tagIdHex);
 		int flag = tmd.add(tp);
 		int flag1 = tmd.addTimly(tp);
 		System.out.println(flag);
@@ -66,6 +73,12 @@ public class TagManagerServiceImp implements IManagerService{
 			rp.setResult("fail");
 			return (T)rp;
 		}
+		String tagIdHex = ToolUtil.int2HexStr(Integer.parseInt(tp.getTagId()));
+		int diffLen = 6 - tagIdHex.length();
+		for(int i = 0; i < diffLen; i++){
+			tagIdHex = "0" + tagIdHex;
+		}
+		tp.setTagId(tagIdHex);
 		tmd.delete(tp);
 		tmd.deleteTimly(tp);
 		rp.setMessage("标签删除成功");
@@ -87,6 +100,12 @@ public class TagManagerServiceImp implements IManagerService{
 			rp.setResult("fail");
 			return (T)rp;
 		}
+		String tagIdHex = ToolUtil.int2HexStr(Integer.parseInt(tp.getTagId()));
+		int diffLen = 6 - tagIdHex.length();
+		for(int i = 0; i < diffLen; i++){
+			tagIdHex = "0" + tagIdHex;
+		}
+		tp.setTagId(tagIdHex);
 		tmd.update(tp);
 		rp.setMessage("标签修改成功");
 		rp.setResult("success");
@@ -127,12 +146,29 @@ public class TagManagerServiceImp implements IManagerService{
 			rep.setResult("fail");
 			return (T)rep;
 		}
+		if(tp.getTagId() != null){
+			String tagIdHex = ToolUtil.int2HexStr(Integer.parseInt(tp.getTagId()));
+			int diffLen = 6 - tagIdHex.length();
+			for(int i = 0; i < diffLen; i++){
+				tagIdHex = "0" + tagIdHex;
+			}
+			tp.setTagId(tagIdHex);
+		}
 		int pages = tp.getPages();
 		int rows = tp.getRows();
 		int begin = (pages - 1) * rows;
+		tp.setBegin(begin);
+		ResultPojo rp1 = new ResultPojo();
 		List<TagPojo> rp = tmd.findAll(tp);
+		int total = tmd.count(tp);
+		for(TagPojo tp1 : rp){
+			tp1.setTagId("" + ToolUtil.hexStr2Int(tp1.getTagId()));
+		}
+		
+		rp1.setTotal(total);
+		rp1.setData(rp);
 		rep.setResult("success");
-		rep.setSource(rp);
+		rep.setSource(rp1);
 		return (T)rep;
 	}
 

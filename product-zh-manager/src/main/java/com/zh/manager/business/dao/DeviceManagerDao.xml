@@ -4,7 +4,7 @@
 <mapper namespace="com.zh.manager.business.dao.IDeviceManagerDao">
 	
 	<insert id="add" parameterType = "com.zh.manager.business.pojo.DevicePojo" useGeneratedKeys="true" keyProperty="id">
-		insert ignore into tb_${unitIndex}_device(deviceId, areaIndex, type)values(
+		insert into tb_${unitIndex}_device(deviceId, areaIndex, type)values(
 			#{deviceId}, ${areaIndex}, ${type}
 		)
 	</insert>
@@ -20,6 +20,13 @@
 	</select>
 	<select id="findAll" parameterType = "com.zh.manager.business.pojo.DevicePojo" resultType = "com.zh.manager.business.pojo.DevicePojo">
 		select * from tb_${unitIndex}_device where 1 = 1
+		<if test="id != null and id != ''">
+			and id = ${id}
+		</if>
+		 limit ${begin}, ${rows}
+	</select>
+	<select id="count" parameterType = "com.zh.manager.business.pojo.DevicePojo" resultType = "Integer">
+		select count(*) from tb_${unitIndex}_device where 1 = 1
 		<if test="id != null and id != ''">
 			and id = ${id}
 		</if>

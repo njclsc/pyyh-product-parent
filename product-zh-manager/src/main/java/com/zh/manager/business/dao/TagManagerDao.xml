@@ -37,5 +37,21 @@
 		<if test="type != null and type != ''">
 			and type= ${type}
 		</if>
+		limit ${begin}, ${rows}
+	</select>
+	<select id="count" parameterType = "com.zh.manager.business.pojo.TagPojo" resultType = "Integer">
+		select count(*) from tb_${unitIndex}_tag where 1 = 1
+		<if test="id != null and id != ''">
+			and id = ${id}
+		</if>
+		<if test="tagId != null and tagId != ''">
+			and tagId = #{tagId}
+		</if>
+		<if test="status != null and status != ''">
+			and status= ${status}
+		</if>
+		<if test="type != null and type != ''">
+			and type= ${type}
+		</if>
 	</select>
 </mapper>
