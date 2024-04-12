@@ -79,6 +79,9 @@ public class BusinessForDeviceStatusTask implements Runnable{
 				e.printStackTrace();
 			}finally{
 				try {
+					if(con == null){
+						return;
+					}
 					con.close();
 					Thread.sleep(2000);
 				} catch (Exception e) {

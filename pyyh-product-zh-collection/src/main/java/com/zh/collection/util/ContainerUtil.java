@@ -19,6 +19,11 @@ import com.zh.collection.pojo.UnitPojo;
 import com.zh.collection.pojo.VehiclePojo;
 
 public class ContainerUtil {
+	private static String addr1;
+	private static String addr2;
+	
+	
+	
 	private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	private static DataSource dataSource;
 	private static String rootPath;
@@ -63,6 +68,22 @@ public class ContainerUtil {
 
 	public static LinkedBlockingQueue<Object> getSaveQueue() {
 		return saveQueue;
+	}
+
+	public static String getAddr1() {
+		return addr1;
+	}
+
+	public static void setAddr1(String addr1) {
+		ContainerUtil.addr1 = addr1;
+	}
+
+	public static String getAddr2() {
+		return addr2;
+	}
+
+	public static void setAddr2(String addr2) {
+		ContainerUtil.addr2 = addr2;
 	}
 
 	public static void setSaveQueue(LinkedBlockingQueue<Object> saveQueue) {

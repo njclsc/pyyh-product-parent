@@ -10,13 +10,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSONObject;
+import com.zh.collection.business.task.Show_1_AddressRefreshThread;
 import com.zh.collection.business.task.BusinessForCacheRefreshTask;
 import com.zh.collection.business.task.BusinessForDeviceStatusTask;
 import com.zh.collection.business.task.BusinessForSaveTask;
-import com.zh.collection.business.task.BusinessForStartAllTask;
 import com.zh.collection.business.task.Show_1_BusinessForStartAllTask;
 import com.zh.collection.lizer.Show_1_UDPChannelinitializer;
-import com.zh.collection.lizer.UDPChannelinitializer;
 import com.zh.collection.pojo.AreaPojo;
 import com.zh.collection.pojo.CachePojo;
 import com.zh.collection.pojo.DevicePojo;
@@ -53,12 +52,20 @@ public class InitApplication {
 					new AdaptiveRecvByteBufAllocator(udpCnf.getMiniBuf(),
 //						udpCnf.getInitBuf(), udpCnf.getMaxBuf())).handler(new UDPChannelinitializer());-----------------------------------
 						udpCnf.getInitBuf(), udpCnf.getMaxBuf())).handler(new Show_1_UDPChannelinitializer());
-			
-			
+			String ip = "";//----
+			int port = 0;//----
 			for(String s : udpCnf.getIpAddress()){
 				String[] tmpAddress = s.split(":");
 				ChannelFuture f = boot.bind(new InetSocketAddress(tmpAddress[0], Integer.parseInt(tmpAddress[1])));
+				ip = tmpAddress[0];
+				port = Integer.parseInt(tmpAddress[1]) + 1;//----
 			}
+			//两个灯//----
+			for(int i = 1; i < 2; i++){
+				InetSocketAddress addr = new InetSocketAddress(ip, port);
+				new Show_1_AddressRefreshThread(addr).start();
+			}
+			//----
 		}
 		//缓存加载
 		cacheLoad();
