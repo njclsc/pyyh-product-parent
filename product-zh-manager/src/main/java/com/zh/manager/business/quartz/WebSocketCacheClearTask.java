@@ -2,6 +2,7 @@ package com.zh.manager.business.quartz;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -25,8 +26,9 @@ public class WebSocketCacheClearTask extends QuartzJobBean{
 	@Override
 	protected void executeInternal(JobExecutionContext arg0) throws JobExecutionException {
 		// TODO Auto-generated method stub
+		Connection con = null;
 		try{
-		Connection con = DataSourceConfiguer.getDataSource().getConnection();
+		con = DataSourceConfiguer.getDataSource().getConnection();
 		Iterator<Entry<String, List<String>>> itr = ContainerUtil.getAlarmIds().entrySet().iterator();
 		synchronized(ContainerUtil.getEndpointSession()){
 		ConcurrentHashMap<String, Session> sesses = ContainerUtil.getEndpointSession();
@@ -65,9 +67,16 @@ public class WebSocketCacheClearTask extends QuartzJobBean{
 			}
 		}
 		}
-		con.close();
+		
 		}catch(Exception e){
 			e.printStackTrace();
+		}finally{
+			try {
+				con.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 //		System.out.println("--->>");
 	}

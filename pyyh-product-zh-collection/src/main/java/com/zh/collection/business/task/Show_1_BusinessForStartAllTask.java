@@ -74,6 +74,10 @@ public class Show_1_BusinessForStartAllTask implements Runnable{
 //					if(apl == null){
 //						apl = new AreaPojo();
 //					}
+					String sql1 = "update tb_" + up.getId() + "_timly set hbStationId = '" + hbId + "' where tagId = '" + tp.getTagId() + "'"; 
+					Statement stat1 = con.createStatement();
+					stat1.executeUpdate(sql1);
+					stat1.close();
 					int a = ((tp.getStatus() & 0xFF) >> 7);
 					//大门
 					if(aph.getType() == 1 && a == 0 && !tp.getPositionType().equals("door")){

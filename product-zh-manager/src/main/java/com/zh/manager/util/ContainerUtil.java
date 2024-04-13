@@ -7,7 +7,11 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.websocket.Session;
 
+import com.zh.manager.business.pojo.PushAlarmPojo;
+
 public class ContainerUtil {
+	//显示用
+	private static ConcurrentHashMap<String, PushAlarmPojo> show_1_InfoBuf = new ConcurrentHashMap<>();
 	private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	private static ConcurrentHashMap<String, Session> endpointSession = new ConcurrentHashMap<>();
 	//报警推送过滤缓存[暂时不使用]只发变化数据
@@ -27,6 +31,16 @@ public class ContainerUtil {
 		return endpointSession;
 	}
 
+
+
+
+	public static ConcurrentHashMap<String, PushAlarmPojo> getShow_1_InfoBuf() {
+		return show_1_InfoBuf;
+	}
+
+	public static void setShow_1_InfoBuf(ConcurrentHashMap<String, PushAlarmPojo> show_1_InfoBuf) {
+		ContainerUtil.show_1_InfoBuf = show_1_InfoBuf;
+	}
 
 	public static void setEndpointSession(ConcurrentHashMap<String, Session> endpointSession) {
 		ContainerUtil.endpointSession = endpointSession;

@@ -14,4 +14,9 @@ public class PushAlarmPojo {
 	private String alarmType;
 	private String tagId;
 	private int key;
+	//演示用
+	private int tagNum;
+	private String posititon;
+	private String deviceId;
+	private String action;
 }
