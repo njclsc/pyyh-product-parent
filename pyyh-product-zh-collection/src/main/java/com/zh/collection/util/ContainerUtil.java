@@ -18,9 +18,12 @@ import com.zh.collection.pojo.TimlyPojo;
 import com.zh.collection.pojo.UnitPojo;
 import com.zh.collection.pojo.VehiclePojo;
 
+import io.netty.channel.ChannelFuture;
+
 public class ContainerUtil {
-	private static String addr1;
-	private static String addr2;
+	private static ChannelFuture f;
+	private static HashMap<String, String> devAddress = new HashMap<>();
+	private static long alarmSend;
 	
 	
 	
@@ -30,6 +33,7 @@ public class ContainerUtil {
 	private static ThreadPoolExecutor threadPool;
 	private static LinkedBlockingQueue<Object> inQueue = new LinkedBlockingQueue<>();
 	private static LinkedBlockingQueue<Object> saveQueue = new LinkedBlockingQueue<>();
+	private static LinkedBlockingQueue<Object> sendQueue = new LinkedBlockingQueue<>();
 	private static HashMap<String, CachePojo<String, UnitPojo, AreaPojo, DevicePojo, TagPojo, RulePojo, TimlyPojo, VehiclePojo>> caches = new HashMap<>();
 	public static DataSource getDataSource() {
 		return dataSource;
@@ -39,6 +43,37 @@ public class ContainerUtil {
 		ContainerUtil.dataSource = dataSource;
 	}
 
+	public static HashMap<String, String> getDevAddress() {
+		return devAddress;
+	}
+
+	public static LinkedBlockingQueue<Object> getSendQueue() {
+		return sendQueue;
+	}
+
+	public static void setSendQueue(LinkedBlockingQueue<Object> sendQueue) {
+		ContainerUtil.sendQueue = sendQueue;
+	}
+
+	public static long getAlarmSend() {
+		return alarmSend;
+	}
+
+	public static void setAlarmSend(long alarmSend) {
+		ContainerUtil.alarmSend = alarmSend;
+	}
+
+	public static void setDevAddress(HashMap<String, String> devAddress) {
+		ContainerUtil.devAddress = devAddress;
+	}
+	public static ChannelFuture getF() {
+		return f;
+	}
+
+	public static void setF(ChannelFuture f) {
+		ContainerUtil.f = f;
+	}
+
 	public static String getRootPath() {
 		return rootPath;
 	}
@@ -46,8 +81,6 @@ public class ContainerUtil {
 	public static void setRootPath(String rootPath) {
 		ContainerUtil.rootPath = rootPath;
 	}
-
-	
 
 	public static SimpleDateFormat getSdf() {
 		return sdf;
@@ -68,22 +101,6 @@ public class ContainerUtil {
 
 	public static LinkedBlockingQueue<Object> getSaveQueue() {
 		return saveQueue;
-	}
-
-	public static String getAddr1() {
-		return addr1;
-	}
-
-	public static void setAddr1(String addr1) {
-		ContainerUtil.addr1 = addr1;
-	}
-
-	public static String getAddr2() {
-		return addr2;
-	}
-
-	public static void setAddr2(String addr2) {
-		ContainerUtil.addr2 = addr2;
 	}
 
 	public static void setSaveQueue(LinkedBlockingQueue<Object> saveQueue) {

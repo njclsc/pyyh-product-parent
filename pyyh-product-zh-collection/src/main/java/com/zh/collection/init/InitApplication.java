@@ -57,14 +57,16 @@ public class InitApplication {
 			for(String s : udpCnf.getIpAddress()){
 				String[] tmpAddress = s.split(":");
 				ChannelFuture f = boot.bind(new InetSocketAddress(tmpAddress[0], Integer.parseInt(tmpAddress[1])));
+				ContainerUtil.setF(f);
 				ip = tmpAddress[0];
 				port = Integer.parseInt(tmpAddress[1]) + 1;//----
 			}
 			//两个灯//----
-			for(int i = 1; i < 2; i++){
-				InetSocketAddress addr = new InetSocketAddress(ip, port);
-				new Show_1_AddressRefreshThread(addr).start();
-			}
+//			for(int i = 1; i < 2; i++){
+//				System.out.println(ip + "   " + port);
+//				InetSocketAddress addr = new InetSocketAddress(ip, port);
+////				new Show_1_AddressRefreshThread(addr).start();
+//			}
 			//----
 		}
 		//缓存加载

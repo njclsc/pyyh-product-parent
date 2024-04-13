@@ -58,7 +58,7 @@ public class Show_1_DataOperateHandler extends ChannelInboundHandlerAdapter {
 			// HashMap<String, TagPojo> tags = cache.getTagCache();
 			// System.out.println("标签" + devs);
 			int tagNum = Integer.parseInt(data.substring(12, 14), 16);
-			System.out.println(tagNum);
+//			System.out.println(tagNum);
 			for (int i = 0; i < tagNum; i++) {
 				String tagData = data.substring(i * 14 + 14, (i + 1) * 14 + 14);
 				String tagId = tagData.substring(0, 6);
@@ -68,10 +68,11 @@ public class Show_1_DataOperateHandler extends ChannelInboundHandlerAdapter {
 				// String hrsi = tagData.substring(14, 16);
 				// System.out.println(tagId + " " + status + " " + antId + " " +
 				// lowrsi + " " + hrsi);
-				System.out.println(tagId + "  " + status + "  " + antId + "  " + lowrsi);
+//				System.out.println(tagId + "  " + status + "  " + antId + "  " + lowrsi);
 				// ------------------------------
 				TimlyPojo tp = timly.get(tagId);
 				if (tp != null) {
+					tp.setStatus(Integer.parseInt(status, 16));
 					tp.setOldDeviceId(tp.getCurrentDeviceId());
 					tp.setOldDeviceTime(tp.getCurrentDeviceTime());
 					tp.setCurrentDeviceId(antId);
@@ -85,14 +86,14 @@ public class Show_1_DataOperateHandler extends ChannelInboundHandlerAdapter {
 				}
 
 			}
-			System.out.println(deviceId + "  " + cmdType + "  " + tagNum + " "
-					+ ctx.channel().localAddress().toString().substring(1));
+//			System.out.println(deviceId + "  " + cmdType + "  " + tagNum + " "
+//					+ ctx.channel().localAddress().toString().substring(1));
 		} else if (cmdType.equals("42")) {
 			// 设备
 			DevicePojo dp = devs.get(deviceId);
 			dp.setRefreshTime(dt);
 		} else {
-			ctx.fireChannelRead(msg);
+//			ctx.fireChannelRead(msg);
 		}
 	}
 

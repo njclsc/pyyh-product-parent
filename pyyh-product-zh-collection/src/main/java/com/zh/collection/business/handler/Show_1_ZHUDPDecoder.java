@@ -3,6 +3,8 @@ package com.zh.collection.business.handler;
 import java.net.InetSocketAddress;
 import java.util.List;
 
+import com.zh.collection.util.ContainerUtil;
+
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
@@ -22,7 +24,10 @@ public class Show_1_ZHUDPDecoder extends MessageToMessageDecoder<Object>{
 		byte[] data = new byte[len];
 		buf.readBytes(data);
 		String _data = byte2HexString(data);
-		System.out.println("data--> " + _data);
+//		System.out.println(_data);
+		if(_data.indexOf("02030405") >= 0){
+		_data = _data.substring(_data.indexOf("02030405"));
+		}
 		String[] _datas = _data.split(head);
 		for(String tmp : _datas){
 			if(tmp == null || tmp.length() < 1){
@@ -30,6 +35,13 @@ public class Show_1_ZHUDPDecoder extends MessageToMessageDecoder<Object>{
 			}
 			if(verify(tmp)){
 				reponse2Device(arg0, tmp, isa);
+				String key = _data.substring(12, 16);
+				String addr =  dp.sender().getAddress().getHostAddress() + ":" + dp.sender().getPort();
+//				System.out.println(_data);
+//				System.out.println(key + "----->>>>----" + addr);
+//				if(!ContainerUtil.getDevAddress().containsKey(key)){
+					ContainerUtil.getDevAddress().put(key, addr);
+//				}
 				arg2.add(tmp);
 			}
 		}

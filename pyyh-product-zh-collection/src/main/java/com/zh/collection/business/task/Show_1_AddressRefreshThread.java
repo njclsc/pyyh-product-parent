@@ -13,7 +13,6 @@ public class Show_1_AddressRefreshThread extends Thread{
 	public Show_1_AddressRefreshThread(InetSocketAddress addr) throws SocketException{
 		this.ds = new DatagramSocket(addr);
 		this.addr = addr.getAddress().getHostAddress() + ":" + addr.getPort();
-		System.out.println("--=");
 	}
 	public void run(){
 		while(true){
@@ -30,8 +29,9 @@ public class Show_1_AddressRefreshThread extends Thread{
 				for(byte b : data){
 					sb.append((char)b);
 				}
-//				String _data = byte2HexString(data);
-				String _data = sb.toString();
+				String _data = byte2HexString(data);
+				System.out.println(dp.getSocketAddress() + "----------" + _data);
+//				String _data = sb.toString();
 				if(verify(_data.substring(8))){
 					String d1 = _data.substring(22, 36);
 					String d2 = _data.substring(36, 50);

@@ -14,8 +14,9 @@ public class TimlyPojo {
 	private String currentDeviceTime;
 	private String hbStationId;
 	private String mappingAddress;
-	private String positionType;
+	private String positionType = "none";
 	private String actionInfo = "none";
+	private int status;
 	//0=标签过期;1=进门后违停;2=电瓶入楼
 	private int saveType;
 }
