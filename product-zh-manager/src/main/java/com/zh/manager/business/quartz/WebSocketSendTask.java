@@ -8,7 +8,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map.Entry;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.websocket.Session;
 
@@ -17,6 +19,7 @@ import org.quartz.JobExecutionException;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 
 import com.alibaba.fastjson.JSONObject;
+import com.zh.manager.business.pojo.PushAlarmPojo;
 import com.zh.manager.business.pojo.WebSocketPushDevPojo;
 import com.zh.manager.business.pojo.WebSocketPushPojo;
 import com.zh.manager.business.pojo.WebSocketPushSevenDayPojo;
@@ -137,6 +140,7 @@ public class WebSocketSendTask extends QuartzJobBean {
 					// System.out.println(total + " " + todayNum + " " + intoNum
 					// + " " + nearDayNum + " " + devNum + " " +
 					// excNum + " " + norNum);
+					wspp.setActions(show_x_(con, keys[0]));
 					sess.getBasicRemote().sendText(JSONObject.toJSONString(wspp));
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -148,7 +152,58 @@ public class WebSocketSendTask extends QuartzJobBean {
 			e1.printStackTrace();
 		}
 	}
-
+	public static List<PushAlarmPojo> show_x_(Connection con, String unitIndex) throws Exception{
+		ConcurrentHashMap<String, PushAlarmPojo> show_1_InfoBuf = ContainerUtil.getShow_1_InfoBuf();
+		String sql = "SELECT tb_" + unitIndex + "_device.deviceId, tb_" + unitIndex + "_vehicle.ownerName, "
+				+ "tb_" + unitIndex + "_vehicle.position, tb_" + unitIndex + "_tag.tagId, tb_" + unitIndex + "_area.areaName "
+				+ "FROM tb_" + unitIndex + "_vehicle " + 
+				"LEFT JOIN tb_" + unitIndex + "_tag ON tb_" + unitIndex + "_vehicle.id = tb_" + unitIndex + "_tag.vehicleIndex " + 
+				"LEFT JOIN tb_" + unitIndex + "_timly ON tb_" + unitIndex + "_tag.tagId = tb_" + unitIndex + "_timly.tagId " + 
+				"LEFT JOIN tb_" + unitIndex + "_device ON tb_" + unitIndex + "_device.deviceId = tb_" + unitIndex + "_timly.hbStationId " + 
+				"LEFT JOIN tb_" + unitIndex + "_area ON tb_" + unitIndex + "_device.areaIndex = tb_" + unitIndex + "_area.id";
+//		System.out.println(sql);
+		Statement stat = con.createStatement();
+		ResultSet rs = stat.executeQuery(sql);
+		List<PushAlarmPojo> paps = new ArrayList<PushAlarmPojo>();
+		while(rs.next()){
+			String tagId = rs.getString("tagId");
+			String ownerName = rs.getString("ownerName");
+			String position = rs.getString("position");
+			String areaName = rs.getString("areaName");
+			String deviceId = rs.getString("deviceId");
+			if(!show_1_InfoBuf.containsKey(tagId)){
+				PushAlarmPojo pap = new PushAlarmPojo();
+				pap.setTagId(tagId);
+				pap.setTagNum(Integer.parseInt(tagId, 16));
+				pap.setPosititon(position);
+				pap.setAreaName(areaName);
+				pap.setOwnerName(ownerName);
+				pap.setDeviceId(deviceId);
+				pap.setAction("init");
+				show_1_InfoBuf.put(tagId, pap);
+//				paps.add(pap);
+			}else{
+				PushAlarmPojo pap = show_1_InfoBuf.get(tagId);
+//				System.out.println(deviceId + "   " + pap + "   " + position);
+				if(deviceId != null && position != null && (!deviceId.equals(pap.getDeviceId()) || !position.equals(pap.getPosititon()))){
+					if(position.equals("ioffice") || position.equals("iparking") || position.equals("into")){
+						pap.setAction("进入");
+					}else if(position.equals("ooffice") || position.equals("oparking") || position.equals("out")){
+						pap.setAction("离开");
+					}
+					pap.setDeviceId(deviceId);
+					pap.setPosititon(position);
+					pap.setAreaName(areaName);
+					paps.add(pap);
+				}
+				
+				
+			}
+		}
+		rs.close();
+		stat.close();
+		return paps;
+	}
 	// 7日报警数,报警及时表保存7天数据
 	private WebSocketPushSevenDayPojo alarmCountFormDays(Session sess, Connection con, String key) throws Exception {
 		SimpleDateFormat sdf = ContainerUtil.getSdf();

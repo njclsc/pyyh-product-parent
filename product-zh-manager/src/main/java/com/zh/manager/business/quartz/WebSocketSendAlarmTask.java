@@ -90,8 +90,6 @@ public class WebSocketSendAlarmTask extends QuartzJobBean{
 					
 					rs.close();
 					stat.close();
-					//----------------show-----------------------
-					show_x_(con, keys[0], sess);
 				}catch(Exception e){
 					e.printStackTrace();
 				}
@@ -105,58 +103,6 @@ public class WebSocketSendAlarmTask extends QuartzJobBean{
 			e.printStackTrace();
 		}
 	}
-	public static void show_x_(Connection con, String unitIndex, Session sess) throws Exception{
-		ConcurrentHashMap<String, PushAlarmPojo> show_1_InfoBuf = ContainerUtil.getShow_1_InfoBuf();
-		String sql = "SELECT tb_" + unitIndex + "_device.deviceId, tb_" + unitIndex + "_vehicle.ownerName, "
-				+ "tb_" + unitIndex + "_vehicle.position, tb_" + unitIndex + "_tag.tagId, tb_" + unitIndex + "_area.areaName "
-				+ "FROM tb_" + unitIndex + "_vehicle " + 
-				"LEFT JOIN tb_" + unitIndex + "_tag ON tb_" + unitIndex + "_vehicle.id = tb_" + unitIndex + "_tag.vehicleIndex " + 
-				"LEFT JOIN tb_" + unitIndex + "_timly ON tb_" + unitIndex + "_tag.tagId = tb_" + unitIndex + "_timly.tagId " + 
-				"LEFT JOIN tb_" + unitIndex + "_device ON tb_" + unitIndex + "_device.deviceId = tb_" + unitIndex + "_timly.hbStationId " + 
-				"LEFT JOIN tb_" + unitIndex + "_area ON tb_" + unitIndex + "_device.areaIndex = tb_" + unitIndex + "_area.id";
-		System.out.println(sql);
-		Statement stat = con.createStatement();
-		ResultSet rs = stat.executeQuery(sql);
-		List<PushAlarmPojo> paps = new ArrayList<PushAlarmPojo>();
-		while(rs.next()){
-			String tagId = rs.getString("tagId");
-			String ownerName = rs.getString("ownerName");
-			String position = rs.getString("position");
-			String areaName = rs.getString("areaName");
-			String deviceId = rs.getString("deviceId");
-			if(!show_1_InfoBuf.contains(tagId)){
-				PushAlarmPojo pap = new PushAlarmPojo();
-				pap.setTagId(tagId);
-				pap.setTagNum(Integer.parseInt(tagId));
-				pap.setPosititon(position);
-				pap.setAreaName(areaName);
-				pap.setOwnerName(ownerName);
-				pap.setDeviceId(deviceId);
-				show_1_InfoBuf.put(tagId, pap);
-				paps.add(pap);
-			}else{
-				PushAlarmPojo pap = show_1_InfoBuf.get(tagId);
-				if(!deviceId.equals(pap.getDeviceId()) || !position.equals(pap.getPosititon())){
-					if(position.equals("ioffice") || position.equals("iparking") || position.equals("into")){
-						pap.setAction("进入");
-					}else if(position.equals("ooffice")){
-						pap.setAction("离开");
-					}
-					pap.setDeviceId(deviceId);
-					pap.setPosititon(position);
-					pap.setAreaName(areaName);
-					paps.add(pap);
-				}
-				
-				
-			}
-		}
-		rs.close();
-		stat.close();
-		JSONObject jb = new JSONObject();
-		jb.put("alarms_delete", JSONObject.toJSONString(new ArrayList<PushAlarmPojo>()));
-		jb.put("alarms_add", JSONObject.toJSONString(paps));
-		sess.getBasicRemote().sendText(jb.toJSONString());
-	}
+	
 
 }
