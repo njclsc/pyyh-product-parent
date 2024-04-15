@@ -50,7 +50,11 @@ public class Show_1_DataOperateHandler extends ChannelInboundHandlerAdapter {
 			// System.out.println("设备" + devs);
 			// ------------------------------
 			// 设备
+//			System.out.println(deviceId);
 			DevicePojo dp = devs.get(deviceId);
+			if(dp == null){
+				return;
+			}
 			dp.setRefreshTime(dt);
 			// 实时缓存
 			HashMap<String, TimlyPojo> timly = cache.getTimlyCache();
@@ -91,6 +95,9 @@ public class Show_1_DataOperateHandler extends ChannelInboundHandlerAdapter {
 		} else if (cmdType.equals("42")) {
 			// 设备
 			DevicePojo dp = devs.get(deviceId);
+			if(dp == null){
+				return;
+			}
 			dp.setRefreshTime(dt);
 		} else {
 //			ctx.fireChannelRead(msg);

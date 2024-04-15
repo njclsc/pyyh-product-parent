@@ -73,7 +73,7 @@ public class WebSocketCacheClearTask extends QuartzJobBean{
 		}finally{
 			try {
 				con.close();
-			} catch (SQLException e) {
+			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}

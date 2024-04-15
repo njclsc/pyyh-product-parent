@@ -4,6 +4,7 @@ import java.net.InetSocketAddress;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -89,7 +90,7 @@ public class Show_1_BusinessForStartAllTask implements Runnable{
 								vp.getId() + "'";
 						stat.executeUpdate(sql);
 						stat.close();
-						if(System.currentTimeMillis() - ContainerUtil.getAlarmSend() > 10000){
+						if(System.currentTimeMillis() - ContainerUtil.getAlarmSend() > 5000){
 							String[] ads = ContainerUtil.getDevAddress().get(hbId).split(":");
 							InetSocketAddress addr = new InetSocketAddress(ads[0], Integer.parseInt(ads[1]));
 					        ByteBuf copiedBuffer = Unpooled.copiedBuffer("rrpc,setpio,29,1,1500".getBytes());
@@ -135,7 +136,7 @@ public class Show_1_BusinessForStartAllTask implements Runnable{
 								vp.getId() + "'";
 						stat.executeUpdate(sql);
 						stat.close();
-						if(System.currentTimeMillis() - ContainerUtil.getAlarmSend() > 10000){
+						if(System.currentTimeMillis() - ContainerUtil.getAlarmSend() > 5000){
 							String[] ads = ContainerUtil.getDevAddress().get(hbId).split(":");
 							InetSocketAddress addr = new InetSocketAddress(ads[0], Integer.parseInt(ads[1]));
 					        ByteBuf copiedBuffer = Unpooled.copiedBuffer("rrpc,setpio,26,1,1500".getBytes());
@@ -143,6 +144,20 @@ public class Show_1_BusinessForStartAllTask implements Runnable{
 							ContainerUtil.getSendQueue().offer(dp);
 						}
 						tp.setPositionType("ioffice");
+						//---------------------------------------------------------------------------
+						Statement statx = con.createStatement();
+						StringBuffer sb = new StringBuffer();
+						sb.append("insert into tb_");sb.append(up.getId());
+						sb.append("_alarm(tagId, alarmType, position, ownerName, areaName, ownerType, dateTime, status) values('");
+						sb.append(up.getId());sb.append("', ");sb.append(2);sb.append(", '', '");sb.append(vp.getOwnerName());
+						sb.append("', '");sb.append(aph.getId());sb.append("','', '");
+						sb.append(ContainerUtil.getSdf().format(new Date()));sb.append("', 1");sb.append(")");
+						statx.executeUpdate(sb.toString());
+						statx.close();
+						
+						
+						//---------------------------------------------------------------------------
+						
 					//出楼	
 					}
 					if(aph.getType() == 3 && a == 0 && hbArea == lbArea && !tp.getPositionType().equals("ooffice")){

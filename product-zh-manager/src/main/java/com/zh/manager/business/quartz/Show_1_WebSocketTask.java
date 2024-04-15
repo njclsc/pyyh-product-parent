@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
@@ -51,7 +52,7 @@ public class Show_1_WebSocketTask  extends QuartzJobBean{
 		}
 	}
 	public static void show_x_(Connection con, String unitIndex, Session sess) throws Exception{
-		ConcurrentHashMap<String, PushAlarmPojo> show_1_InfoBuf = ContainerUtil.getShow_1_InfoBuf();
+		HashMap<String, PushAlarmPojo> show_1_InfoBuf = ContainerUtil.getShow_1_InfoBuf();   
 		String sql = "SELECT tb_" + unitIndex + "_device.deviceId, tb_" + unitIndex + "_vehicle.ownerName, "
 				+ "tb_" + unitIndex + "_vehicle.position, tb_" + unitIndex + "_tag.tagId, tb_" + unitIndex + "_area.areaName "
 				+ "FROM tb_" + unitIndex + "_vehicle " + 
@@ -69,7 +70,7 @@ public class Show_1_WebSocketTask  extends QuartzJobBean{
 			String position = rs.getString("position");
 			String areaName = rs.getString("areaName");
 			String deviceId = rs.getString("deviceId");
-			if(!show_1_InfoBuf.contains(tagId)){
+			if(!show_1_InfoBuf.containsKey(tagId)){
 				PushAlarmPojo pap = new PushAlarmPojo();
 				pap.setTagId(tagId);
 				pap.setTagNum(Integer.parseInt(tagId));
@@ -84,7 +85,7 @@ public class Show_1_WebSocketTask  extends QuartzJobBean{
 				if(!deviceId.equals(pap.getDeviceId()) || !position.equals(pap.getPosititon())){
 					if(position.equals("ioffice") || position.equals("iparking") || position.equals("into")){
 						pap.setAction("进入");
-					}else if(position.equals("ooffice")){
+					}else if(position.equals("ooffice") || position.equals("oparking") || position.equals("into")){
 						pap.setAction("离开");
 					}
 					pap.setDeviceId(deviceId);
