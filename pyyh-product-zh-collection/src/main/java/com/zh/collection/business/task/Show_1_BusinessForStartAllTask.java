@@ -139,6 +139,7 @@ public class Show_1_BusinessForStartAllTask implements Runnable{
 						if(System.currentTimeMillis() - ContainerUtil.getAlarmSend() > 5000){
 							String[] ads = ContainerUtil.getDevAddress().get(hbId).split(":");
 							InetSocketAddress addr = new InetSocketAddress(ads[0], Integer.parseInt(ads[1]));
+							System.out.println(ads[0] + ":" + ads[1]);
 					        ByteBuf copiedBuffer = Unpooled.copiedBuffer("rrpc,setpio,26,1,1500".getBytes());
 							DatagramPacket dp = new DatagramPacket(copiedBuffer, addr);
 							ContainerUtil.getSendQueue().offer(dp);

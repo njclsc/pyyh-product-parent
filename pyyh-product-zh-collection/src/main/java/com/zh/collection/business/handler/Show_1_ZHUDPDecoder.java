@@ -24,7 +24,7 @@ public class Show_1_ZHUDPDecoder extends MessageToMessageDecoder<Object>{
 		byte[] data = new byte[len];
 		buf.readBytes(data);
 		String _data = byte2HexString(data);
-//		System.out.println(_data);
+		System.out.println(_data);
 		if(_data.indexOf("02030405") >= 0){
 		_data = _data.substring(_data.indexOf("02030405"));
 		}
@@ -37,7 +37,7 @@ public class Show_1_ZHUDPDecoder extends MessageToMessageDecoder<Object>{
 				reponse2Device(arg0, tmp, isa);
 				String key = _data.substring(12, 16);
 				String addr =  dp.sender().getAddress().getHostAddress() + ":" + dp.sender().getPort();
-//				System.out.println(_data);
+				System.out.println("-------->>>KKK" + _data);
 //				System.out.println(key + "----->>>>----" + addr);
 //				if(!ContainerUtil.getDevAddress().containsKey(key)){
 					ContainerUtil.getDevAddress().put(key, addr);
