@@ -34,7 +34,7 @@ public class Show_1_ZHUDPDecoder extends MessageToMessageDecoder<Object>{
 				continue;
 			}
 			if(verify(tmp)){
-				reponse2Device(arg0, tmp, isa);
+//				reponse2Device(arg0, tmp, isa);
 				String key = _data.substring(12, 16);
 				String addr =  dp.sender().getAddress().getHostAddress() + ":" + dp.sender().getPort();
 //				System.out.println("-----1--->>>---" + _data);

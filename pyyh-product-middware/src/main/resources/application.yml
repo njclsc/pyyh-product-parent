@@ -2,3 +2,10 @@ server:
   port: 8765
   servlet:
     context-path: /middware
+    
+spring:
+  application:
+    name: manager
+  profiles:
+    active: 
+      - quartz

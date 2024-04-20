@@ -13,15 +13,13 @@ import com.zh.middware.util.ToolUtil;
 @Service("SourceOperateOfConfig")
 public class SourceOperateOfConfig extends SourceOperate{
 	@Override
-	public <T, P> T loadSource(P p) throws Exception {
-		
+	public <T, P> T loadSource(P p, Class<T> clezz) throws Exception {
 		// TODO Auto-generated method stub
 		FileInputStream communication_fis = new FileInputStream(new File(this.getRoot() + "/" + (String)p));
 		byte[] data_config = new byte[communication_fis.available()];
 		communication_fis.read(data_config);
 		communication_fis.close();
-		CommunicationConfigPojo ccp = JSONObject.parseObject(data_config, CommunicationConfigPojo.class);
-		return (T)ccp;
+		return JSONObject.parseObject(data_config, clezz);
 	}
 
 }

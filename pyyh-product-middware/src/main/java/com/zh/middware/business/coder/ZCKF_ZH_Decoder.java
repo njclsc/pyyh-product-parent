@@ -27,7 +27,7 @@ public class ZCKF_ZH_Decoder extends MessageToMessageDecoder<Object>{
 				continue;
 			}
 			if(verify(s)){
-				reponse2Device(arg0, s, isa);
+//				reponse2Device(arg0, s, isa);
 				arg2.add(s);
 			}
 		}
