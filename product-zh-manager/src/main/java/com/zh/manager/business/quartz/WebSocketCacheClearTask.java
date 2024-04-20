@@ -58,7 +58,7 @@ public class WebSocketCacheClearTask extends QuartzJobBean{
 					jb.put("alarms_add", JSONObject.toJSONString(new ArrayList<PushAlarmPojo>()));
 					jb.put("alarms_delete", JSONObject.toJSONString(paps));
 					sesses.get(key).getBasicRemote().sendText(jb.toJSONString());
-					System.out.println(key + "--------" + jb.toJSONString());
+//					System.out.println(key + "--------" + jb.toJSONString());
 				}
 				rs1.close();
 				stat1.close();

@@ -132,7 +132,10 @@ public class VehicleManagerServiceImp implements IManagerService, IAuditingServi
 			return (T)rp;
 		}
 		
-		
+		int pages = up.getPages();
+		int rows = up.getRows();
+		int begin = (pages - 1) * rows;
+		up.setBegin(begin);
 		
 		List<VehiclePojo> ups = vmd.findByAll(up);
 		ResultPojo rp1 = new ResultPojo();

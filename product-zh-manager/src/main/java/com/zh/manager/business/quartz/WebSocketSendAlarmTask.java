@@ -66,6 +66,7 @@ public class WebSocketSendAlarmTask extends QuartzJobBean{
 						int type = rs.getInt("alarmType");
 						String dt = rs.getString("dateTime");
 						String areaName = rs.getString("areaName");
+						
 						String ownerName = rs.getString("ownerName");
 						if(type == 0){
 							pap.setAlarmType("过期警报");
@@ -76,6 +77,7 @@ public class WebSocketSendAlarmTask extends QuartzJobBean{
 						}
 						pap.setKey(rs.getInt("id"));
 						pap.setOwnerName(ownerName);
+						System.out.println(ownerName);
 						pap.setAreaName(areaName);
 						pap.setDateTime(dt);
 						paps.add(pap);
