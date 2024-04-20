@@ -77,6 +77,7 @@ public class Show_1_WebSocketTask  extends QuartzJobBean{
 				pap.setPosititon(position);
 				pap.setAreaName(areaName);
 				pap.setOwnerName(ownerName);
+				System.out.println(ownerName);
 				pap.setDeviceId(deviceId);
 				show_1_InfoBuf.put(tagId, pap);
 				paps.add(pap);

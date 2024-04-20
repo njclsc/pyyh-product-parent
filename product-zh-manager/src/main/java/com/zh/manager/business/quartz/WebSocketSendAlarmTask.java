@@ -68,6 +68,7 @@ public class WebSocketSendAlarmTask extends QuartzJobBean{
 						String areaName = rs.getString("areaName");
 						
 						String ownerName = rs.getString("ownerName");
+						System.out.println(ownerName);
 						if(type == 0){
 							pap.setAlarmType("过期警报");
 						}else if(type == 1){
