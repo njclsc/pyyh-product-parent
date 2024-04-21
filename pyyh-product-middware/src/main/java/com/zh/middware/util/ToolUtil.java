@@ -1,6 +1,10 @@
 package com.zh.middware.util;
 
 import java.net.InetSocketAddress;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import com.zh.middware.init.lizer.ZCKF_ZH_BusinessChain;
 import com.zh.middware.pojos.CommunicationConfigPojo;
@@ -15,6 +19,18 @@ import io.netty.channel.socket.nio.NioDatagramChannel;
 
 public class ToolUtil {
 	
+	public static ThreadPoolExecutor createThreadPool(){
+		int cpuNum = Runtime.getRuntime().availableProcessors();
+		return new ThreadPoolExecutor(
+				cpuNum * 2,
+				cpuNum * 2 + 10,
+				60,
+				TimeUnit.SECONDS,
+				new ArrayBlockingQueue<Runnable>(50000),
+				Executors.defaultThreadFactory(),
+				new ThreadPoolExecutor.AbortPolicy()
+			  );
+	}
 	public static void openChannel(CommunicationConfigPojo ccp){
 		String way = ccp.getWay();
 		switch(way){
