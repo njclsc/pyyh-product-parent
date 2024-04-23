@@ -213,9 +213,9 @@ public class WebSocketSendTask extends QuartzJobBean {
 				pap.setAction("init");
 				show_1_InfoBuf.put(tagId, pap);
 //				paps.add(pap);
-			}else if(show_1_InfoBuf.containsKey(tagId)){
+			}else if(show_1_InfoBuf.containsKey(tagId) && deviceId != null){
 				PushAlarmPojo pap = show_1_InfoBuf.get(tagId);
-				System.out.println(tagId + " --  " + deviceId + " --  " + pap + "  -- " + position);
+//				System.out.println(tagId + " --  " + deviceId + " --  " + pap + "  -- " + position);
 				if(!deviceId.equals(pap.getDeviceId()) || !position.equals(pap.getPosititon())){
 					if(position.equals("ioffice") || position.equals("iparking") || position.equals("into")){
 						pap.setAction("进入");
