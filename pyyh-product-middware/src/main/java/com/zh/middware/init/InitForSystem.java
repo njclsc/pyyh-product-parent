@@ -2,6 +2,7 @@ package com.zh.middware.init;
 
 import java.util.concurrent.LinkedBlockingQueue;
 
+import org.apache.http.impl.client.HttpClients;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -36,6 +37,8 @@ public class InitForSystem {
 			//pool
 			ContainerUtil.setThreadPool(ToolUtil.createThreadPool());
 			ContainerUtil.getThreadPool().execute(new ParseDataTask(ContainerUtil.getInQueue()));
+			//oth
+			ContainerUtil.setHttpClient(HttpClients.createDefault());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
