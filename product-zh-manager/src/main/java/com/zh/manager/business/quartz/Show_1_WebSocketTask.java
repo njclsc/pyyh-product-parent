@@ -86,7 +86,7 @@ public class Show_1_WebSocketTask  extends QuartzJobBean{
 				if(!deviceId.equals(pap.getDeviceId()) || !position.equals(pap.getPosititon())){
 					if(position.equals("ioffice") || position.equals("iparking") || position.equals("into")){
 						pap.setAction("进入");
-					}else if(position.equals("ooffice") || position.equals("oparking") || position.equals("into")){
+					}else if(position.equals("ooffice") || position.equals("oparking") || position.equals("out")){
 						pap.setAction("离开");
 					}
 					pap.setDeviceId(deviceId);
