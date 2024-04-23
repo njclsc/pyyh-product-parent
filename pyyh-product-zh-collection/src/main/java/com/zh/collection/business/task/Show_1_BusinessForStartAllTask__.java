@@ -23,13 +23,11 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.socket.DatagramPacket;
 
-public class Show_1_BusinessForStartAllTask implements Runnable{
+public class Show_1_BusinessForStartAllTask__ implements Runnable{
 	private ThreadPoolExecutor threadPool;
 	private LinkedBlockingQueue<Object> inQueue;
 	private Connection con;
-	private long doorDT;
-	private long offDT;
-	public Show_1_BusinessForStartAllTask() throws Exception{
+	public Show_1_BusinessForStartAllTask__() throws Exception{
 		this.threadPool = ContainerUtil.getThreadPool();
 		this.inQueue = ContainerUtil.getInQueue();
 		this.con = ContainerUtil.getDataSource().getConnection();
@@ -82,9 +80,9 @@ public class Show_1_BusinessForStartAllTask implements Runnable{
 					stat1.executeUpdate(sql1);
 					stat1.close();
 					int a = ((tp.getStatus() & 0xFF) >> 7);
-					//入大门
-					if(aph.getType() == 1 && a == 1 && hbArea == 1 && lbArea == 1){
-//						System.out.println(tp.getTagId() + "  " + tp.getHbStationId() + "  " + tp.getCurrentDeviceId() + "  " + tp.getMappingAddress());
+					//大门
+					if(aph.getType() == 1 && a == 0 && !tp.getPositionType().equals("door")){
+						System.out.println(tp.getTagId() + "  " + tp.getHbStationId() + "  " + tp.getCurrentDeviceId() + "  " + tp.getMappingAddress());
 						System.out.println("into door");
 						VehiclePojo vp = vehicles.get("" + tags.get(tp.getTagId()).getVehicleIndex());
 						Statement stat = con.createStatement();
@@ -92,28 +90,22 @@ public class Show_1_BusinessForStartAllTask implements Runnable{
 								vp.getId() + "'";
 						stat.executeUpdate(sql);
 						stat.close();
-						if(System.currentTimeMillis() - doorDT > 30000){
+						if(System.currentTimeMillis() - ContainerUtil.getAlarmSend() > 5000){
 							String[] ads = ContainerUtil.getDevAddress().get(hbId).split(":");
 							InetSocketAddress addr = new InetSocketAddress(ads[0], Integer.parseInt(ads[1]));
 					        ByteBuf copiedBuffer = Unpooled.copiedBuffer("rrpc,setpio,29,1,5000".getBytes());
 							DatagramPacket dp = new DatagramPacket(copiedBuffer, addr);
 							ContainerUtil.getSendQueue().offer(dp);
-							doorDT = System.currentTimeMillis();
 						}
-					}else
-					//出大门
-					if(aph.getType() == 1 && a == 0 && hbArea == 1 && lbArea == 0){
-						System.out.println("out door");
-						VehiclePojo vp = vehicles.get("" + tags.get(tp.getTagId()).getVehicleIndex());
-						Statement stat = con.createStatement();
-						String sql = "update tb_" + up.getId() + "_vehicle set position = 'out' where id = '" + 
-								vp.getId() + "'";
-						stat.executeUpdate(sql);
-						stat.close();
-					}else
+						
+						tp.setPositionType("door");
+						
+						
 					//进停车场
-					if(aph.getType() == 2 && a == 1 && hbArea == 2 && lbArea == 2){
-//						System.out.println(tp.getTagId() + "  " + tp.getHbStationId() + "  " + tp.getStatus() + "  " + tp.getCurrentDeviceId() + "  " + tp.getMappingAddress());
+					}
+					
+					if(aph.getType() == 2 && a == 1 && hbArea == lbArea && !tp.getPositionType().equals("iparking")){
+						System.out.println(tp.getTagId() + "  " + tp.getHbStationId() + "  " + tp.getStatus() + "  " + tp.getCurrentDeviceId() + "  " + tp.getMappingAddress());
 						System.out.println("into parking");
 						VehiclePojo vp = vehicles.get("" + tags.get(tp.getTagId()).getVehicleIndex());
 						Statement stat = con.createStatement();
@@ -121,10 +113,12 @@ public class Show_1_BusinessForStartAllTask implements Runnable{
 								vp.getId() + "'";
 						stat.executeUpdate(sql);
 						stat.close();
+						tp.setPositionType("iparking");
 					//出停车场
-					}else
-					if(aph.getType() == 2 && a == 0 && hbArea == 2 && lbArea == 0){
-//						System.out.println(tp.getTagId() + "  " + tp.getHbStationId() + "  " + tp.getStatus() + "  " + tp.getCurrentDeviceId() + "  " + tp.getMappingAddress());
+					}
+					System.out.println(a + " *******************  " + tp.getPositionType() + "    " + hbArea + "        " + lbArea);
+					if(aph.getType() == 2 && a == 0 && hbArea != lbArea && !tp.getPositionType().equals("oparking")){
+						System.out.println(tp.getTagId() + "  " + tp.getHbStationId() + "  " + tp.getStatus() + "  " + tp.getCurrentDeviceId() + "  " + tp.getMappingAddress());
 						System.out.println("out parking");
 						VehiclePojo vp = vehicles.get("" + tags.get(tp.getTagId()).getVehicleIndex());
 						Statement stat = con.createStatement();
@@ -132,10 +126,11 @@ public class Show_1_BusinessForStartAllTask implements Runnable{
 								vp.getId() + "'";
 						stat.executeUpdate(sql);
 						stat.close();
+						tp.setPositionType("oparking");
 					//进楼
-					}else
-					if(aph.getType() == 3 && a == 1 && hbArea == 3 && lbArea == 3){
-//						System.out.println(tp.getTagId() + "  " + tp.getHbStationId() + "  " + tp.getStatus() + "  " + tp.getCurrentDeviceId() + "  " + tp.getMappingAddress());
+					}
+					if(aph.getType() == 3 && a == 1 && hbArea == lbArea && !tp.getPositionType().equals("ioffice")){
+						System.out.println(tp.getTagId() + "  " + tp.getHbStationId() + "  " + tp.getStatus() + "  " + tp.getCurrentDeviceId() + "  " + tp.getMappingAddress());
 						System.out.println("into office");
 						VehiclePojo vp = vehicles.get("" + tags.get(tp.getTagId()).getVehicleIndex());
 						Statement stat = con.createStatement();
@@ -143,15 +138,15 @@ public class Show_1_BusinessForStartAllTask implements Runnable{
 								vp.getId() + "'";
 						stat.executeUpdate(sql);
 						stat.close();
-						if(System.currentTimeMillis() - offDT > 30000){
+						if(System.currentTimeMillis() - ContainerUtil.getAlarmSend() > 5000){
 							String[] ads = ContainerUtil.getDevAddress().get(hbId).split(":");
 							InetSocketAddress addr = new InetSocketAddress(ads[0], Integer.parseInt(ads[1]));
 							System.out.println(ads[0] + ":" + ads[1]);
 					        ByteBuf copiedBuffer = Unpooled.copiedBuffer("rrpc,setpio,26,1,5000".getBytes());
 							DatagramPacket dp = new DatagramPacket(copiedBuffer, addr);
 							ContainerUtil.getSendQueue().offer(dp);
-							offDT = System.currentTimeMillis();
 						}
+						tp.setPositionType("ioffice");
 						//---------------------------------------------------------------------------
 						Statement statx = con.createStatement();
 						StringBuffer sb = new StringBuffer();
@@ -167,9 +162,9 @@ public class Show_1_BusinessForStartAllTask implements Runnable{
 						//---------------------------------------------------------------------------
 						
 					//出楼	
-					}else
-					if(aph.getType() == 3 && a == 0 && hbArea == 3 && lbArea == 0){
-//						System.out.println(tp.getTagId() + "  " + tp.getHbStationId() + "  " + tp.getStatus() + "  " + tp.getCurrentDeviceId() + "  " + tp.getMappingAddress());
+					}
+					if(aph.getType() == 3 && a == 0 && hbArea != lbArea && !tp.getPositionType().equals("ooffice")){
+						System.out.println(tp.getTagId() + "  " + tp.getHbStationId() + "  " + tp.getStatus() + "  " + tp.getCurrentDeviceId() + "  " + tp.getMappingAddress());
 						System.out.println("out office");
 						VehiclePojo vp = vehicles.get("" + tags.get(tp.getTagId()).getVehicleIndex());
 						Statement stat = con.createStatement();
@@ -177,6 +172,7 @@ public class Show_1_BusinessForStartAllTask implements Runnable{
 								vp.getId() + "'";
 						stat.executeUpdate(sql);
 						stat.close();
+						tp.setPositionType("ooffice");
 					}
 				}
 				
