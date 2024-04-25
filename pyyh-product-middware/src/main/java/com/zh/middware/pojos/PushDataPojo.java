@@ -7,20 +7,16 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class TagPojo {
+public class PushDataPojo {
+	private int action;
 	private String tagId;
 	private String stationId;
-	private String _stationId;
 	private String antennalId;
-	private String _antennalId;
+	private String lfRssi;
+	private String hfRssi;
 	private boolean isActive;
-	private boolean _isActive;
 	private boolean voltageOk;
 	private boolean disassOk;
-//	private boolean status;
+	private boolean status;
 	private long dateTime;
-//	private int action;
-//	private int dataType;
-//	private int dataNumber;
-//	private List<TagPojo> data;
 }

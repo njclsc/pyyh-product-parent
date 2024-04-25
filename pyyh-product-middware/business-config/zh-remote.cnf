@@ -1,3 +1,4 @@
 {
-	"deviceInfoUrl":"http://zhhq-test240.zkfc.cn/api/park_smart/web/device/list"
+	"deviceInfoUrl":"http://zhhq-test240.zkfc.cn/api/park_smart/web/device/list",
+	"pushUrl":"http://zhhq-test240.zkfc.cn/api/park_smart/hardware/report"
 }

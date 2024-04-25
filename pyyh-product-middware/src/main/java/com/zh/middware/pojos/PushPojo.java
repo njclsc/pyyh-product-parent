@@ -7,7 +7,8 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class RemoteConfigPojo {
-	private String deviceInfoUrl;
-	private String pushUrl;
+public class PushPojo {
+	private int dataType;
+	private int dataNumber;
+	private List<PushDataPojo> data;
 }

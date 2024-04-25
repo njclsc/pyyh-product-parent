@@ -13,7 +13,7 @@ spring:
             threadsInheritContextClassLoaderOfInitializingThread: true
             
 custom: 
-  quartzCron: "*/3 * * * * ?"
+  quartzCron: "0 0 */1 * * ?"
   jobGroupName: jobGroupName
   triggerGroupName: triggerGroupName
   

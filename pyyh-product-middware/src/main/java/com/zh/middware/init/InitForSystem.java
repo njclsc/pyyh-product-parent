@@ -1,5 +1,7 @@
 package com.zh.middware.init;
 
+import java.util.ArrayList;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import org.apache.http.impl.client.HttpClients;
@@ -11,7 +13,10 @@ import org.springframework.context.annotation.Configuration;
 import com.zh.middware.business.task.ParseDataTask;
 import com.zh.middware.init.service.ISourceService;
 import com.zh.middware.pojos.CommunicationConfigPojo;
+import com.zh.middware.pojos.LogicDevicePojo;
+import com.zh.middware.pojos.PushDataPojo;
 import com.zh.middware.pojos.RemoteConfigPojo;
+import com.zh.middware.pojos.TagPojo;
 import com.zh.middware.util.ContainerUtil;
 import com.zh.middware.util.ToolUtil;
 
@@ -23,6 +28,13 @@ public class InitForSystem {
 	@Bean
 	public void initSource(){
 		try {
+			//oth
+			ContainerUtil.setPushData(new ArrayList<PushDataPojo>());
+			ContainerUtil.setHttpClient(HttpClients.createDefault());
+			ContainerUtil.setLgDevices(new ConcurrentHashMap<String, LogicDevicePojo>());
+			ContainerUtil.setDevAddr(new ConcurrentHashMap<String, String>());
+			ContainerUtil.setTags(new ConcurrentHashMap<String, TagPojo>());
+//			ContainerUtil.setDevices(new ConcurrentHashMap<String, DevicePojo>());
 			//queue
 			ContainerUtil.setInQueue(new LinkedBlockingQueue<>());
 			//channel
@@ -34,11 +46,11 @@ public class InitForSystem {
 			}
 			//device cnf
 			ContainerUtil.setRemoteConfig(sourceService.loadSource("business-config/zh-remote.cnf", RemoteConfigPojo.class));
+			ToolUtil.forInitLoad();
 			//pool
 			ContainerUtil.setThreadPool(ToolUtil.createThreadPool());
 			ContainerUtil.getThreadPool().execute(new ParseDataTask(ContainerUtil.getInQueue()));
-			//oth
-			ContainerUtil.setHttpClient(HttpClients.createDefault());
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
