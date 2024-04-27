@@ -1,19 +1,18 @@
 package com.zh.middware.business.task;
 
-import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.util.EntityUtils;
 
 import com.alibaba.fastjson.JSONObject;
 import com.zh.middware.pojos.PushDataPojo;
@@ -21,19 +20,30 @@ import com.zh.middware.pojos.PushPojo;
 import com.zh.middware.pojos.TagPojo;
 import com.zh.middware.util.ContainerUtil;
 
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
+import io.netty.channel.socket.DatagramPacket;
+
 public class ParseDataTask implements Runnable{
 	private LinkedBlockingQueue<Object> inQueue;
 	private long dtFlag;
 	private PushPojo pp;
 	private HttpClient cli;
+	private List<PushDataPojo> dpd;
+	private HashSet<String> deduplic;
+	private HashSet<String> sendBuf;
+	private long sendDT;
+	private ConcurrentHashMap<String, String> devAddr;
 	public ParseDataTask(LinkedBlockingQueue<Object> inQueue){
 		this.inQueue = inQueue;
 		this.pp = new PushPojo();
 		this.pp.setData(new ArrayList<PushDataPojo>());
 		this.dtFlag = System.currentTimeMillis();
-//		this.reqCnf = RequestConfig.custom().setConnectTimeout(10000)
-//						.setConnectionRequestTimeout(5000).setSocketTimeout(10000).build();
 		this.cli = ContainerUtil.getHttpClient();
+		this.dpd = new ArrayList<>();
+		this.deduplic = new HashSet<>();
+		this.sendBuf = new HashSet<String>();
+		this.devAddr = ContainerUtil.getDevAddr();
 	}
 	@Override
 	public void run() {
@@ -45,43 +55,138 @@ public class ParseDataTask implements Runnable{
 				if(tp == null){
 					continue;
 				}
-				String _cst = tp.get_stationId();
-				String cst = tp.getStationId();
-				String _ant = tp.get_antennalId();
-				String ant = tp.getAntennalId();
-				boolean _act = tp.is_isActive();
-				boolean act = tp.isActive();
-				boolean vol = tp.isVoltageOk();
-				boolean dis = tp.isDisassOk();
-				if(cst.equals(_cst) && ant.equals(_ant)){
-					StringBuffer sb = new StringBuffer();
-					sb.append(tp.getTagId());sb.append("    ");
-					sb.append(cst);sb.append("    ");
-					if(act && _act){
-						sb.append("   into  ");
-						if(vol && dis){
-							sb.append(" noAlarm");
-						}else{
-							sb.append(" alarm");
-						}
-					}else if(!act && !_act){
-						sb.append("   out  ");
-						if(vol && dis){
-							sb.append(" noAlarm");
-						}else{
-							sb.append(" alarm");
-						}
-					}
-					
-					
-					System.out.println(sb.toString());
-				}
-
+				_pushTag(tp);
 			}catch(Exception e){
 				e.printStackTrace();
 			}
 		}
 	}
+	
+	private void _pushTag(TagPojo tp){
+		long _dt = System.currentTimeMillis();
+		String _cst = tp.get_stationId();
+		String cst = tp.getStationId();
+		String _ant = tp.get_antennalId();
+		String ant = tp.getAntennalId();
+		boolean _act = tp.is_isActive();
+		boolean act = tp.isActive();
+		boolean vol = tp.isVoltageOk();
+		boolean dis = tp.isDisassOk();
+		if(cst.equals(_cst) && ant.equals(_ant)){
+			if(act && _act){
+				if(!deduplic.contains(tp.getTagId())){
+					PushDataPojo _pdp = new PushDataPojo();
+					if(!vol || !dis){
+						_pdp.setAction(5);
+					}else{
+						_pdp.setAction(1);
+					}
+					_pdp.setTagId("" + Integer.parseInt(tp.getTagId(), 16));
+					_pdp.setStationId("" + Integer.parseInt(cst, 16));
+					_pdp.setAntennalId(ant);
+					_pdp.setActive(act);
+					_pdp.setVoltageOk(vol);
+					_pdp.setDisassOk(dis);
+					_pdp.setDateTime(_dt);
+					dpd.add(_pdp);
+					deduplic.add(tp.getTagId());
+					//只做公寓  所以不用判断发送与否
+					sendBuf.add(tp.getStationId());
+				}
+			}else if(!act && !_act){
+				if(!deduplic.contains(tp.getTagId())){
+					PushDataPojo _pdp = new PushDataPojo();
+					if(!vol || !dis){
+						_pdp.setAction(6);
+					}else{
+						_pdp.setAction(2);
+					}
+					_pdp.setTagId("" + Integer.parseInt(tp.getTagId(), 16));
+					_pdp.setStationId("" + Integer.parseInt(cst, 16));
+					_pdp.setAntennalId(ant);
+					_pdp.setActive(act);
+					_pdp.setVoltageOk(vol);
+					_pdp.setDisassOk(dis);
+					_pdp.setDateTime(_dt);
+					dpd.add(_pdp);
+					deduplic.add(tp.getTagId());
+				}
+			}
+		}
+		long ct = System.currentTimeMillis();
+		if(ct - dtFlag > 1000){
+			pp.setDataType(1);
+			pp.setDataNumber(dpd.size());
+			pp.setData(dpd);
+			HttpPost httpPost = new HttpPost(ContainerUtil.getRemoteConfig().getPushUrl());
+			httpPost.addHeader("Content-Type", "application/json;charset=utf-8");
+			String data = JSONObject.toJSONString(pp);
+			StringEntity entity = new StringEntity(data, "UTF-8");
+			httpPost.setEntity(entity);
+			CloseableHttpResponse rep = null;
+			try {
+				rep = (CloseableHttpResponse) cli.execute(httpPost);
+//				HttpEntity repEntity = rep.getEntity();
+				System.out.println(rep.getStatusLine() + "-->" + data);
+				if(ct - sendDT >= 4000){
+					for(String devId : sendBuf){
+						String adr = devAddr.get(devId);
+						String[] addrs = adr.split(":");
+						InetSocketAddress addr = new InetSocketAddress(addrs[0], Integer.parseInt(addrs[1]));
+				        ByteBuf copiedBuffer = Unpooled.copiedBuffer("rrpc,setpio,26,1,5000".getBytes());
+						DatagramPacket dp = new DatagramPacket(copiedBuffer, addr);
+						ContainerUtil.getChannels().entrySet().iterator().next().getValue().channel().writeAndFlush(dp);
+					}
+					sendDT = System.currentTimeMillis();
+				}
+			}catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}finally{
+				try {
+					if(rep != null){
+						rep.close();
+					}
+					deduplic.clear();
+					sendBuf.clear();
+					dpd.clear();
+					dtFlag = System.currentTimeMillis();
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	private void pushStation(){
 		//基站数据
 		pp.setDataType(2);

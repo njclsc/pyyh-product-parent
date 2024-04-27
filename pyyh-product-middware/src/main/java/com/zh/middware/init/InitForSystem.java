@@ -1,6 +1,6 @@
 package com.zh.middware.init;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -14,11 +14,12 @@ import com.zh.middware.business.task.ParseDataTask;
 import com.zh.middware.init.service.ISourceService;
 import com.zh.middware.pojos.CommunicationConfigPojo;
 import com.zh.middware.pojos.LogicDevicePojo;
-import com.zh.middware.pojos.PushDataPojo;
 import com.zh.middware.pojos.RemoteConfigPojo;
 import com.zh.middware.pojos.TagPojo;
 import com.zh.middware.util.ContainerUtil;
 import com.zh.middware.util.ToolUtil;
+
+import io.netty.channel.ChannelFuture;
 
 @Configuration
 public class InitForSystem {
@@ -29,12 +30,11 @@ public class InitForSystem {
 	public void initSource(){
 		try {
 			//oth
-			ContainerUtil.setPushData(new ArrayList<PushDataPojo>());
 			ContainerUtil.setHttpClient(HttpClients.createDefault());
 			ContainerUtil.setLgDevices(new ConcurrentHashMap<String, LogicDevicePojo>());
 			ContainerUtil.setDevAddr(new ConcurrentHashMap<String, String>());
 			ContainerUtil.setTags(new ConcurrentHashMap<String, TagPojo>());
-//			ContainerUtil.setDevices(new ConcurrentHashMap<String, DevicePojo>());
+			ContainerUtil.setChannels(new HashMap<String, ChannelFuture>());
 			//queue
 			ContainerUtil.setInQueue(new LinkedBlockingQueue<>());
 			//channel

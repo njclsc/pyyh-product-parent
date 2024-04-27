@@ -122,6 +122,7 @@ public class ToolUtil {
 				String[] tmpAddress = s.split(":");
 				ChannelFuture f = boot.bind(new InetSocketAddress(tmpAddress[0], Integer.parseInt(tmpAddress[1])));
 				//==========================
+				ContainerUtil.getChannels().put(s, f);
 			}
 			break;
 //		case "tcpServer":
