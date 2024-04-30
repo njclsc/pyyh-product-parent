@@ -72,11 +72,12 @@ public class ParseDataTask implements Runnable{
 		boolean act = tp.isActive();
 		boolean vol = tp.isVoltageOk();
 		boolean dis = tp.isDisassOk();
+		int devType = ContainerUtil.getLgDevices().get(cst).getType();
 		if(cst.equals(_cst) && ant.equals(_ant)){
 			if(act && _act){
 				if(!deduplic.contains(tp.getTagId())){
 					PushDataPojo _pdp = new PushDataPojo();
-					if(!vol || !dis){
+					if(devType == 5 || devType == 6 || (!vol || !dis)){
 						_pdp.setAction(5);
 					}else{
 						_pdp.setAction(1);

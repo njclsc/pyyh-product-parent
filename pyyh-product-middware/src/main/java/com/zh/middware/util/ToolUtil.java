@@ -62,6 +62,7 @@ public class ToolUtil {
 	public static void refreshDevBuffer(List<DevicePojo> dps, ConcurrentHashMap<String, LogicDevicePojo> devices){
 		for(DevicePojo dp : dps){
 			int deviceId = Integer.parseInt(dp.getDeviceId());
+			int devType = dp.getDeviceType();
 			String antIdOut = dp.getSenseOut();
 			String antIdIn = dp.getSenseIn();
 			int _did = deviceId & 0xFFFF;
@@ -73,7 +74,7 @@ public class ToolUtil {
 			String key = sb.toString().toUpperCase();
 			if(!devices.containsKey(key)){
 				LogicDevicePojo ldp = new LogicDevicePojo();
-				ldp.setType(dp.getDeviceType());
+				ldp.setType(devType);
 				ldp.setDeviceId(key);
 				ldp.setDeviceIdDec(deviceId);
 				if(antIdOut != null && antIdOut.length() > 0){
@@ -84,7 +85,7 @@ public class ToolUtil {
 				devices.put(key, ldp);
 			}else{
 				LogicDevicePojo ldp = devices.get(key);
-				ldp.setType(dp.getDeviceType());
+				ldp.setType(devType);
 				ldp.setDeviceId(key);
 				ldp.setDeviceIdDec(deviceId);
 				if(antIdOut != null && antIdOut.length() > 0){
