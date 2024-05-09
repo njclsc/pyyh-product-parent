@@ -32,7 +32,7 @@ public class ParseDataTask implements Runnable{
 	private List<PushDataPojo> dpd;
 	private HashSet<String> deduplic;
 	private HashSet<String> sendBuf;
-	private long sendDT;
+//	private long sendDT;
 	private ConcurrentHashMap<String, String> devAddr;
 	public ParseDataTask(LinkedBlockingQueue<Object> inQueue){
 		this.inQueue = inQueue;
@@ -73,7 +73,102 @@ public class ParseDataTask implements Runnable{
 		boolean vol = tp.isVoltageOk();
 		boolean dis = tp.isDisassOk();
 		int devType = ContainerUtil.getLgDevices().get(cst).getType();
-		if(cst.equals(_cst) && ant.equals(_ant)){
+		if(devType == 1 || devType == 2 || devType == 3){
+//			System.out.println(devType + "-----" + act);
+			if(devType == 3 && act){
+				if(!deduplic.contains(tp.getTagId())){
+					PushDataPojo _pdp = new PushDataPojo();
+					if(!vol || !dis){
+						_pdp.setAction(6);
+					}else{
+						_pdp.setAction(2);
+					}
+					_pdp.setTagId("" + Integer.parseInt(tp.getTagId(), 16));
+					_pdp.setStationId("" + Integer.parseInt(cst, 16));
+					_pdp.setAntennalId(ant);
+					_pdp.setActive(act);
+					_pdp.setVoltageOk(vol);
+					_pdp.setDisassOk(dis);
+					_pdp.setDateTime(_dt);
+					dpd.add(_pdp);
+					deduplic.add(tp.getTagId());
+				}
+			}else if(devType == 2 && act){
+				if(!deduplic.contains(tp.getTagId())){
+					PushDataPojo _pdp = new PushDataPojo();
+					if(!vol || !dis){
+						_pdp.setAction(5);
+					}else{
+						_pdp.setAction(1);
+					}
+					_pdp.setTagId("" + Integer.parseInt(tp.getTagId(), 16));
+					_pdp.setStationId("" + Integer.parseInt(cst, 16));
+					_pdp.setAntennalId(ant);
+					_pdp.setActive(act);
+					_pdp.setVoltageOk(vol);
+					_pdp.setDisassOk(dis);
+					_pdp.setDateTime(_dt);
+					dpd.add(_pdp);
+					deduplic.add(tp.getTagId());
+					sendBuf.add(tp.getStationId());
+				}
+			}else if(devType == 1 && act){
+				String inAntId = ContainerUtil.getLgDevices().get(cst).getAntIdIn();
+				String outAntId = ContainerUtil.getLgDevices().get(cst).getAntIdOut();
+//				System.out.println(inAntId + "--2---" + outAntId);
+				if(!ant.equals(tp.getDoorAnt1())){
+					tp.setDoorAnt2(tp.getDoorAnt1());
+					tp.setDoorAnt1(ant);
+				}
+//				System.out.println(tp.getDoorAnt1() + "---3--" + tp.getDoorAnt2());
+				if(!tp.getDoorAnt1().equals("") && !tp.getDoorAnt2().equals("")){
+					//in
+					if(tp.getDoorAnt2().equals(outAntId) && tp.getDoorAnt1().equals(inAntId)){
+//						System.out.println("in.....");
+						if(!deduplic.contains(tp.getTagId())){
+							PushDataPojo _pdp = new PushDataPojo();
+							if(!vol || !dis){
+								_pdp.setAction(5);
+							}else{
+								_pdp.setAction(1);
+							}
+							_pdp.setTagId("" + Integer.parseInt(tp.getTagId(), 16));
+							_pdp.setStationId("" + Integer.parseInt(cst, 16));
+							_pdp.setAntennalId(ant);
+							_pdp.setActive(act);
+							_pdp.setVoltageOk(vol);
+							_pdp.setDisassOk(dis);
+							_pdp.setDateTime(_dt);
+							dpd.add(_pdp);
+							deduplic.add(tp.getTagId());
+							sendBuf.add(tp.getStationId());
+						}
+					//out
+					}else if(tp.getDoorAnt2().equals(inAntId) && tp.getDoorAnt1().equals(outAntId)){
+//						System.out.println("out.....");
+						if(!deduplic.contains(tp.getTagId())){
+							PushDataPojo _pdp = new PushDataPojo();
+							if(!vol || !dis){
+								_pdp.setAction(6);
+							}else{
+								_pdp.setAction(2);
+							}
+							_pdp.setTagId("" + Integer.parseInt(tp.getTagId(), 16));
+							_pdp.setStationId("" + Integer.parseInt(cst, 16));
+							_pdp.setAntennalId(ant);
+							_pdp.setActive(act);
+							_pdp.setVoltageOk(vol);
+							_pdp.setDisassOk(dis);
+							_pdp.setDateTime(_dt);
+							dpd.add(_pdp);
+							deduplic.add(tp.getTagId());
+//							sendBuf.add(tp.getStationId());
+						}
+					}
+				}
+			}
+		}else if(cst.equals(_cst) && ant.equals(_ant)){
+			tp.setDoorAnt1("");tp.setDoorAnt2("");
 			if(act && _act){
 				if(!deduplic.contains(tp.getTagId())){
 					PushDataPojo _pdp = new PushDataPojo();
@@ -115,7 +210,7 @@ public class ParseDataTask implements Runnable{
 			}
 		}
 		long ct = System.currentTimeMillis();
-		if(ct - dtFlag > 1000){
+		if(ct - dtFlag > 1000 && dpd.size() > 0){
 			pp.setDataType(1);
 			pp.setDataNumber(dpd.size());
 			pp.setData(dpd);
@@ -129,17 +224,36 @@ public class ParseDataTask implements Runnable{
 				rep = (CloseableHttpResponse) cli.execute(httpPost);
 //				HttpEntity repEntity = rep.getEntity();
 				System.out.println(rep.getStatusLine() + "-->" + data);
-				if(ct - sendDT >= 4000){
-					for(String devId : sendBuf){
+				for(String devId : sendBuf){
+					long sdt = ContainerUtil.getLgDevices().get(devId).getSendDT();
+					int dt = ContainerUtil.getLgDevices().get(devId).getType();
+					if(ct - sdt >= 4000){
 						String adr = devAddr.get(devId);
 						String[] addrs = adr.split(":");
 						InetSocketAddress addr = new InetSocketAddress(addrs[0], Integer.parseInt(addrs[1]));
-				        ByteBuf copiedBuffer = Unpooled.copiedBuffer("rrpc,setpio,26,1,5000".getBytes());
+						String cmd = "";
+						if((dt == 1 || dt == 2)){
+							cmd = "rrpc,setpio,29,1,5000";
+						}else if(dt > 3){
+							cmd = "rrpc,setpio,26,1,5000";
+						}
+				        ByteBuf copiedBuffer = Unpooled.copiedBuffer(cmd.getBytes());
 						DatagramPacket dp = new DatagramPacket(copiedBuffer, addr);
 						ContainerUtil.getChannels().entrySet().iterator().next().getValue().channel().writeAndFlush(dp);
+						ContainerUtil.getLgDevices().get(devId).setSendDT(ct);
 					}
-					sendDT = System.currentTimeMillis();
 				}
+//				if(ct - sendDT >= 4000){
+//					for(String devId : sendBuf){
+//						String adr = devAddr.get(devId);
+//						String[] addrs = adr.split(":");
+//						InetSocketAddress addr = new InetSocketAddress(addrs[0], Integer.parseInt(addrs[1]));
+//				        ByteBuf copiedBuffer = Unpooled.copiedBuffer("rrpc,setpio,26,1,5000".getBytes());
+//						DatagramPacket dp = new DatagramPacket(copiedBuffer, addr);
+//						ContainerUtil.getChannels().entrySet().iterator().next().getValue().channel().writeAndFlush(dp);
+//					}
+//					sendDT = System.currentTimeMillis();
+//				}
 			}catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

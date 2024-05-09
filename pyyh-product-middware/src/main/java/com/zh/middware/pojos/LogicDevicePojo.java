@@ -14,4 +14,5 @@ public class LogicDevicePojo {
 	private String antIdIn;
 	private String antIdOut;
 	private long refresh;
+	private long sendDT;
 }

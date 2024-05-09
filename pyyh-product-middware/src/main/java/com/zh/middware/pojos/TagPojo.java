@@ -1,6 +1,5 @@
 package com.zh.middware.pojos;
 
-import java.util.List;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -19,6 +18,9 @@ public class TagPojo {
 	private boolean disassOk;
 //	private boolean status;
 	private long dateTime;
+	
+	private String doorAnt1 = "";
+	private String doorAnt2 = "";
 //	private int action;
 //	private int dataType;
 //	private int dataNumber;

@@ -42,7 +42,7 @@ public class ToolUtil {
 			if(reEntity != null){
 				List<DevicePojo> dps = JSONObject.parseObject(data).getJSONObject("body").getJSONArray("list").toJavaList(DevicePojo.class);
 				ToolUtil.refreshDevBuffer(dps, devices);
-				System.out.println("设备数：" + devices.size());
+				System.out.println("设备数：" + devices.size() + "   " + data);
 			}
 		} catch(Exception e) {
 			// TODO Auto-generated catch block
@@ -78,9 +78,38 @@ public class ToolUtil {
 				ldp.setDeviceId(key);
 				ldp.setDeviceIdDec(deviceId);
 				if(antIdOut != null && antIdOut.length() > 0){
-					ldp.setAntIdOut(antIdOut);
-				}else if(antIdIn != null && antIdIn.length() > 0){
-					ldp.setAntIdIn(antIdIn);
+					int antOutDec = Integer.parseInt(antIdOut);
+					StringBuffer sb1 = new StringBuffer();
+					sb1.append(Integer.toHexString((antOutDec & 0xF000) >> 12));
+					sb1.append(Integer.toHexString((antOutDec & 0xF00) >> 8));
+					sb1.append(Integer.toHexString((antOutDec & 0xF0) >> 4));
+					sb1.append(Integer.toHexString(antOutDec & 0xF));
+					ldp.setAntIdOut(sb1.toString().toUpperCase());
+				}
+				if(antIdIn != null && antIdIn.length() > 0){
+					int antInDec = Integer.parseInt(antIdIn);
+					StringBuffer sb1 = new StringBuffer();
+					sb1.append(Integer.toHexString((antInDec & 0xF000) >> 12));
+					sb1.append(Integer.toHexString((antInDec & 0xF00) >> 8));
+					sb1.append(Integer.toHexString((antInDec & 0xF0) >> 4));
+					sb1.append(Integer.toHexString(antInDec & 0xF));
+					ldp.setAntIdIn(sb1.toString().toUpperCase());
+				}
+				if(antIdIn != null && antIdOut != null && antIdIn.length() > 0 && antIdOut.length() > 0){
+					int antOutDec = Integer.parseInt(antIdOut);
+					StringBuffer sb1 = new StringBuffer();
+					sb1.append(Integer.toHexString((antOutDec & 0xF000) >> 12));
+					sb1.append(Integer.toHexString((antOutDec & 0xF00) >> 8));
+					sb1.append(Integer.toHexString((antOutDec & 0xF0) >> 4));
+					sb1.append(Integer.toHexString(antOutDec & 0xF));
+					ldp.setAntIdOut(sb1.toString().toUpperCase());
+					int antInDec = Integer.parseInt(antIdIn);
+					StringBuffer sb2 = new StringBuffer();
+					sb2.append(Integer.toHexString((antInDec & 0xF000) >> 12));
+					sb2.append(Integer.toHexString((antInDec & 0xF00) >> 8));
+					sb2.append(Integer.toHexString((antInDec & 0xF0) >> 4));
+					sb2.append(Integer.toHexString(antInDec & 0xF));
+					ldp.setAntIdIn(sb2.toString().toUpperCase());
 				}
 				devices.put(key, ldp);
 			}else{
@@ -89,9 +118,38 @@ public class ToolUtil {
 				ldp.setDeviceId(key);
 				ldp.setDeviceIdDec(deviceId);
 				if(antIdOut != null && antIdOut.length() > 0){
-					ldp.setAntIdOut(antIdOut);
-				}else if(antIdIn != null && antIdIn.length() > 0){
-					ldp.setAntIdIn(antIdIn);
+					int antOutDec = Integer.parseInt(antIdOut);
+					StringBuffer sb1 = new StringBuffer();
+					sb1.append(Integer.toHexString((antOutDec & 0xF000) >> 12));
+					sb1.append(Integer.toHexString((antOutDec & 0xF00) >> 8));
+					sb1.append(Integer.toHexString((antOutDec & 0xF0) >> 4));
+					sb1.append(Integer.toHexString(antOutDec & 0xF));
+					ldp.setAntIdOut(sb1.toString().toUpperCase());
+				}
+				if(antIdIn != null && antIdIn.length() > 0){
+					int antInDec = Integer.parseInt(antIdIn);
+					StringBuffer sb1 = new StringBuffer();
+					sb1.append(Integer.toHexString((antInDec & 0xF000) >> 12));
+					sb1.append(Integer.toHexString((antInDec & 0xF00) >> 8));
+					sb1.append(Integer.toHexString((antInDec & 0xF0) >> 4));
+					sb1.append(Integer.toHexString(antInDec & 0xF));
+					ldp.setAntIdIn(sb1.toString().toUpperCase());
+				}
+				if(antIdIn != null && antIdOut != null && antIdIn.length() > 0 && antIdOut.length() > 0){
+					int antOutDec = Integer.parseInt(antIdOut);
+					StringBuffer sb1 = new StringBuffer();
+					sb1.append(Integer.toHexString((antOutDec & 0xF000) >> 12));
+					sb1.append(Integer.toHexString((antOutDec & 0xF00) >> 8));
+					sb1.append(Integer.toHexString((antOutDec & 0xF0) >> 4));
+					sb1.append(Integer.toHexString(antOutDec & 0xF));
+					ldp.setAntIdOut(sb1.toString().toUpperCase());
+					int antInDec = Integer.parseInt(antIdIn);
+					StringBuffer sb2 = new StringBuffer();
+					sb2.append(Integer.toHexString((antInDec & 0xF000) >> 12));
+					sb2.append(Integer.toHexString((antInDec & 0xF00) >> 8));
+					sb2.append(Integer.toHexString((antInDec & 0xF0) >> 4));
+					sb2.append(Integer.toHexString(antInDec & 0xF));
+					ldp.setAntIdIn(sb2.toString().toUpperCase());
 				}
 			}
 			

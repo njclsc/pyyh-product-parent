@@ -43,7 +43,7 @@ public class ZCKF_ZH_Handler extends ChannelInboundHandlerAdapter{
 	private void tagOperate(String tagData, String stationId){
 		String tagId = tagData.substring(0, 6);
 		int status = Integer.parseInt(tagData.substring(6, 8), 16);
-		String antId = tagData.substring(8, 10);
+		String antId = tagData.substring(8, 12);
 		int activation = ((status & 0x80) >> 7);
 		int voltage = ((status & 0x40) >> 6);
 		int disass = ((status & 0x20) >> 5);
